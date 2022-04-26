@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: 문섭스블로그
 description: 문섭스블로그
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/docs" # the subpath of your site, e.g. /blog
 url: "https://moonsub-kim.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
@@ -61,12 +61,12 @@ search:
 heading_anchors: true
 
 # Aux links for the upper right navigation
-aux_links:
-  "Just the Docs on GitHub":
-    - "//github.com/just-the-docs/just-the-docs"
+# aux_links:
+#   "Just the Docs on GitHub":
+#     - "//github.com/just-the-docs/just-the-docs"
 
 # Makes Aux links open in a new tab. Default is false
-aux_links_new_tab: false
+# aux_links_new_tab: false
 
 # Sort order for navigation links
 # nav_sort: case_insensitive # default, equivalent to nil
@@ -88,7 +88,7 @@ last_edit_time_format: "%Y-%m-%d" # uses ruby's time format: https://ruby-doc.or
 
 
 # Footer "Edit this page on GitHub" link text
-gh_edit_link: true # show or hide edit this page link
+gh_edit_link: false # show or hide edit this page link
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: "https://github.com/just-the-docs/just-the-docs" # the github URL for your repo
 gh_edit_branch: "main" # the branch that your docs is served from
