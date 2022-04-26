@@ -123,13 +123,13 @@ game_id == "kingdom" && event == "level_up" && level == 3
 
 ![Untitled](devsisters-data-driven/Untitled.png)
 
-![Untitled](devsisters-data-driven/Untitled%201.png)
+![Untitled](devsisters-data-driven/Untitled1.png)
 
 ## DCEP 핵심 기능
 
 ### KeyedStream 변환연산
 
-![Untitled](devsisters-data-driven/Untitled%202.png)
+![Untitled](devsisters-data-driven/Untitled2.png)
 
 쏟아지는 많은 로그중 필요한 정보만 필터해서 process task로 던져줘야함
 
@@ -148,7 +148,7 @@ A로그 N번 && B로그 M번 && C로그 K번 → 프로시저 호출
 
 ### Window (Time Window, Count Window)
 
-![Untitled](devsisters-data-driven/Untitled%203.png)
+![Untitled](devsisters-data-driven/Untitled3.png)
 
 native하게 window를 지원해줘야만 함
 

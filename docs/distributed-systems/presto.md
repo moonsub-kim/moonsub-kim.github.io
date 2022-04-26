@@ -72,7 +72,7 @@ GROUP BY orders.orderkey
 
 위의 query는 아래 logical plan이 된다
 
-![Untitled](presto/Untitled%201.png)
+![Untitled](presto/Untitled1.png)
 
 ## C. Query Optimization
 
@@ -90,7 +90,7 @@ optmizer는 connector를 통해 pushing range와 equality prediciate을 connecto
 
 optimization process는 plan이 병렬적으로 수행될 수 있는 부분을 찾아낸다. 병렬적으로 실행되는 부분들을 stage라고 부르고 한 stage는 1개 이상의 task로 분산된다. 각 task는 같은 input data에서 서로다른 dataset으로 같은 연산을 수행한다. optimizer는 stage간 데이터를 주고받기 위해 buffered in-memory data transfer (shuffle)을 추가한다. Shuffle을 쓰면 latency 증가, buffer memory 사용, cpu overhead가 높다. 따라서 optimizer는 전체 shuffle의 횟수를 잘 설정해야 한다. 아래 그림은 plan이 stage들과 요것들을 연결하는 shuffle로 변환된 예시이다.
 
-![Untitled](presto/Untitled%202.png)
+![Untitled](presto/Untitled2.png)
 
 **Data Layout Properties**: optimizer는 plan에서 shuffle수를 최소화 하기 위해 physical data layout를 이용한다. engine은 join에 들어가는 두 테이블이 같은 컬럼으로 partition되어있는 점을 활용하고, resource-intensive shuffle을 없애기 위해 co-located join strategy를 쓴다(같은 node에 배치). connector로부터 join column에 index가 있는지 받을 수 있다면 optmizer는 index를 이용해서 nested loop join을 할 수 있다
 
@@ -98,13 +98,13 @@ optimization process는 plan이 병렬적으로 수행될 수 있는 부분을 �
 
 Figure 3의 plan에서 이 optimization을 적용하면 아래처럼 single data processing stage으로 변경된다. 왼쪽 테이블은 join column으로 파티셔닝 되어있고, 오른쪽 테이블은 join column으로 파티셔닝 되어있지않아 local shuffle을 거친다. join은 co-located로 수행되어 network를 타지 않게된다.
 
-![Untitled](presto/Untitled%203.png)
+![Untitled](presto/Untitled3.png)
 
 ### 4) Intra-Node Paralleism
 
 optimizer는 single node에서 여러 thread로 병렬화시킬수 있는 이점을 가지는 plan stage내의 section을 찾아낸다. node내 parallize는 latency도 없고 thread간 정보공유를 하면 되므로 inter-node parallelism보다 훨씬 효율적이다. 특히 query에 concurrency bottleneck이 있으면 성능 향상이 크다 (skew로 인해 large data를 읽는경우).
 
-![Untitled](presto/Untitled%204.png)
+![Untitled](presto/Untitled4.png)
 
 ## D. Scheduling
 
@@ -232,7 +232,7 @@ Scan operator는 leaf split 정보로 Connector API를 호출하고 columnar dat
 
 Figure 5는 각 column이 압축된 page layout을 보여준다. Dictionary-encoded block은 low-cardinality column을 저장하는데 용이하고, run-length encoded (RLE) block은 반복되는 data를 압축하는데 용이하다. 일부 page는 dictionary를 공유할 수 있는데 이건 memory efficiency를 향상시킬 수 있다. ORC file의 column은 전체 stripe(최대100만row)에 대해 한 dictionary를 공유할 수 있다.
 
-![Untitled](presto/Untitled%205.png)
+![Untitled](presto/Untitled5.png)
 
 ## D. Lazy Data Loading
 

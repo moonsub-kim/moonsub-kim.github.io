@@ -25,15 +25,15 @@ E commerce에서 user action event를 받아오는 stream을 생각해보자. �
 
 예시의 오른쪽에서는 한 operator에 대해 3개의 parallel task가 user action, pattern stream을 ingest하고, action stream에서 pattern을 감지하고, match된 pattern을 downstream으로 emit한다. 단순하게 이 예시의 operator는 2개의 연속된 action pattern을 evaluate한다. active pattern은 stream으로부터 새 pattern이 들어오면 replace되게 된다. 또한 operator는 더 복잡한 pattern이나 여러 pattern을 동시에 evaulate 할 수 있도록 구현된다.
 
-![Untitled](broadcast-state/Untitled%201.png)
+![Untitled](broadcast-state/Untitled1.png)
 
 pattern이 operator에 전달되면, pattern은 3개의 parallel task로 broadcast되고, task는 broadcast state로 pattern을 저장한다. broadcast state는 broadcasted data를 통해서만 업데이트되므로, 모든 task의 state는 언제나 같게 된다.
 
-![Untitled](broadcast-state/Untitled%202.png)
+![Untitled](broadcast-state/Untitled2.png)
 
 그 다음, 첫번째 user action이 user id에 따라 partition되고 각각의 task로 전달된다. partitioning은 같은 유저의 모든 action이 같은 task에서 처리되도록 보장한다. task가 새 user action을 받으면, 직전에 들어온 action과 함께 active pattern을 evalate한다. 각 유저에 대해 operator는 이전의 action을 keyed state에 저장하고 있다. (위 그림에서는 각 user에 대해 1개의 action만 받았으므로 pattern은 evaluate될필요가 없다.) 마지막으로 각 user의 keyed state에 있는 이전 action은 방금 받은 action으로 replace된다.
 
-![Untitled](broadcast-state/Untitled%203.png)
+![Untitled](broadcast-state/Untitled3.png)
 
 그 다음 event인 1001이 logout한 action이 task에 들어간다. task가 action을 받으면 broadcast state의 pattenr과 1001의 이전 액션과 함께 evaluate한다. pattern이 action들과 매치되므로 task는 pattern match event를 emit한다, 마지막으로 task는 keyed state를 방금 받은 action으로 업데이트 한다.
 

@@ -85,7 +85,7 @@ rescaling 이후 state를 subtask로 매핑하는 문제는 알아서 해결됐�
 
 다른 방식은 checkpoint의 각 key에 대해 state location을 추적하는 index를 만드는 것이다. 이를 통해 모든 subtask는 자신의 key를 선택적으로 찾아내고 읽을 수 있다. 또한 자신과 연관없는 데이터를 읽지 않을수도있다. 하지만 2개의 단점이 있다. 1) 모든 key에 대해 materialized index(key to read offset mapping)가 매우 커질 수 있다. 2) 또한 큰 양의 random I/O가 발생할 수 있다. random I/O는 distributed file system에서 낮은 퍼포먼스를 보여줄 것이다.
 
-![Untitled](a-deep-dive-into-rescalable-state/Untitled%201.png)
+![Untitled](a-deep-dive-into-rescalable-state/Untitled1.png)
 
 Flink의 접근법은 atomic unit of state assignment로 key-group이란 개념을 도입한다. key-group의 수는 job이 시작되기 전에 정의되고, 실행하는 도중에 바뀔 수 없다. key-group은 atomic unit of state assigment이므로 key group의 갯수가 operator paralleism의 최대한계점이 된다(위 그림에서는 10까지 paralleism을 올릴 수 있다). key-group 갯수는 rescaling의 유연성과(paralleism의 upper limit 설정을 통해), state를 indexing/restoring 하는데 쓰이는 overhead 사이의 trade-off가 있다.
 

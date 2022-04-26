@@ -29,7 +29,7 @@ $shared\ storage\ format$은 columnar이다.
 
 # 3. Data Model
 
-![Untitled](dremel/Untitled%201.png)
+![Untitled](dremel/Untitled1.png)
 
 protobuf임
 
@@ -49,7 +49,7 @@ Dremel은 Figure 9의 serving tree로 쿼리를 실행한다. serving tree를 �
 
 root server가 query를 받으면 table metadata를 읽고 serving tree의 다음 level로 쿼리를 전달한다. leaf server는 storage layer나 local disk에서 데이터를 읽는다.
 
-![Untitled](dremel/Untitled%202.png)
+![Untitled](dremel/Untitled2.png)
 
 `SELECT A, COUNT(B) FROM T GROUP BY A` query가 root server로 가게되면 `T` 를 구성하는 모든 tablet을 결정하고 query를 아래처럼 바꾼다.
 `SELECT A, SUM*=(c) FROM$R_1^1$UNION ALL...$R_n^1$) GROUP BY A`
@@ -121,7 +121,7 @@ Dremel은 $shuffle$ primitive를 통한 distributed join을 지원한다. dremel
 
 따라서 colossus를 이용해서 disagregated shuffle을 만들었다. 새 shuffle에서 RAM, disk resource는 distributed transient storage system에서 따로 매니징되는 intermediate shuffle data를 저장할때 필요하다. in-memory shuffle은 shuffle latency를 줄이고, larger shuffle을 지원할 수 있게 되고, resource cost를 20%이상 줄였다. in-memory shuffle primitive는 여러 data analytics platform에 영향을 미쳤다.
 
-![Untitled](dremel/Untitled%203.png)
+![Untitled](dremel/Untitled3.png)
 
 ## 3.3 Observations
 

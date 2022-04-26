@@ -55,7 +55,7 @@ Bigtable은 client library, master server, tablet server로 구성된다. tablet
 
 ## 5.1 Tablet Location
 
-![Untitled](bigtable/Untitled%201.png)
+![Untitled](bigtable/Untitled1.png)
 
 tablet location information은 B+ tree와 비슷한 3 level hierarchy를 가진다. chubby file은 root tablet location을 가진다. root table은 METDATA table의 모든 tablet location을 저장하고 있고, 각 METADATA tablet은 여러개의 user tablet location을 가지고 있다. root tablet은 METADATA table의 첫번째 tablet이며 3 level hierarchy를 유지하기위해 절대로 split되지 않는다.
 
@@ -79,7 +79,7 @@ tablet은 table이 생성,삭제 되거나, 두 tablet이 한개의 tablet으로
 
 ## 5.3 Tablet Serving
 
-![Untitled](bigtable/Untitled%202.png)
+![Untitled](bigtable/Untitled2.png)
 
 tablet은 GFS에 저장된다. update는 log commit이후에 commit된다. update도중 commited change는 $memtable$이라 불리는 in-memroy sroted buffer에 저장된다. older update는 SSTable들로 저장된다. tablet을 복구하려면 tablet server는 METADAT table에서 metdata를 읽으면 tablet과 redo point set(commit log의 pointer)으로 이루어진 SSTable list를 찾을 수 있다. tablet server는 SSTable의 index를 memory로 읽어온 뒤, redo point 이후에 commit된 update들을 모두 apply쳐서 복구한다.
 

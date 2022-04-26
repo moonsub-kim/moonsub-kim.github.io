@@ -17,7 +17,7 @@ nav_order: 5
 
 Chandy-Lamport algorithm은 decentrialized이다. snapshot을 시작할때 아무런 프로세스(또는 여러프로세스 동시에)로부터 시작가능하다(no master). 또한 여러 process가 “동시에” 스냅샷을 만들 필요가 없다(non-blocing).
 
-![Untitled](chandy-lamport-algorithm/Untitled%201.png)
+![Untitled](chandy-lamport-algorithm/Untitled1.png)
 
 B 이벤트가 발생한 직후, $P_1$에서 스냅샷을 생성한다. 스냅샷 을 생성하기 위해 아래의 init 과정이 필요하다
 
@@ -29,7 +29,7 @@ $P_2$는 메시지를 늦게 받는 반면, $P_3$은 메시지를 빨리 받았�
 
 ## process가 marker message 처음으로 받았을 때
 
-![Untitled](chandy-lamport-algorithm/Untitled%202.png)
+![Untitled](chandy-lamport-algorithm/Untitled2.png)
 
 $P_i$가 marker message를 $C_{ki}$를 통해 받았을때, 2개의 가능성이 있다. marker message를 다른 채널을 통해 이미 받았거나, 처음으로 받았거나 이다. $P_i$가 marker message를 처음으로 받았을때 $P_i$은 아래의 행동을 한다
 
@@ -42,7 +42,7 @@ $P_3$은 state `I` 를 레코드하고, $C_{13}$은 empty로 레코드, marker m
 
 ## snapshot을 이미 만들고 채널을 기다리는데 marker message가 온경우 $P_1$
 
-![Untitled](chandy-lamport-algorithm/Untitled%203.png)
+![Untitled](chandy-lamport-algorithm/Untitled3.png)
 
 $P_3$은 marker mesage를 보냈고, marker message가 $P_1$에 먼저 도착했다.
 
@@ -50,19 +50,19 @@ $P_i$가 $C_{ki}$를 통해 marker message를 받았지만 이미 snapshot을 �
 
 $P_1$은 $C_{31}$에 대해 레코딩을 끝낸다. 받은 메시지가 없으므로 empty로 찍힌다.
 
-![Untitled](chandy-lamport-algorithm/Untitled%204.png)
+![Untitled](chandy-lamport-algorithm/Untitled4.png)
 
 $P_2$는 $C_{32}$에서 marker message를 받은 뒤, state `F, G, H` 를 레코딩 하고, $C_{32}$를 emtpy로 레코딩하고, outgoing channel $C_{21}$, $C_{23}$에 marker message를 뿌린다.
 
-![Untitled](chandy-lamport-algorithm/Untitled%205.png)
+![Untitled](chandy-lamport-algorithm/Untitled5.png)
 
 $P_2$가 $C_{12}$로 marker message를 받았다. $C_{12}$에 대해 레코딩을 끝낸다. 받은 메시지가 없으므로 empty이다.
 
-![Untitled](chandy-lamport-algorithm/Untitled%206.png)
+![Untitled](chandy-lamport-algorithm/Untitled6.png)
 
 $P_1$이 $C_{21}$을 통해 marker message를 받았다. $C_{21}$에 `[H->D]` 메시지가 들어와있으므로 이것에대해 레코딩을 한다.
 
-![Untitled](chandy-lamport-algorithm/Untitled%207.png)
+![Untitled](chandy-lamport-algorithm/Untitled7.png)
 
 $P_3$이 $C_{23}$을 통해 marker message를 받았다. $C_{23}$을 empty로 레코딩을 끝낸다.
 
@@ -70,7 +70,7 @@ $P_3$이 $C_{23}$을 통해 marker message를 받았다. $C_{23}$을 empty로 �
 
 snapshot을 찍을때 marker message를 무시했다. 위에서 언급했던, distributed execution상에서 찍힌 snapshot 안에있는 특정 이벤트에 대해, 그 이전(happend before) 이벤트 또한 snapshot으로 찍힌다고 말했다. 모든 프로세스의 state를 보면 이 특성을 만족한다(causal consistency). 즉 snapshot은 consistent cut을 생성했다. 메시지는 시간을 거슬러 올라가는 경우가 발생하지 않았다.
 
-![Untitled](chandy-lamport-algorithm/Untitled%208.png)
+![Untitled](chandy-lamport-algorithm/Untitled8.png)
 
 Q. $C_{21}$에 들어있던 `[H->D]` 가 incoming channel에 있지않고 `D` 로 $P_1$의 state에 들어가야하는거 아닌가?
 

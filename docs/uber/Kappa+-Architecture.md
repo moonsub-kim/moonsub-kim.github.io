@@ -87,7 +87,7 @@ backfill로 동작하면서도 original streaming job의 windowing과 watermarki
 
 - backfill mode에서 위의 그림과 같은 stateful streaming job이다. 차이점은 unbounded kafak stream에서 hive로 query를 수행하는 것으로 바뀌었다.
 
-![Untitled](Kappa%2B-Architecture/Untitled%201.png)
+![Untitled](Kappa%2B-Architecture/Untitled1.png)
 
 backfill을 위해 kafka connector에서 hive로 바꿀때, 위에 설명한 principle들을 지키기 위해 기존 streaming job의 state persistence, windowing, triggering semantics를 저장했다. trigger간에 읽는 data 양을 조절할 수 있기 때문에 며칠에 걸쳐 hive에서 한번에 모든 data를 읽지않고, 서서히 backfill할 수도 있다. 또한 backfill job을 위한 별도의 resource를 넣지 않고도 prod stateful streaming job과 같은 config로 backfill이 가능하다.
 

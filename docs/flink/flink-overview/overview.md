@@ -21,13 +21,13 @@ nav_order: 0
 
 Flink의 application은 user-defined operator로부터 만들어진 streaming dataflow로 구성된다. 이 dataflow는 1개이상의 source에서 시작해서 1개이상의 sink로 끝나는 Directed Graph를 만든다.
 
-![Untitled](overview/Untitled%201.png)
+![Untitled](overview/Untitled1.png)
 
 code의 transformation과 dataflow의 operator가 1:1 매핑될때도 있지만, 1개의 trasnformation이 여러 operator를 가질때도 있다.
 
 Flink application은 message queue(Kafka)나 distributed logs(Kinesis)같은 real-time data를 받을수도있고, bounded(historical data) 또한 읽을 수 있다. Flink application에서 생성되는 result stream 또한 sink로 연결된 다양한 시스템에 보낼 수 있다.
 
-![Untitled](overview/Untitled%202.png)
+![Untitled](overview/Untitled2.png)
 
 # Parallel Dataflows
 
@@ -35,7 +35,7 @@ Flink pragram은 parallel, distributed이다. 실행되는동안 stream은 1개 
 
 oeprator subtask의 수는 특정 operator의 `parallelism`이 된다. 같은 prgoram의 서로 다른 Operator들은 각각의 parallelism을 가진다.
 
-![Untitled](overview/Untitled%203.png)
+![Untitled](overview/Untitled3.png)
 
 stream은 아래와 같은 패턴들로 2개 operator사이의 데이터를 전송한다.
 
@@ -58,7 +58,7 @@ Flink application은 distributed cluster에서 병렬적으로 실행된다. ope
 
 stateful operator의 parallel instance set은 shareded key-value store와 비슷하다. 각 parallel instance는 특정 key group에 대한 event를 핸들링하고, 이 key들에 대한 state를 로컬에 저장한다.
 
-![Untitled](overview/Untitled%204.png)
+![Untitled](overview/Untitled4.png)
 
 위 그림에서, 앞에 3개는 2개의 paralleism을 가지고, 마지막 한개는 1개의 parallelism을 가진다. 세번째 operator는 stateful해서 2번째와 3번쨰 operator간에 fully-connected network shuffle이 일어나는것을 볼 수있다. 즉 stream이 key값에 의해 repartition되고, 한꺼번에 같이 process될필요가 있는 Event들이 분류된다.
 
@@ -66,6 +66,6 @@ state는 언제나 local에서만 access되므로 Flink application이 high thro
 
 # Fault Tolerance via State Snapshots
 
-![Untitled](overview/Untitled%205.png)
+![Untitled](overview/Untitled5.png)
 
 Flink는 state snapshot과 stream replay를 통해 fault-tolerent, exactly-once semantic을 제공한다, snapshot은 distributed pipeline의 전체 state를 캡쳐해서, inpt queue로 들어가는 offset들을 기록하고, 해당 시점까지 data를 ingest한 결과로 발생하는 job graph의 전체 상태를 저장한다. 장애가 발생하면 source는 replay되고, state는 복구되고, processing은 재시작된다. 위 그림처럼 state snapshot은 진행되는 processing을 방해하지 않고 async로 백업된다.

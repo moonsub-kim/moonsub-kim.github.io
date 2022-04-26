@@ -62,11 +62,11 @@ Barrier는 source에 주입되고 (Kafka를 쓴다면 barrier는 offset에 align
 
 Barrier는 operator를 통과할때 downstream에 전달되고, state snapshot을 만든다. operator는 (operator가 2개이상의 input을 가진 경우)모든 incoming stream partition에서 온 barrier들을 align하고, faster partition의 data를 buffering한다. operator가 모든 incoming stream에서 barrier를 받으면, operator의 state를 durable statorage에 checkpointing한다. state checkpoint이 끝나면 operator는 barrier를 downstream에 전달한다. 이 mechanism에서 state checkpointing은 (operator가 지원해줘야하지만..) asynchronous (state가 저장되는동안 processing은 지속됨)하고, incremental (모든 변경사항이 저장됨)하다.
 
-![Untitled](flink-checkpointing-mechanism/Untitled%201.png)
+![Untitled](flink-checkpointing-mechanism/Untitled1.png)
 
 모든 data sink가 barrier를 받으면 현재 checkpoint는 끝난것이다. failure로부터 복구하는것은 latest checkpoint state를 복구하고 last recorded barrier로부터 source를 재시작하는것이다. distributed snapshot은 문서 초반에 나온 요구사항들 (exactly-once, low latency, high throughput, powerful computation model, flow control, low overhead)을 만족한다.
 
 # Summary
 
-![Untitled](flink-checkpointing-mechanism/Untitled%202.png)
+![Untitled](flink-checkpointing-mechanism/Untitled2.png)
 

@@ -182,7 +182,7 @@ double barrier는 client가 computation의 시작/끝을 sync할 수 있게 해�
 
 # 4. ZooKeeper Implementation
 
-![Untitled](zookeeper/Untitled%201.png)
+![Untitled](zookeeper/Untitled1.png)
 
 zookeeper는 각서버에 data를 replicate하여 high availability를 만든다. request를 받으면 server는 execution을 준비하고(request processor), write request인경우 coordination이 필요하므로 aggrement protocol을 이용한다 (atomic broadcast). 마지막으로 server는 모든 server에 replicate되는 db에 변경사항을 commit한다. read request가 오면 각 server는 local database에서 읽어서 response를 리턴한다.
 

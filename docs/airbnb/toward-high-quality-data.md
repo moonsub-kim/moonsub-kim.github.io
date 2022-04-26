@@ -67,7 +67,7 @@ nav_order: 6
 
 현재
 
-![Untitled](toward-high-quality-data/Untitled%201.png)
+![Untitled](toward-high-quality-data/Untitled1.png)
 
 - **Software Engineer**: log, production data 생성
 - **Data engineer**: product team에 속해있고 Software Engineer와 협업함
@@ -122,13 +122,13 @@ Building the Community
 
 ### 예시: Active Listings
 
-![Untitled](toward-high-quality-data/Untitled%202.png)
+![Untitled](toward-high-quality-data/Untitled2.png)
 
-![Untitled](toward-high-quality-data/Untitled%203.png)
+![Untitled](toward-high-quality-data/Untitled3.png)
 
-![Untitled](toward-high-quality-data/Untitled%204.png)
+![Untitled](toward-high-quality-data/Untitled4.png)
 
-![Untitled](toward-high-quality-data/Untitled%205.png)
+![Untitled](toward-high-quality-data/Untitled5.png)
 
 ## Skills Required to Up-level Data Quality
 
@@ -155,7 +155,7 @@ Building the Community
 
 ## Airbnb's Warehouse Architecture
 
-![Untitled](toward-high-quality-data/Untitled%206.png)
+![Untitled](toward-high-quality-data/Untitled6.png)
 
 ## Minerva Output
 
@@ -171,11 +171,11 @@ Building the Community
 
 ## Data LifeCycle
 
-![Untitled](toward-high-quality-data/Untitled%207.png)
+![Untitled](toward-high-quality-data/Untitled7.png)
 
 ## Understanding consumption
 
-![Untitled](toward-high-quality-data/Untitled%208.png)
+![Untitled](toward-high-quality-data/Untitled8.png)
 
 위 그림에 나온것같은 정보들을 모두 수집함
 
@@ -198,16 +198,16 @@ Building the Community
 
 ## An integrated Solution
 
-![Untitled](toward-high-quality-data/Untitled%209.png)
+![Untitled](toward-high-quality-data/Untitled9.png)
 
-![Untitled](toward-high-quality-data/Untitled%2010.png)
+![Untitled](toward-high-quality-data/Untitled10.png)
 
-![Untitled](toward-high-quality-data/Untitled%2011.png)
+![Untitled](toward-high-quality-data/Untitled11.png)
 
-![Untitled](toward-high-quality-data/Untitled%2012.png)
+![Untitled](toward-high-quality-data/Untitled12.png)
 
-![Untitled](toward-high-quality-data/Untitled%2013.png)
+![Untitled](toward-high-quality-data/Untitled13.png)
 
-![Untitled](toward-high-quality-data/Untitled%2014.png)
+![Untitled](toward-high-quality-data/Untitled14.png)
 
 -

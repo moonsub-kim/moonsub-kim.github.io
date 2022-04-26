@@ -56,11 +56,11 @@ certification process는 여러 관점의 Data Quality를 보장한다
 
 data가 certified되면, 다양한 data tool에서 별도로 표시된다.
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%201.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled1.png)
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%202.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled2.png)
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%203.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled3.png)
 
 # The Midas Certification Process
 
@@ -80,24 +80,24 @@ Midas process의 첫번째는 pipeline, table, metric대 tech spec과 data model
 
 - design spec의 위쪽에는, owner와 reviewer를 명시한다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%204.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled4.png)
 
 - 첫번째 섹션에는 datamodel에 포함된 headline metric과 business definition, 메트릭을 이해하는데 필요한 디테일을 명시한다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%205.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled5.png)
 
 - 두번째 섹션은 data model에 포함되는 테이블을 만드는데 필요한 파이프라인 요약을 나타낸다
     - tool table이 뭘까
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%206.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled6.png)
 
 - 그 밑에, 만들어질 테이블 스키마를 보여준다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%207.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled7.png)
 
 - 마지막 섹션은, pipeline validation을 위한 DQ check를 보여준다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled%208.png)
+![Untitled](data-quality-2-a-new-gold-standard/Untitled8.png)
 
 이 예시는 단순하게 표현했지만, 실제로는 메트릭과 파이프라인 디테일에 대한 자세한 스펙을 작성하며, 긴것들은 20페이지를 넘길때도 있다... 이러한 문서화는 많은 시간이 필요하지만, data model이 제대로 설계되고, 여러 stakeholder가 design input(요구사항 등)을 넣게 만들어주며, 소수만 알던 데이터 스펙을 많은 사람들이 알수 있게 해준다.
 

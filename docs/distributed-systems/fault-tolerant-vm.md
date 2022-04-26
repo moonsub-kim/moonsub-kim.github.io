@@ -55,7 +55,7 @@ backup VM이 모든 output-producing operation과 연관된것을 포함한 모�
 
 Output Rule은 primary VM의 execution을 멈추도록 하지는 않는다. 그저 output을 보내는것을 delay 시키고 VM 자신은 계속 실행되게 한다. OS가 completion을 위해 non-blocking network와 disk output에 async interrupt를 하므로 VM은 execution을 계속 할 수 있고, output을 delay시키는것에 대해 즉시 영향을 받지는 않게 된다. 반면에 previous work는 primary VM이 멈춰야만 했다.
 
-![Untitled](fault-tolerant-vm/Untitled%201.png)
+![Untitled](fault-tolerant-vm/Untitled1.png)
 
 Figure 2는 FT protocol의 Output Requirement에 대한 예시로 primary, backup Vm의 event timeline을 그렸다. primary에서 backup으로 가는 화살표는 log entry전송을 나타내고, backup에서 primary로 가는 화살표는 ack를 나타낸다. async event와 input, output operation에 대한 정보는 log entry로 보내지고 ack가 와야만 한다. 위의 그림처럼 외부로 나가는 output은 primary가 backup으로부터 ack를 받기 전까지 delay된다. Output Rule에따라 backup Vm은 primary가 보낸 last output과 consistent한 state에서 시작한다.
 
@@ -85,7 +85,7 @@ backup VM을 시작할때 고려해야할 것은 어떤 server에서 실행하�
 
 ## 3.2 Managing the Logging Channel
 
-![Untitled](fault-tolerant-vm/Untitled%202.png)
+![Untitled](fault-tolerant-vm/Untitled2.png)
 
 hypvervisor는 logging entry를 위한 large buffer를 유지한다. primary VM이 실행될때 log entry를 log buffer로 보내고, backup VM은 log buffer에서 log entry를 consume한다. primary log buffer의 content는 모두 바로 logging channel로 flush되고, log entry는 backup log buffer로 도착하자마자 바로 읽힌다. backup VM은 log entry들을 읽자마자 primary에게 ack를 보낸다. ack는 VMware FT가 output이 Output Rule에 따라 delay되도록 해준다.
 
@@ -129,7 +129,7 @@ network device는 async update 제거와 Section 2.2에 나온 sending packet을
 
 primary, backup VM은 virtual disk를 공유한다. 따라서 shared disk의 content는 correct하고 failover에서도 available하다. shared disk는 또한 primary, backup VM 바깥에 있어 shared disk로 write하는것은 external world로 통신하는것으로 볼 수 있따. 따라서 primary VM만 실제 disk로 write를 수행하고, shared disk에 대한 write는 Output Rule에 따라 delay되어야한다.
 
-![Untitled](fault-tolerant-vm/Untitled%203.png)
+![Untitled](fault-tolerant-vm/Untitled3.png)
 
 primary backup VM에 대한 alternative design은 non-shared virtual disk를 가지는 것이다. 이 디자인에서 backup VM은 모든 disk write를 자신의 virtual disk로 수행하여 primary VM의 virtual disk와 in-sync하게 만든다. Figure 4가 이것을 보여준다. non-shared disk 케이스에서 virtual disk는 각 VM의 internal state로 볼 수 있다. 따라서 primary의 disk write는 Output Rule에따라 delay될 필요가 없다. non-shared design은 shared storage가 unavailable하거나 비싸거나 하는경우에 유용하다. non-shared design의 단점은 2 copy의 virtual disk가 fault-tolerance를 위해 in-sync를 유지해아 한다는 것이다. 또한 disk는 failure 이후에 sync가 되지 않을 수 있어 failure이후에 backup VM이 재시작할때 resync되어야 한다. 즉 FT VMotion은 primary, backup VM의 상태를 sync할뿐만아니라 disk도 해야한다.
 

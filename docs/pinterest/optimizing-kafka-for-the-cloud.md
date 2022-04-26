@@ -32,7 +32,7 @@ Kafka cluster가 여러 AZ에 걸친 broker들을 가지면, 세종류의 cross 
 
 1번은 fault tolerance를 위해 필요하지만, 2번과 3번은 원하지 않는 cost이
 
-![Untitled](optimizing-kafka-for-the-cloud/Untitled%201.png)
+![Untitled](optimizing-kafka-for-the-cloud/Untitled1.png)
 
 # Design
 
@@ -64,7 +64,7 @@ Pinterest의 S3 transporter는 AZ info를 Zookeeper로 lookup, publish 한다. �
 
 # Results
 
-![Untitled](optimizing-kafka-for-the-cloud/Untitled%202.png)
+![Untitled](optimizing-kafka-for-the-cloud/Untitled2.png)
 
 AZ aware S3 transporter를 production에 배포해서 logging에 대해서는 AZ transfer cost가 25% 줄어들었고 천천히 Rollout하고있기때문에 cost는 더 줄어들것이다.
 

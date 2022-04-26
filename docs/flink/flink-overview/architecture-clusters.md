@@ -43,7 +43,7 @@ distributed execution에서 Flink는 operator subtask를 task로 묶는다. 각 
 
 아래 예시 dataflow는 5개의 subtask를 실행하므로 5개의 trhead를 쓴다
 
-![Untitled](architecture-clusters/Untitled%201.png)
+![Untitled](architecture-clusters/Untitled1.png)
 
 # Task Slots and Resources
 
@@ -53,7 +53,7 @@ distributed execution에서 Flink는 operator subtask를 task로 묶는다. 각 
 
 task slot 갯수를 조정하여 user는 어떻게 subtask가 다른 subtask와 isolate하는지 설정할 수있다. TaskManager당 1개 slot을 쓰면 각 task group은 서로 분리된 JVM에서 동작한다. 여러개 slot을 쓰면 subtask들은 같은 JVM위에서 동작하며 TCP connection (multiplexing)과 heartbeat message를 공유한다. subtask들은 또한 dataset, datastructure도 공유할수 있어 task단위에서 발생하는 overhead를 줄이게 된다.
 
-![Untitled](architecture-clusters/Untitled%202.png)
+![Untitled](architecture-clusters/Untitled2.png)
 
 Flink는 같은 job에 있지만 다른 task에 속한 subtask일지라도 subtask들이 slot을 공유하는걸 기본값으로 한다. (서로다른 stage에 있는 subtask들도 slot을 공유한다는말?) 따라서 한개 slot이 job 전체 pipeline에 관여할 수도 있다. 이 방식은 아래의 이점이 있다
 

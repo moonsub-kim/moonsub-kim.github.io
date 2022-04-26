@@ -43,7 +43,7 @@ ad events processing system은 아래 요구사항을 맞춰야한다
 
 첫번째로 Flink와 Kafka에서 제공하는 exactly-once를 활용해서, Flink에서 처리되고 Kafka로 보내지는 모든 메시지가 [transactional](Real-Time%20Exactly-Once%20Ad%20Event%20Processing.md)하게 동작한다. Flink에서 `read_commited` 로 Kafka consumer를쓰면, transactional message만 읽게된다. 두번째로 aggregation job에서 생성되는 모든 record에 unique id를 부여한다. unique id는 downstream consumer에서 idempotency와 deduplication의 목적으로 쓰인다
 
-![Untitled](real-time-exactly-once-ad-event-processing/Untitled%201.png)
+![Untitled](real-time-exactly-once-ad-event-processing/Untitled1.png)
 
 Flink Aggregation Job은 분단위로 kafka에서 raw event를 받아 bucket에 aggregate한다. message의 timestamp에서 분단위로 truncate하고 분단위 timestamp를 ad indeitifier의 composite key중 하나로 쓰게 한다. 또한 aggregated result에 대해 record UUID를 생성한다.
 
@@ -59,7 +59,7 @@ record UUID는 ad-budget service의 idempotency key로 사용되고, Hive에서�
 
 ## Aggregation Job
 
-![Untitled](real-time-exactly-once-ad-event-processing/Untitled%202.png)
+![Untitled](real-time-exactly-once-ad-event-processing/Untitled2.png)
 
 ### Data Cleansing (Validation, Deduplication)
 
@@ -79,13 +79,13 @@ ad identifier와 event의 분단위 bucket의 조합을 바탕으로 event key�
 
 ## Attribution Job
 
-![Untitled](real-time-exactly-once-ad-event-processing/Untitled%203.png)
+![Untitled](real-time-exactly-once-ad-event-processing/Untitled3.png)
 
 Attribution job은 더 직관적이다. uber eats의 모든 order data가 들어오는 kafka topic에서 order events를 받고, invalid data를 버린다. 그리고 docstore에 쿼리를 날려서 attribution을 만든다. 쿼리조건에 매치되면 attribution이 생기는 것이다. attribution event에 augment를 하기 위해 external service를 호출해서 추가 정보를 가져온다. 그리고 Pinot, Hive에서 활용하기 위한 record UUID를 붙인 뒤, Attributed Orders topic으로 event를 전달한다. 이 event는 Union and Load Job에서 쓰인다
 
 ## Union and Load Job - 월클이라 하는일
 
-![Untitled](real-time-exactly-once-ad-event-processing/Untitled%204.png)
+![Untitled](real-time-exactly-once-ad-event-processing/Untitled4.png)
 
 Union and Load Job은 여러 region에서 동작하는 aggregation job의 output event를 union시키고, Pinot과 Hive로 들어가게되는 output topic으로 보내준다. Pinot이 active-active(replicate없이 별도로 동작)하도록 설정되어있기때문에, region간의 event를 union해야한다. 따라서 이 job은 여러 region에서도 동일한 데이터를 가지도록 한다.
 

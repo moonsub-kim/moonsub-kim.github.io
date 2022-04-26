@@ -87,7 +87,7 @@ Minerva가 이 request를 받으면, data를 가져올 table을 결정하는것 
 
 - `price_per_night`메트릭에 대한 Split-Apply-Combine
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%201.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled1.png)
 
 ## Step 1: Split the Request into Atomic Metric Requests
 
@@ -104,7 +104,7 @@ Minervasms step 1의 atomic metric을 이용해 S3에 저장된 metric configura
 
 - Average Daily Price(ADR) metric에 대한 Split-Apply-Combine 적용
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%202.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled2.png)
 
 Minerva API는 각 atomic metric에 대해 subquery가 생성되면 Druid나 Presto로 쿼리를 던진다. 만약 resource limit에 걸리면, time range를 쪼개서 쿼리하여 결과를 합친다. 또한 aggregation granularity에 맞게 dataframe을 rolling하기 전에 incomplete leading/trailing data를 잘라낸다
 
@@ -133,7 +133,7 @@ data에대한 전문성없이 어느누구나 사용할수있게 만들어진 Me
 
 - Metric Explorer는 high level business question에대해 답을 찾기 위한 비개발직군 사람들이 사용하기 좋은 툴이다
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%203.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled3.png)
 
 Metric Explorer의 모든 metric, dimension과 관련 metadata는 Minerva metric repository에서 데이터를 퍼담은 ES의 데이터를 사용한다. Metadata는 오른쪽 사이드바에 보여진다.
 
@@ -151,13 +151,13 @@ Minerva API로 만들어진 많은 앱들이 RESTful API를 통해 통신하지�
 
 tool안에서 custom business logic이 구현되는기존 BI tool과 다르게, Minerva는 AGG라는 metrice function을 통해 모든 로직을 통합하고 난독화시켰다.
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%204.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled4.png)
 
 왼쪽 쿼리에서 유저는 metric이 어떤 테이블에 있는지, 어떤 aggregation function을 써야 적절한지 알 필요가 없다. 디테일한 것들은 Minerva안으로 숨겨져있다
 
 마지막으로 Minerva엔 12000개의 metric과 5000의 dimension이 있어 모든 metric-dimnesion 조합이 존재하진 않는다. 예를들어 host 지역에따른 active listing은 있지만, guest가 어디서 왔냐에 따른 listing은 존재하지 않는다. 따라서 적합한 metric-dimension 조합만 왼쪽 pane에 표시된다. 이는 data에 대해 찾아가는 부하를 줄이고 간소화시켰다.
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%205.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled5.png)
 
 ## Integration with XRF - eXecutive Reporting Framework
 
@@ -165,7 +165,7 @@ tool안에서 custom business logic이 구현되는기존 BI tool과 다르게, 
 
 - XRF는 반복 수작업을 자동화하여 높은 신뢰도의 리포트를 표준화시켰다
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%206.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled6.png)
 
 XRF report를 만들려면 유저는 reporting config를 정의하고 필요로하는 business metric, dimension cut, global filter를 설정한다. 또한 유저는 metric이 어느 aggregation(MTD, QTD, YTD)로 계산되어야하는지, growth rate (YoY, MoM, WoW)등 도 설정한다. 이 config가 만들어지면 Minerva API는 aggregation을 수행하고 report를 만들어낸다
 
@@ -179,13 +179,13 @@ Minerva는 raw event를 ERF로 제공한다. analysis나 randomization 단위에
 
 - ERF scorecard는 실험에대한 summary statistics를 보여준다
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%207.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled7.png)
 
 또한 Experimentation UI는 연관된 Minerva metadata도 보여준다. 유저는 Minerva event에대한 description과 owner등을 볼 수있다. ETA가 overlay된 lineage view에선 유저는 ERF metric에대한 data timeliness를 볼 수 있다.
 
 - ERF는 data lineage와 timeliness를 보여주는 SLA tracker 링크를 보여준다
 
-![Untitled](minerva-3-consistent-data-consumption/Untitled%208.png)
+![Untitled](minerva-3-consistent-data-consumption/Untitled8.png)
 
 Minerva와 다양한 integration은 유저가 reporting에서 metric을 쉽게 추적하고, 실험으로 인한 movement를 확인하고, 예측되지 않은 변경사항들을 파악한다. 이 모든 것이 data가 correct하고 consistent한 확신이 있기때문에, insight를 도출하는데 쓰는 시간을 크게 줄이고, data에 대한 신뢰도를 높이며, data driven decision을 만드는데 큰 도움이 된다.
 

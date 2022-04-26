@@ -52,7 +52,7 @@ analytical job은 raw data로부터 정보와 insight를 뽑는다. 전통적으
 
 stream processing engine에서 analytics는 real-time fashion으로 수행된다. bounded data set을 읽는것이 아닌 streaming query나 application이 real-time event stream을 ingest하고, event consuming에 따라 지속적으로 result를 생성/업데이트 한다. result는 external database에 저장되거나 internal state에 유지된다. dashboard application은 external database에 저장된 result를 읽거나 application의 internal state에 직접 쿼리한다.
 
-![Untitled](usecases/Untitled%201.png)
+![Untitled](usecases/Untitled1.png)
 
 ## What are the advantages of streaming analytics applications?
 
@@ -77,7 +77,7 @@ ETL은 storage system간에 데이터 변환, 이동에 일반적인 방법이�
 
 Data pipeline은 ETL처럼 data를 transform, enrich하고 storage system에서 다른곳으로 data를 옮길 수 있지만, 주기적인 트리거뿐만아니라 streaming mode에서도 동작한다. 따라서 data pipeline은 low-latency로 event stream에서 record를 읽어서 destination으로 옮길 수 있다. 예를들어 data pipeline은 file system directory에서 새 파일을 모니터링 하다가 data를 event log로 남긴다. 다른 예시는 event stream을 database로 materialize하거나 search index를 update 하는 것이 있다. 밑의 사진은 ETL과 data pipeilne의 차이를 보여준다.
 
-![Untitled](usecases/Untitled%202.png)
+![Untitled](usecases/Untitled2.png)
 
 ## What are the advantages of data pipelines?
 
