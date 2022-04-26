@@ -54,7 +54,7 @@ countStream.print
 
 ## 3.2 Distributed Dataflow Application
 
-User가 application을 실행하면, 모든 DataStreams operator는 directed graph $G=(T,E)$ 인 execution graph로 컴파일된다($T$ 는 Task, $E$ 는 edge). 위 word count의 exeuction graph 예시를 보면, 모든 operator instance는 각 task로 encapsulate된다. Task에 input channel이 없으면 `Source`, output channel이 없으면 `Sink` 이다. 병렬 실행중에 task에 의해 전송된 모든 record set은 $M$ 이다. 각 task $t\in T$ 는 아래와 같은 방식으로 구성된다. (1) input, output channel의 set은 각각 $I_t,O_t\sube E$, (2) operator state $S_t$, (3) User Defined Function $F_t$ 이다. Data ingestion은 pull-based로 동작한다. 실행되는동안 각 task는 input record를 받아, operator state를 업데이트하고, UDF를 써서 새 record를 생성한다. 즉 각 record $r\in M$ 을 task $t\in T$ 가 받아, UDF $F_t: S_t, r \rightarrow\ <S_t',D>$ 를 실행해 각각 새 state $S_t'$, output record $D$ 를 만든다.
+User가 application을 실행하면, 모든 DataStreams operator는 directed graph $G=(T,E)$ 인 execution graph로 컴파일된다($T$ 는 Task, $E$ 는 edge). 위 word count의 exeuction graph 예시를 보면, 모든 operator instance는 각 task로 encapsulate된다. Task에 input channel이 없으면 `Source`, output channel이 없으면 `Sink` 이다. 병렬 실행중에 task에 의해 전송된 모든 record set은 $M$ 이다. 각 task $t\in T$ 는 아래와 같은 방식으로 구성된다. (1) input, output channel의 set은 각각 $I_t,O_t\subseteq E$, (2) operator state $S_t$, (3) User Defined Function $F_t$ 이다. Data ingestion은 pull-based로 동작한다. 실행되는동안 각 task는 input record를 받아, operator state를 업데이트하고, UDF를 써서 새 record를 생성한다. 즉 각 record $r\in M$ 을 task $t\in T$ 가 받아, UDF $F_t: S_t, r \rightarrow\ <S_t',D>$ 를 실행해 각각 새 state $S_t'$, output record $D$ 를 만든다.
 
 # 4. Asynchronous Barrier Snapshotting
 
@@ -129,7 +129,7 @@ execution graph에서 directed cycle이 존재하는경우, 위의 ABS algorithm
 
 첫번째로 static analysis를 통해 loop에 있는 *back-edges* $L$에 대해 따로 정의한다. control flow graph theory에서 directed graph의 back-edge는 DFS(depth-first search)를 하면서 이미 visit한 vertex를 가리키는 edge로 정의한다. execution graph
 $G(T,E\ \backslash\ L)$
- 은 topology에서 모든 task를 포함하는 DAG이다. 이 관점에서 알고리즘에 snapshot이 진행되는동안 back-edge로 들어오는 record들에 대한 downstream backup을 추가한다. 이것은 back-edge $L_t\sube I_t$ 의 consumer인 각 task $t$ 에서 수행된다. $L_t$는 barrier를 전달한 순간부터, $L_t$가 barrier를 다시 받을때까지 (barrier가 한바퀴 돌게됨) 받게된 모든 레코드의 backup log를 생성한다. loop 안에서 barrier는 모든 in-transit record를 downstream log로 밀어넣어 consistent snapshot안에 “한번만” 포함되도록 한다.
+ 은 topology에서 모든 task를 포함하는 DAG이다. 이 관점에서 알고리즘에 snapshot이 진행되는동안 back-edge로 들어오는 record들에 대한 downstream backup을 추가한다. 이것은 back-edge $L_t\subseteq I_t$ 의 consumer인 각 task $t$ 에서 수행된다. $L_t$는 barrier를 전달한 순간부터, $L_t$가 barrier를 다시 받을때까지 (barrier가 한바퀴 돌게됨) 받게된 모든 레코드의 backup log를 생성한다. loop 안에서 barrier는 모든 in-transit record를 downstream log로 밀어넣어 consistent snapshot안에 “한번만” 포함되도록 한다.
 
 ### Algorithm 1: Asynchronous Barrier Snapshotting for Cyclic Execution Graphs (굳이 안봐도 됨ㅋㅋ)
 
