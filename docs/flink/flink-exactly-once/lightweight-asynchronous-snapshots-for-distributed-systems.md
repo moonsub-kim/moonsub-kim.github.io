@@ -62,9 +62,9 @@ consistent result를 만들기 위해 distributed processing system은 task fail
 
 ## 4.1 Problem Definition
 
-Global snapshot은 $G^* = (T^*,E^*)$ 로 정의한다. $T^*$는 모든 operator state $S_t^* \in T^*$, $\forall_t\in T$ 로 구성되고, $E^*$는 channel state $e^* \in E^*$ 로 구성된다. $e^*$ 는 $e$ 에서 들어오는 record로 구성된다.
+Global snapshot은 $G^\* = (T^\*,E^\*)$ 로 정의한다. $T^\*$는 모든 operator state $S_t^\* \in T^\*$, $\forall_t\in T$ 로 구성되고, $E^\*$는 channel state $e^\* \in E^\*$ 로 구성된다. $e^\*$ 는 $e$ 에서 들어오는 record로 구성된다.
 
-$termination, feasibility$같이, recovery 이후에 정확한 결과를 보장하기 위해 각 snapshot $G^*$ 에 대해 특정 property가 유지되어야 한다. $termination$은 모든 process가 살아있을때 snapshot algorithm이 initialize이후 한정된 시간 내에 eventually finish 되도록 보장한다. $feasibility$는 snapshot의 meaningfulness를 표현한다. 즉 snapshotting process동안 computation에 대한 정보가 사라지지 않는다는 것을 의미한다.feasibility는 causal order가 snapshot에서 유지되고, in-transit message가 사라지지 않는다는 것을 의미한다. ([chandy-lamport](Chandy-Lamport%20Algorithm.md)의 discussion 참조).
+$termination, feasibility$같이, recovery 이후에 정확한 결과를 보장하기 위해 각 snapshot $G^\*$ 에 대해 특정 property가 유지되어야 한다. $termination$은 모든 process가 살아있을때 snapshot algorithm이 initialize이후 한정된 시간 내에 eventually finish 되도록 보장한다. $feasibility$는 snapshot의 meaningfulness를 표현한다. 즉 snapshotting process동안 computation에 대한 정보가 사라지지 않는다는 것을 의미한다.feasibility는 causal order가 snapshot에서 유지되고, in-transit message가 사라지지 않는다는 것을 의미한다. ([chandy-lamport](Chandy-Lamport%20Algorithm.md)의 discussion 참조).
 
 ## 4.2 ABS for Acyclic Dataflows
 
@@ -115,7 +115,7 @@ a) source가 barrier를 받으면 snapshot을 만들고, 모든 output channel�
 b) (line 9) source가 아닌 task가 input에서 barrier를 받으면, 모든 input channel에서 barrier를 받을때까지, barrier를 받은 input channel을 block한다. 그림에서 `count-1` task가 `src-1`, `src-2` input channel을, `count-2` task가 `src-1` 을 block하고있다.
 c) (line 12-13) barrier를 모든 input channel에서 받게되면 task는 current state에 대한 snapshot을 찍고, 모든 output channel에 barrier를 보낸다.
 d) (line 15) 그리고 block해뒀던 모든 input channel을 unblock시켜서 원래 하던 프로세싱을 지속한다.
-complete global snapshot $G^* = (T^*,E^*)$는 $E^*=0$ (즉 비어있는), $T^*$로만 구성된다.
+complete global snapshot $G^\* = (T^\*,E^\*)$는 $E^\*=0$ (즉 비어있는), $T^\*$로만 구성된다.
 
 ### Proof Sketch
 
@@ -125,7 +125,7 @@ $feasibility$는, global snapshot의 operator state가 마지막 stage까지 처
 
 ## 4.3 ABS for Cyclic Dataflows
 
-execution graph에서 directed cycle이 존재하는경우, 위의 ABS algorithm은 deadlock으로 인해 $termination$을 만족하지 못한다. cycle상에 있는 task들은 input으로부터 무한히 barrier를 기다리려 하기 떄문이다. 또한 cycle 상에 in-transit record들은 snapshot에 포함되지 않으므로 $feasibility$도 만족하지 못한다. 따라서 $feasilbility$를 위해 consistent하게 cycle안에서 생성된 모든 record를 snapshot에 포함시키고, recovery할때 이 record들을 다시 in-transit 으로 보내는 것이 필요하다(즉, $E^* \neq 0$). 우리는 위의 ABS algorithm에서 추가적인 channel blocking을 만들지 않으면서 cyclic graph에도 확장시키려 한다.
+execution graph에서 directed cycle이 존재하는경우, 위의 ABS algorithm은 deadlock으로 인해 $termination$을 만족하지 못한다. cycle상에 있는 task들은 input으로부터 무한히 barrier를 기다리려 하기 떄문이다. 또한 cycle 상에 in-transit record들은 snapshot에 포함되지 않으므로 $feasibility$도 만족하지 못한다. 따라서 $feasilbility$를 위해 consistent하게 cycle안에서 생성된 모든 record를 snapshot에 포함시키고, recovery할때 이 record들을 다시 in-transit 으로 보내는 것이 필요하다(즉, $E^\* \neq 0$). 우리는 위의 ABS algorithm에서 추가적인 channel blocking을 만들지 않으면서 cyclic graph에도 확장시키려 한다.
 
 첫번째로 static analysis를 통해 loop에 있는 *back-edges* $L$에 대해 따로 정의한다. control flow graph theory에서 directed graph의 back-edge는 DFS(depth-first search)를 하면서 이미 visit한 vertex를 가리키는 edge로 정의한다. execution graph
 $G(T,E\ \backslash\ L)$
@@ -172,7 +172,7 @@ $G(T,E\ \backslash\ L)$
 
 b) (line 14) back-edge를 가진 task는 모든 backedge가 아닌 input channel $e \notin L$ 로부터 barrier를 받으면, state의 local copy를 생성하고, (line 26) back-edge에서 들어온 모든 레코드를 barrier를 다시 받을때까지 레코딩한다.
 
-c) loop에서 in-transit pre-shot record들은 현재 snapshot에 포함되었다. final global snapshot $G^*=(T^*,L^*)$은 모든 task state $T^*$와 back-edge에서 들어온 record $L^* \subset E^*$ 를 포함한다. 다른 Edge record는 없다.
+c) loop에서 in-transit pre-shot record들은 현재 snapshot에 포함되었다. final global snapshot $G^\*=(T^\*,L^\*)$은 모든 task state $T^\*$와 back-edge에서 들어온 record $L^\* \subset E^\*$ 를 포함한다. 다른 Edge record는 없다.
 
 ### Proof Sketch
 
