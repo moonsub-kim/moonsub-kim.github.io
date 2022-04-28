@@ -137,6 +137,19 @@ layout: table_wrappers
           {{ content }}
         {% endif %}
 
+        {% if page.navigate == true %}
+          <hr>
+          <h2 class="text-delta">All Pages</h2>
+          <ul>
+            {%- assign children_list = pages_list -%}
+            {% for child in children_list %}
+              <li>
+                <a href="{{ child.url | absolute_url }}">{{ child.title }}</a>{% if child.summary %} - {{ child.summary }}{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
         {% if page.has_children == true and page.has_toc != false %}
           <hr>
           <h2 class="text-delta">Table of contents</h2>
