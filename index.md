@@ -1,6 +1,6 @@
 ---
 nav_order: 0
-navigate: True
+navigate: true
 ---
 
 # Blog
