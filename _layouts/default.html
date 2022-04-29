@@ -217,7 +217,7 @@ layout: table_wrappers
                 {%- if node.has_children -%}
                 {%- endif -%}
                 <a href="{{ node.url | absolute_url }}" class="nav-list-link">{{ node.title }}</a>
-                {%- if node.last_modified_date -%} - {{ node.last_modified_date }}{%- endif -%}
+                {%- if node.last_modified_date -%}&nbsp; ({{ node.last_modified_date }}){%- endif -%}
                 {%- if node.has_children -%}
                   {%- assign children_list = pages_list | where: "parent", node.title -%}
                   <ul class="nav-list ">
@@ -227,7 +227,7 @@ layout: table_wrappers
                       {%- if child.has_children -%}
                       {%- endif -%}
                       <a href="{{ child.url | absolute_url }}" class="nav-list-link">{{ child.title }}</a>
-                      {%- if child.last_modified_date -%} - {{ child.last_modified_date }}{%- endif -%}
+                      {%- if child.last_modified_date -%}&nbsp; - ({{ child.last_modified_date }}){%- endif -%}
                       {%- if child.has_children -%}
                         {%- assign grand_children_list = pages_list | where: "parent", child.title | where: "grand_parent", node.title -%}
                         <ul class="nav-list">
@@ -235,7 +235,7 @@ layout: table_wrappers
                           {%- unless grand_child.nav_exclude -%}
                           <li class="nav-list">
                             <a href="{{ grand_child.url | absolute_url }}" class="nav-list-link">{{ grand_child.title }}</a>
-                            {%- if grand_child.last_modified_date -%} - {{ grand_child.last_modified_date }}{%- endif -%}
+                            {%- if grand_child.last_modified_date -%}&nbsp; - ({{ grand_child.last_modified_date }}){%- endif -%}
                           </li>
                           {%- endunless -%}
                         {%- endfor -%}
