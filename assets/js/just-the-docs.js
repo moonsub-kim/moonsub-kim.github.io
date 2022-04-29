@@ -67,14 +67,6 @@ function initNav() {
 {%- if site.search_enabled != false %}
 // Site search
 
-function trimmerEnKo(token) {
-  console.log(typeof token);
-  token.str = token.str
-    .replace(/^[^\w가-힣]+/, '')
-    .replace(/[^\w가-힣]+$/, '');
-  return token;
-};
-
 function initSearch() {
   var request = new XMLHttpRequest();
   request.open('GET', '{{ "assets/js/search-data.json" | absolute_url }}', true);
@@ -86,12 +78,6 @@ function initSearch() {
       lunr.tokenizer.separator = {{ site.search.tokenizer_separator | default: site.search_tokenizer_separator | default: "/[\s\-/]+/" }}
 
       var index = lunr(function(){
-        this.pipeline.reset();
-        this.pipeline.add(
-          trimmerEnKo,
-          lunr.stopWordFilter,
-          lunr.stemmer
-        );
         this.ref('id');
         this.field('title', { boost: 200 });
         this.field('content', { boost: 2 });
