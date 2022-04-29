@@ -69,7 +69,7 @@ function initNav() {
 
 function trimmerEnKo(token) {
   console.log(typeof token);
-  return token
+  return token.str
     .replace(/^[^\w가-힣]+/, '')
     .replace(/[^\w가-힣]+$/, '');
 };
