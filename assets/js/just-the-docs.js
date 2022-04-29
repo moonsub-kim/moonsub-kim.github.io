@@ -68,6 +68,7 @@ function initNav() {
 // Site search
 
 function trimmerEnKo(token) {
+  console.log(typeof token);
   return token
     .replace(/^[^\w가-힣]+/, '')
     .replace(/[^\w가-힣]+$/, '');
