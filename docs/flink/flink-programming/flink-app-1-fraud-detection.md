@@ -4,7 +4,7 @@ parent: Flink Programming
 grand_parent: Flink
 last_modified_date: 2021-12-15
 nav_order: 1
-summary: hello
+# summary: hello
 ---
 # Flink App 1: Fraud Detection
 
