@@ -77,27 +77,26 @@ function initSearch() {
       
       lunr.tokenizer.separator = {{ site.search.tokenizer_separator | default: site.search_tokenizer_separator | default: "/[\s\-/]+/" }}
 
-      var index = lunr(function(){
-        this.pipeline.reset();
-        this.ref('id');
-        this.field('title', { boost: 200 });
-        this.field('content', { boost: 2 });
-        {%- if site.search.rel_url != false %}
-        this.field('relUrl');
-        {%- endif %}
-        this.metadataWhitelist = ['position']
+      var index = lunr.Index;
+      index.pipeline.reset();
+      index.ref('id');
+      index.field('title', { boost: 200 });
+      index.field('content', { boost: 2 });
+      {%- if site.search.rel_url != false %}
+      index.field('relUrl');
+      {%- endif %}
+      index.metadataWhitelist = ['position']
 
-        for (var i in docs) {
-          this.add({
-            id: i,
-            title: docs[i].title,
-            content: docs[i].content,
-            {%- if site.search.rel_url != false %}
-            relUrl: docs[i].relUrl
-            {%- endif %}
-          });
-        }
-      });
+      for (var i in docs) {
+        index.add({
+          id: i,
+          title: docs[i].title,
+          content: docs[i].content,
+          {%- if site.search.rel_url != false %}
+          relUrl: docs[i].relUrl
+          {%- endif %}
+        });
+      }
 
       searchLoaded(index, docs);
     } else {
