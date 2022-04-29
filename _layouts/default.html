@@ -211,7 +211,7 @@ layout: table_wrappers
           {%- assign pages_list = sorted_number_ordered_pages | concat: sorted_string_ordered_pages -%}
           
           {%- for node in pages_list -%}
-            {%- if node.parent == nil and node.title != page.titles -%}
+            {%- if node.parent == nil and node.title != page.title -%}
               {%- unless node.nav_exclude -%}
               <li class="nav-list">
                 {%- if node.has_children -%}
