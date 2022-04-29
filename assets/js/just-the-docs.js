@@ -78,7 +78,6 @@ function initSearch() {
       lunr.tokenizer.separator = {{ site.search.tokenizer_separator | default: site.search_tokenizer_separator | default: "/[\s\-/]+/" }}
 
       var index = lunr.Index;
-      index.pipeline.reset();
       index.ref('id');
       index.field('title', { boost: 200 });
       index.field('content', { boost: 2 });
