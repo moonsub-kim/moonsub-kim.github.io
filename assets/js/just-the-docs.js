@@ -69,9 +69,10 @@ function initNav() {
 
 function trimmerEnKo(token) {
   console.log(typeof token);
-  return token.str
+  token.str = token.str
     .replace(/^[^\w가-힣]+/, '')
     .replace(/[^\w가-힣]+$/, '');
+  return token;
 };
 
 function initSearch() {
