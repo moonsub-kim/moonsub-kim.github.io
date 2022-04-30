@@ -17,7 +17,7 @@ Broadcast State는 특정한 방식으로 2개의 event stream을 합쳐서 proc
 
 E commerce에서 user action event를 받아오는 stream을 생각해보자. 웹사이트를 운영하는 회사는 revenue를 올리고, UX를 향상시키고, 이상행동을 감지하고 막고싶어한다. 웹사이트는 user event stream을 detect하는 streaming application을 구현하려 현다. 그러나 pattern이 변경될때마다 코드를 수정하거나 redploy하는것을 피하고 싶어한다. application은 두번째 stream으로 pattern을 받고, pattern stream에서 새 pattern을 받으면 active pattern을 업데이트 할 것이다.
 
-![Untitled](broadcast-state/Untitled.png)
+![broadcast state example](broadcast-state/Untitled.png)
 
 위 예시에서는 2개의 stream이 있다. 첫번째는 website의 user action이다. user interaction event는 여러 타입의 action (로그인, 로그아웃, 장바구니, 구매)로 구성되고, user id에 따라 색칠을 해놨다. 두번째 stream은 application이 evaluate하려는 action pattern이 들어온다. pattern은 2개의 연속된 action으로 구성된다. 예시에서 첫번쨰 pattern은 user가 로그인하자마자 다른액션없이 로그아웃하는것, 두번째는 유저가 아이템을 장바구니에 담은뒤 구매하지않고 로그아웃 하는것이다.
 
@@ -25,15 +25,15 @@ E commerce에서 user action event를 받아오는 stream을 생각해보자. �
 
 예시의 오른쪽에서는 한 operator에 대해 3개의 parallel task가 user action, pattern stream을 ingest하고, action stream에서 pattern을 감지하고, match된 pattern을 downstream으로 emit한다. 단순하게 이 예시의 operator는 2개의 연속된 action pattern을 evaluate한다. active pattern은 stream으로부터 새 pattern이 들어오면 replace되게 된다. 또한 operator는 더 복잡한 pattern이나 여러 pattern을 동시에 evaulate 할 수 있도록 구현된다.
 
-![Untitled](broadcast-state/Untitled1.png)
+![broadcast stream](broadcast-state/Untitled1.png)
 
 pattern이 operator에 전달되면, pattern은 3개의 parallel task로 broadcast되고, task는 broadcast state로 pattern을 저장한다. broadcast state는 broadcasted data를 통해서만 업데이트되므로, 모든 task의 state는 언제나 같게 된다.
 
-![Untitled](broadcast-state/Untitled2.png)
+![data stream](broadcast-state/Untitled2.png)
 
 그 다음, 첫번째 user action이 user id에 따라 partition되고 각각의 task로 전달된다. partitioning은 같은 유저의 모든 action이 같은 task에서 처리되도록 보장한다. task가 새 user action을 받으면, 직전에 들어온 action과 함께 active pattern을 evalate한다. 각 유저에 대해 operator는 이전의 action을 keyed state에 저장하고 있다. (위 그림에서는 각 user에 대해 1개의 action만 받았으므로 pattern은 evaluate될필요가 없다.) 마지막으로 각 user의 keyed state에 있는 이전 action은 방금 받은 action으로 replace된다.
 
-![Untitled](broadcast-state/Untitled3.png)
+![process](broadcast-state/Untitled3.png)
 
 그 다음 event인 1001이 logout한 action이 task에 들어간다. task가 action을 받으면 broadcast state의 pattenr과 1001의 이전 액션과 함께 evaluate한다. pattern이 action들과 매치되므로 task는 pattern match event를 emit한다, 마지막으로 task는 keyed state를 방금 받은 action으로 업데이트 한다.
 

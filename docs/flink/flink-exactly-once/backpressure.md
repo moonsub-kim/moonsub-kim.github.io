@@ -15,23 +15,23 @@ nav_order: 7
 
 Flink같은 “streaming system” 은  backpressure에 graceful하게 대응할 수 있다. backpressure는 일시적인 load동안 system이 process하는것보다 더 높은 rate으로 data를 받는것을 말한다. 일상적인 상황에서도 backpressure가 일어날 수 잇다. 예를들어 GC stall로 인해 incoming data가 쌓이거나, data source에서 data를 보내는 속도에 스파이크가 발생할 수 있다. backpressure를 잘 처리하지 않으면 resource낭비가 생기고 심한경우 data loss가 생긴다.
 
-![Untitled](backpressure/Untitled.png)
+![backpressure normal](backpressure/Untitled.png)
 
 위의 streaming system은 초당 5M elements를 처리한다. 이 스냅샷은 1초동안에 처리되는 양을 나타낸다. 한개의 검정 바는 1M elements이고, streaming job은 1초동안 5M개를 처리, channel에는 1초에 5M개씩 들어가있다.
 
-![Untitled](backpressure/Untitled1.png)
+![backpresure](backpressure/Untitled1.png)
 
 이때 streaming job이나 sink가 1초동안 멈추게 되면, 5m개 이상의 element가 더 쌓이게된다. 따라서 source에서 spike가 발생하고 data producing rate이 1초동안 2배가 된다.
 
 어떻게 이 상황을 해결할것인가? 당연히 exactly-once를 필요로하는 많은 streaming application에서 data loss는 허용하지 않는다. data를 buffering할 추가적인 공간이 필요하다. buffering은 failure에서도 durable해야, data loss없이 replay가능하다. buffered data는 persistence channel에 저장되어야한다. 만약 source가 durability를 보장하는 케이스라면 그 source 자체를 쓰면 된다. Kafka는 이렇게 동작한다. **가장 이상적인 대응은 sink에서부터 source까지 backpressure를 하고(즉 source의 persistence channel에서 버퍼링 되는것), stream의 속도를 전체 pipeline에서 가장 “느린 task”기준으로 맞출 수 있게 source를 쓰로틀하는것이다.**
 
-![Untitled](backpressure/Untitled2.png)
+![source store](backpressure/Untitled2.png)
 
 # Backpressure in Flink
 
 Flink runtime의 building block은 operator, stream이다. 각 operator는 intermediate stream을 consume하고, event에 대해 transformation을 실행하고, 새 stream에 output을 produce한다. Flink는 제한된 용량을 가진 distributed blocking queue를 효율적으로 사용한다. 느린 downstream task는 queue의 buffering이 사라지면 upstream task의 속도를 느리게 만든다.
 
-![Untitled](backpressure/Untitled3.png)
+![task buffer](backpressure/Untitled3.png)
 
 1. Record “A” 는 Flink로 들어오고, Task 1에서 처리된다
 2. “A”는 buffer에 serialize된다

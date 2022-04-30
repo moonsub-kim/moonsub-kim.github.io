@@ -22,11 +22,11 @@ DataStream<Alert> alerts = transactions
 
 `DynamicKeyFunction` 은 dynamic data partitioning을 제공하고, `DynamicAlertFunction`은 transaction을 처리하는 main logic을 실행하고 rule에 따라 alert를 보낸다. 첫번째 포스팅에서 usecase를 단순화하고, rule set이 pre defined라고 가정하고, `DynamicKeyFunction` 에서 `List<Rule>` 로 접근가능하다고 했다. 하지만 이 방식은 rule이 바뀔때마다 다시 compile해야하는것이다.
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled.png)
+![config](flink-app-2-dynamic-update-of-application-logic/Untitled.png)
 
 이전 포스팅에서 `groupingKeyNames`는 `DynamicKeyFunction`에서 message key를 뽑기 위해 쓰였다. 이 포스팅에서는 `DynamicAlertFunction`에 쓰인다. `DynamicAlertFunction`은 이전 operation(`DynamicKeyFunction`)과 parameter(초록박스)로 로직을 정의한다. 즉 `DynamicKeyFunction`과 `DynamicAlertFunction`은 에 같은 rule이 존재해야 한다. 이를 위해서 brodcast state를 사용해야 한다.
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled1.png)
+![dataflow](flink-app-2-dynamic-update-of-application-logic/Untitled1.png)
 
 위는 구현하려는 전체 job graph이다.
 
@@ -38,19 +38,19 @@ DataStream<Alert> alerts = transactions
 
 위의 job graph는 operator간 다양한 data exchange pattern을 보여준다. broadcast pattern이 어떻게 동작하는지 이해하기 위해 Flink의 distributed runtime에 어떤 messagse propagation method가 있는지 잠깐 봐보자
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled2.png)
+![forward](flink-app-2-dynamic-update-of-application-logic/Untitled2.png)
 
 transaction source 다음에 **FORWARD** connection은 transaction source operator에서 한개의 parallel instance(task)에서 전송되는 모든 data는 `DynamicKeyFunction` operator의 정확히 한 instance로 전달되는것을 의미한다. 또한 두개의 연결된 operator가 같은 parallelism을 가지게 된다.
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled3.png)
+![hash](flink-app-2-dynamic-update-of-application-logic/Untitled3.png)
 
 `DynamicKeyFunction` 과 `DynamicAlertFunction` 사이의 **HASH** connection은 각 message에 대해 hash가 생성되고 message들은 다음 operator의 available parallel instance로 evenly distribute된다. **HASH** connection은 명시적으로 `keyBy` 사용해야 한다.
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled4.png)
+![rebalance](flink-app-2-dynamic-update-of-application-logic/Untitled4.png)
 
 **REBALANCE** distribution은 `rebalance` 를 호출하거나, 다음 Operator에서 paralleism이 바뀌는 경우에 생긴다. `rebalance` 를 직접 호출하면 data는 round-robin으로 repartition되고 data skew를 완화해준다.
 
-![Untitled](flink-app-2-dynamic-update-of-application-logic/Untitled5.png)
+![broadcast](flink-app-2-dynamic-update-of-application-logic/Untitled5.png)
 
 위에서 Fraud Detection jobgraph는 `Rules` source라는 추가적인 data source를 가진다. `Rules`는 **BROADCAST** channel을 통해 main processing data flow에 섞이게 된다. **FORWARD, HASH, REBALANCE** 같이 operator간에 각 message를 receiving operator의 parallel instance중 한 곳에서만 처리하는것과 다르게, **BROADCAST**는 각 message를 모든 parallel instance로 뿌리게 된다. **BROADCAST**는 key나 source partition에 관계없이 모든 message가 다음 모든 operator로 전달되게 한다.
 

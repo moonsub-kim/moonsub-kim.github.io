@@ -34,7 +34,7 @@ Flink는 state를 operator state와 keyed state라는 두 타입으로 구분한
 
 # Rescaling Stateful Stream Processing Jobs
 
-![https://flink.apache.org/img/blog/stateless-stateful-streaming.svg](https://flink.apache.org/img/blog/stateless-stateful-streaming.svg)
+![Rescaling Stateful Stream Processing Jobs](https://flink.apache.org/img/blog/stateless-stateful-streaming.svg)
 
 stateless streaming에서 parallelism을 바꾸는 것은 쉽다. 하지만 stateful operator의 parallelism을 바꾸는것은 더 많은 행동이 필요하다. 왜냐면 **(1) consistent, (2) meaningful하게 이전 operator state를 (3) redistribute 해야만 하기 떄문이다.**
 
@@ -55,7 +55,7 @@ stateless streaming에서 parallelism을 바꾸는 것은 쉽다. 하지만 stat
 
 하지만 kafka user는 Kafka partition offset의 **의미**를 알고있고, 이것을 독립적이고 redistribute 가능한 state unit으로 쓸 수 있다는 것을 알고 있을 것이다. 그러므로 이 domain knowledge를 Flink에 전달하는 문제를 풀어야한다.
 
-![https://flink.apache.org/img/blog/list-checkpointed.svg](https://flink.apache.org/img/blog/list-checkpointed.svg)
+![Reassigning Operator State When Rescaling](https://flink.apache.org/img/blog/list-checkpointed.svg)
 
 A) 는 Flink의 operator state를 checkpointing 하기 위한 이전(왜 이전?) 인터페이스를 보여준다. snapshot을 만들때 각 operator instance는 complete state를 보여주는 object를 리턴한다. Kafka source에서 이 object는 partition offset 리스트이다. 그 다음 snapshot object는 distributed storage에 저장된다. 복구할때 object는 distributed storage에서 가져오고, operator instance로 전달된다.
 
@@ -79,13 +79,13 @@ rescaling 이후 state를 subtask로 매핑하는 문제는 알아서 해결됐�
 
 하지만 rescaling이 일어날때는 sequential read는 비효율적이다. 각 subtask의 state는 모든 subtask들에 의해 만들어진 file 안에 scatter되어있을 것이다. 이 문제점은 아래 `A) Without Key-Groups` 에 그려놨다. 이 예시에서 parallelism을 3에서 4로 바꿀때 key가 어떻게 shuffle되는지 보여준다
 
-![Untitled](a-deep-dive-into-rescalable-state/Untitled.png)
+![changing parallelism from 3 to 4](a-deep-dive-into-rescalable-state/Untitled.png)
 
 단순하게는 모든 subtask의 checkpoint state를 읽고 filter하면 된다. 이 방식은 sequential read가 가능하지만 각 subtask는 자신과 연관없는 fraction을 읽게되고 distributed filesystem은 큰 parallel read request를 받게 된다.
 
 다른 방식은 checkpoint의 각 key에 대해 state location을 추적하는 index를 만드는 것이다. 이를 통해 모든 subtask는 자신의 key를 선택적으로 찾아내고 읽을 수 있다. 또한 자신과 연관없는 데이터를 읽지 않을수도있다. 하지만 2개의 단점이 있다. 1) 모든 key에 대해 materialized index(key to read offset mapping)가 매우 커질 수 있다. 2) 또한 큰 양의 random I/O가 발생할 수 있다. random I/O는 distributed file system에서 낮은 퍼포먼스를 보여줄 것이다.
 
-![Untitled](a-deep-dive-into-rescalable-state/Untitled1.png)
+![with key groups](a-deep-dive-into-rescalable-state/Untitled1.png)
 
 Flink의 접근법은 atomic unit of state assignment로 key-group이란 개념을 도입한다. key-group의 수는 job이 시작되기 전에 정의되고, 실행하는 도중에 바뀔 수 없다. key-group은 atomic unit of state assigment이므로 key group의 갯수가 operator paralleism의 최대한계점이 된다(위 그림에서는 10까지 paralleism을 올릴 수 있다). key-group 갯수는 rescaling의 유연성과(paralleism의 upper limit 설정을 통해), state를 indexing/restoring 하는데 쓰이는 overhead 사이의 trade-off가 있다.
 

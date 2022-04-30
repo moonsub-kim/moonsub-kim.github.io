@@ -21,13 +21,13 @@ fraud detection rule을 다시 봐보자
 
 payer와 beneficiary 필드를 합친 key에 의해 파티션된 transaction stream에서, 각 transaction에 대해 lookback을 하고, 이전 payment sum이 threshold를 넘겼는지 확인해야 한다. computation window는 특정 partition key에 대해 마지막으로 본 event 위치로 이동된다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled.png)
+![window](flink-app-3-custom-window-processing/Untitled.png)
 
 fraud detection의 key requirements중 하나는 low response time이다. fraud detection이 빨라질수록 negative action을 미리 막을 수 있다. 특히 finantial domain에서는 fraud detection을 수행하는 시간만큼 일반 사용자의 행동이 지연되게 된다. processing을 빠르게 하면 다른 경쟁자들에 비해 우위를 점할수있고, alert을 생성하는데까지 latency limit을 500ms정도까지 낮게 유지할 수 있다.
 
 Flink는 다양한 usecase에서 쓸 수 있는 [Window API](https://nightlies.apache.org/flink/flink-docs-release-1.11/dev/stream/operators/windows.html) 를 제공한다. 그러나 fraud detection usecase처럼 각각의 incoming transaction에 대한 low latency를 맞춰주는 window API는 없다. Flink에는 **현재 이벤트 기준으로 몇분전/몇시간전/몇일전을 표현하는 window는 없다.** Window API에서 event는 windows로 들어가지만([window assigner](https://nightlies.apache.org/flink/flink-docs-release-1.11/dev/stream/operators/windows.html#window-assigners)), 각 이벤트에 대한 window evaulation이나 creation을 제어할 수 없다. fraud detection의 목표는 새 event가 들어왔을때 이전에 연관된 event와 함께 즉각적인 evaluation을 하는것이다. Window API는 custom trigger, evictor, window assigner를 정의할수 있게 제공하지만, 위의 요구사항을 만족시키긴 쉽지 않고, 깨지기 쉬운 로직이 된다. 게다가 broadcast state를 접근할수 없어서 dynamic reconfiguration이 불가능하다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled1.png)
+![sliding window](flink-app-3-custom-window-processing/Untitled1.png)
 
 Flink API의 [sliding window](https://nightlies.apache.org/flink/flink-docs-release-1.11/dev/stream/operators/windows.html#sliding-windows) example을 보면, slide S인 sliding window를 쓰면, S/2 만큼의 evaluation delay가 생기게 된다.(???왜지..) 즉 500ms delay를 맞추기위해선 window slide가 1s로 정의해야 하는고 실제 computation까지 고려하면 더 오래걸린다. Flink가 각 sliding window pane에 window state를 저장하므로 high load condition에서는 쓰기 힘들게 된다.
 
@@ -55,7 +55,7 @@ public class SomeProcessFunction
 
 time window로 process하기 위해 data가 속한 window를 계속 잡고 있어야 한다. fault-tolerant한 data를 보장하고, 장애상황에서도 복구하기 위해서는 data window를 Flink-managed state에 저장해야 한다. 시간이 지날수록 모든 이전 transaction을 keep할 필요는 없어진다. 위에서 언급한 sample rule에서 24시간이 지난 모든 event는 버려도 된다. 즉 data window는 지속적으로 움직이고 stale transaction은 계속해서 out-of-scope로 가게 된다(즉 버려진다).
 
-![Untitled](flink-app-3-custom-window-processing/Untitled2.png)
+![watermark](flink-app-3-custom-window-processing/Untitled2.png)
 
 `MapState`를 써서 event window를 저장할 것이다. 효율적으로 out-of-scope event를 버리기 위해 event timestamp를 `MapState`의 key로 쓸 것이다. 일반적으로 같은 timestamp에 여러 event가 들어오므로 각각의 transaction이 아닌 transaction set으로 저장해야 한다.
 
@@ -69,7 +69,7 @@ MapState<Long, Set<Transaction>> windowState;
 event당 여러 value를 저장하고싶을때에 `MapState`가  적절하다.
 >
 >
-> ![Untitled](flink-app-3-custom-window-processing/Untitled3.png)
+> ![map state](flink-app-3-custom-window-processing/Untitled3.png)
 >
 
 여러개의 서로 다른 rule에서 정의된 event들을 받아온다. 서로 다른 rule은 같은 grouping key를 가질 수 있다. 즉 alerting function이 같은 key scope를 가지는 transaction을 받을 수 있지만, 다른 Rule에 의해 evaluate되고, 다른 길이의 time window를 가질 것이다. 이건 어떻게 적절하게 `KeyedProcessFunction`에 fault-tolerante window state를 저장해야 하는지에 대한 문제가 된다. rule당 분리된 `MapState`를 생성, 관리하는것도 한방법이다. 그러나 중복저장이라는 큰 단점이 있다. 더 나은 방법은 같은 key마다 rule이 필요로하는 충분한 data를 저장하는 것이다. 이를 위해선 rule이 더해질때마다 lagest time window span을 계산하고 broadcast state에 `WIDEST_RULE_KEY` 같은 reserved key로 저장해야 한다. 이 data는 cleanup 시점에도 쓰일것이다.
@@ -97,7 +97,7 @@ private void updatWidestWindowRule(Rule rule, BoradcastState<Integer, Rule> broa
 
 이전 포스팅에서 `DynamicKeyFunction`은 `groupingKeyNames` parameter로 dynamic data paritioning을 할수 있게 해줬다. 그 다음은 `DynamicAlertFunction` 에 대해 볼것이다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled4.png)
+![config](flink-app-3-custom-window-processing/Untitled4.png)
 
 alerting process function은 `Keyed<Transaction, String, Integer>` type의 event를 받는다. Transaction은 wrapped event이고, String은 key값, Integer는 rule ID 이다. 이 rule은 broadcast state로 저장되어있고 rule ID로 읽어 올 수 있다.
 
@@ -211,7 +211,7 @@ private void aggregateValuesInState(
 
 위에서 말한것처럼, 가장 넓은 window span을 가진 rule의 evaluation에 필요한 만큼의 event를 state에 저장해야한다. 즉 cleanup시점에 widest window의 범위를 넘어가는 event를 제거해야 한다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled5.png)
+![7d window](flink-app-3-custom-window-processing/Untitled5.png)
 
 ```java
 @Override
@@ -268,7 +268,7 @@ private void evicOutOfScopeElementsFromWindow(Long threshold) {
 
 late event arrival 케이스에서 window를 다시 evaluate 하는것이 의미가 있는가?? 만약 의미가 있다면 예상되는 out-of-order event (late event)만큼 cleanup을 위해 widest window를 더 길게 잡아야 한다. 이렇게 하면 late firing에 대해 잠재적으로 incomplete한 time window를 가지는 상황을 없앨 수 있다. 즉 밑 그림에서 lateset event 가 온 뒤로, late event가 들어오게되는 경우 이미 potentially already deleted event도 킵해놨으므로 late event에 대해서도 제대로 프로세싱이 가능하다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled6.png)
+![late events](flink-app-3-custom-window-processing/Untitled6.png)
 
 하지만 low latency processing을 강조한다면 late event arrival이 의미가 없을 수 있다. 이 케이스에선 가장 최근의 timestamp만 보고, monotonic increase 하지않는 event (late event)에 대해 alerting logic을 돌리지 않고 state에 저장만 하는것으로 끝내면 된다.
 
@@ -282,7 +282,7 @@ state에 각 transaction을 저장하는 이유는 뭔가? 저장된 event의 gr
 - `MapState` key로 millisecond timestamp를 쓰는것 대신, 적절하게 precision을 조정해서 각 entry가 bucket이 되도록 설정한다.
 - window가 evaluate될때마다 transaction의 data를 저장하지말고, 새 transaction data를 bucket aggregation에 추가한다.
 
-![Untitled](flink-app-3-custom-window-processing/Untitled7.png)
+![Redundant Re-computations and State Size](flink-app-3-custom-window-processing/Untitled7.png)
 
 ## State Data and Serializers
 

@@ -48,7 +48,7 @@ val countStream = workdStream.groupBy(_).count
 countStream.print
 ```
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled.png)
+![The execution graph for incremental word count](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled.png)
 
 위의 코드는 Apache Flink에서 incremental word count의 구현을 보여준다. text file에서 word를 읽고, 각 word에 대한 현재 count를 print한다. 현재 file offset을 알아야 하고, counter는 각 internal state에 대해 현재 count를 저장하고 있어야 하는 stateful streaming program이다.
 
@@ -104,11 +104,11 @@ channel이 block되면 모든 message는 buffered되며, channel이 unblocked될
 22:     **trigger** <send | output, out_record>;
 ```
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled1.png)
+![Asynchronous barrier snapshots for acyclic graphs 1](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled1.png)
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled2.png)
+![Asynchronous barrier snapshots for acyclic graphs 2](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled2.png)
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled3.png)
+![Asynchronous barrier snapshots for acyclic graphs 3](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled3.png)
 
 Central coordinator는 주기적으로 stage barrier를 모든 source task에 주입한다.
 a) source가 barrier를 받으면 snapshot을 만들고, 모든 output channel에 barrier를 broadcast한다.
@@ -166,9 +166,9 @@ $G(T,E\ \backslash\ L)$
 30:     **trigger** <send | output, out_record>;
 ```
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled4.png)
+![Asynchronous barrier snapshots for cyclic graphs 1](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled4.png)
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled5.png)
+![Asynchronous barrier snapshots for cyclic graphs 2](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled5.png)
 
 b) (line 14) back-edge를 가진 task는 모든 backedge가 아닌 input channel $e \notin L$ 로부터 barrier를 받으면, state의 local copy를 생성하고, (line 26) back-edge에서 들어온 모든 레코드를 barrier를 다시 받을때까지 레코딩한다.
 
@@ -186,7 +186,7 @@ consistent snapshot 에서 동작하는 failure recovery scheme은 이미 존재
 
 partial graph recovery scheme또한 가능하다. [TimeStream](https://www.microsoft.com/en-us/research/wp-content/uploads/2013/04/timestream_eurosys13.pdf) 과 비슷하게, upstream task dependency(failed task를 output channel로 가지는 task들)에서부터 source까지의 upstream task들만 reshedule 할 수 있다.
 
-![Untitled](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled6.png)
+![Upstream Dependency Recovery Scheme](lightweight-asynchronous-snapshots-for-distributed-systems/Untitled6.png)
 
 exactly-once semantic을 보장하기 위해 duplicate record는 recomputation을 피하기 위해 모든 downstream node에서 무시되어야 한다. 이를 위해선 [SDG](https://raulcastrofernandez.com/papers/atc14-sgd.pdf) 와 비슷한 scheme을 써서 source에서부터 record에다가 sequence number를 마킹하여 모든 downstream node가 이미 process된 record의 sequence number보다 작은 Record들은 버릴 수 있다.
 

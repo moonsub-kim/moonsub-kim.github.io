@@ -37,7 +37,7 @@ checkpoint간 변경사항을 tracking하기 위해, consolidated table을 uploa
 
 # An Example
 
-![https://flink.apache.org/img/blog/incremental_cp_impl_example.svg](https://flink.apache.org/img/blog/incremental_cp_impl_example.svg)
+![incremental checkpointing](https://flink.apache.org/img/blog/incremental_cp_impl_example.svg)
 
 keyed state를 가지는 한 operator의 subtask와, \# of retained checkpoint를 2로 설정한 예시이다.
 

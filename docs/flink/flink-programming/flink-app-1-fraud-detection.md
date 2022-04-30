@@ -18,13 +18,13 @@ DEMO: https://github.com/afedulov/fraud-detection-demo
 
 demo app은 Kafka with Zookeeper, Flink, Fraud detection webapp으로 구성된다. Fraud detection engine의 goal은 finantial transaction stream을 consume하고 정의된 rule에 반하는지 Evaluate하는 것이다. rule은 자주 변경될 수 있다. production system에서 runtime에 job을 redeploy할 필요 없이 Rule을 더하거나 지우는것은 매우 중요하다.
 
-![Untitled](flink-app-1-fraud-detection/Untitled.png)
+![birds eye view](flink-app-1-fraud-detection/Untitled.png)
 
 demo에는 미리 정의된 sample rule이 있다. start button을 누르고 시간이 지나면 UI의 오른쪽에 alert이 뜨는 것을 볼 수 있다. 이 alert은 Flink evaulation의 결과이다.
 
 이 application은 Frontend(React), Backend(Sprint Boot), Fraud Detection app(Flink) 로 구성된다.
 
-![Untitled](flink-app-1-fraud-detection/Untitled1.png)
+![architecture](flink-app-1-fraud-detection/Untitled1.png)
 
 Backend는 REST API로 rule을 생성, 삭제 할수 있도록 해주고, 이 이벤트들을 `Control` topic으로 보내준다. 또한 에뮬레이션을 위해 Backend에 Transaction Generator를 넣어 Transaction이 `Transaction` topic으로 흐르게 해놨다. Flink에서 생성되는 alert은 `Alerts`  Topic을 통해 backend로 들어가고 websocket을 통해 UI에 보여진다.
 
@@ -80,7 +80,7 @@ DataStream<Alert> alerts = transactions
 
 각각의 rule의 `groupingKeyNames` 에 따라 event를 grouping하게 된다. 각각의 rule은 서로 다른 `groupingKeyNames` 조합을 가지게 된다. 즉 incoming event는 여러 rule에서 evaluate되어야 한다. 이건 event가 evaulating operator에서 여러 rule에 맞추어 여러 task로 보내져야 하는것을 말한다. 이런 dispatch를 만들어주는 것은 `DynamicKeyFunction` 이다.
 
-![Untitled](flink-app-1-fraud-detection/Untitled2.png)
+![dynamic key function](flink-app-1-fraud-detection/Untitled2.png)
 
 `DynamicKeyFunction` 은 정의된 rule set을 iterate하면서 모든 event가 `keyBy` method를 이용해 각 rule의 grouping key에 맞추어 process되도록 준비해준다.
 
@@ -129,4 +129,4 @@ DataStream<Alert> alerts = transactions
 
 `DynamicKeyFunction` 을 적용하여 rule단위 evaluation을 수행하기위해 **implicit**하게 event를 복사하게 된다. 이를통해 rule processing의 horizontal scalability를 얻게 되었다. 이 system은 cluster에 더 많은 서버를 붙여서 더 많은 rule을 처리할수 있게 해준다. 당연히 data rate, network bandwidth, event payload size 에 따라 이슈를 만들수 있는 data copy이므로, production에서는 추가적인 최적화가 가능하다. 예를들면 같은 groupingKeyName을 가지는 여러 Rule을 합쳐서 evaulation하거나, evaluation에 필요하지 않은 field를 제거해주는 filtering layer를 만드는 방법이 있다.
 
-![Untitled](flink-app-1-fraud-detection/Untitled3.png)
+![dynamic alert function](flink-app-1-fraud-detection/Untitled3.png)

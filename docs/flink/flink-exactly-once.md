@@ -115,7 +115,7 @@ distributed system에서 asynchronous global snapshot을 만드는 알고리즘
 3. 화살표: process간 이벤트 전달
 4. $C_{ji}$ : $P_j$ 에서 $P_i$ 로 이벤트를 전달하는 채널
 
-![Untitled](flink-exactly-once-images/Untitled7.png)
+![chandy-lamport 1](flink-exactly-once-images/Untitled7.png)
 
 $P_1$
 
@@ -123,46 +123,46 @@ $P_1$
 - $P_1$ barrier(marker message)를 다른 process에게 전달 (주황점선), barrier는 speical event로, snapshot에 찍히는 이벤트의 대상은 아니다
 - incoming channel $C_{21}$, $C_{31}$에 대해 레코딩 시작
 
-![Untitled](flink-exactly-once-images/Untitled8.png)
+![chandy-lamport 2](flink-exactly-once-images/Untitled8.png)
 
 $P_3$
 
 - $P_3$은 $P_1$로부터 barrier를 받아서 snapshot을 캡처
 - $P_1$이 했던것과 비슷 한일을하지만, $P_1$에서 barrier를 받았으므로 $C_{13}$ 채널을 레코딩할 필요없이 empty로 저장
 
-![Untitled](flink-exactly-once-images/Untitled9.png)
+![chandy-lamport 3](flink-exactly-once-images/Untitled9.png)
 
 $P_1$
 
 - $P_3$에게서 barrier를 받음
 - $C_{31}$ 채널 레코딩 끝내고 상태 저장
 
-![Untitled](flink-exactly-once-images/Untitled10.png)
+![chandy-lamport 4](flink-exactly-once-images/Untitled10.png)
 
 $P_2$
 
 - $P_3$에게서 barrier 받음
 
-![Untitled](flink-exactly-once-images/Untitled11.png)
+![chandy-lamport 5](flink-exactly-once-images/Untitled11.png)
 
 $P_2$
 
 - $P_1$에서 barrier 받음
 
-![Untitled](flink-exactly-once-images/Untitled12.png)
+![chandy-lamport 6](flink-exactly-once-images/Untitled12.png)
 
 $P_1$
 
 - $P_2$에서 barrier받음
 - $C_{21}$ 채널에 들어온 이벤트 `[H->D]` 가 있으므로 이 상태를 저장
 
-![Untitled](flink-exactly-once-images/Untitled13.png)
+![chandy-lamport 7](flink-exactly-once-images/Untitled13.png)
 
 $P_3$
 
 - $P_2$에서 barrier 받음
 
-![Untitled](flink-exactly-once-images/Untitled14.png)
+![chandy-lamport 8](flink-exactly-once-images/Untitled14.png)
 
 final state
 
@@ -170,7 +170,7 @@ final state
 - causal consistency
     - eventual consistency << causal consistency << sequential consistency
 
-![Untitled](flink-exactly-once-images/Untitled15.png)
+![chandy-lamport final state](flink-exactly-once-images/Untitled15.png)
 
 ## Flink’s checkpointing algorithm
 
@@ -185,7 +185,7 @@ Flink의 dataflow와 chandy-lamport algorithm의 constraint와 다른점
     - dataflow가 directed acyclic graph인 경우, 채널이 단방향이 되므로 채널 레코딩이 필요없어진다
         - cycle이 생기는경우에 대한것도 위 링크에 있긴함
 
-![Untitled](flink-exactly-once-images/Untitled16.png)
+![flink checkpointing](flink-exactly-once-images/Untitled16.png)
 
 ## 요약
 
