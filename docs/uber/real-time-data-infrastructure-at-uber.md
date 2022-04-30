@@ -38,7 +38,7 @@ realtime data processing은 uber의 tech stack에 중요한 역할을 하며 많
 
 - The high-level data flow at Uber infrastructure
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled.png)
+![The high-level data flow at Uber infrastructure](real-time-data-infrastructure-at-uber/Untitled.png)
 
 다양한 종류의 analytical data가 여러 region에걸쳐 data center로 들어온다. 이 raw data stream들은 모든 분석에서 source of truth로 쓰인다. 대부분 stream들은 batch processing으로 archived되고, warehouse로 ingest되고, machine learning이나 ad-hoc query등의 usecase에서 쓰인다. real time data infra는 data stream이 dynamic pricing, intelligent alerting, operational dashboard등의 다양한 mission critical usecase에 활용되도록 processing을 한다.
 
@@ -60,7 +60,7 @@ introduction에서 나온 각 usecase category마다 각각 realtime data infra�
 
 - An abstraction of the real-time data infrastructure and the overview of the components
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled1.png)
+![An abstraction of the real-time data infrastructure and the overview of the components](real-time-data-infrastructure-at-uber/Untitled1.png)
 
 - **Storage**(HDFS): read-after-write consistency를 보장하는 generic object, blob storage interface를 제공한다. storage laye는 high write rate에 최적화되어야 하며, long term storage로 사용된다. read는 write보다 덜 발생하고, OLAP table / stream의 bootstrapping이나 data backfill등에 사용된다
 - **Stream**(Kafka): publish-subscribe inetrface를 제공한다. stream layer의 유저는 특정 stream이나 topic에 대해 event를 만들 수 있고, stream을 subscribe하는 유저는 event를 한번에 한 event씩 consume할 수 있다. stream layer는 R/W low latency를 가져야하며, data partitioning, producer와 consumer간 at least once semantic을 보장해야하는 요구사항이 있다.
@@ -74,7 +74,7 @@ introduction에서 나온 각 usecase category마다 각각 realtime data infra�
 
 - Overview of the real-time data infrastructure at Uber
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled2.png)
+![Overview of the real-time data infrastructure at Uber](real-time-data-infrastructure-at-uber/Untitled2.png)
 
 ## 4.1 Apache Kafka for streaming storage
 
@@ -86,7 +86,7 @@ Uber는 kafka를 큰 스케일로 쓰는 곳들중 하나이다. streaming data�
 
 [https://www.confluent.io/kafka-summit-san-francisco-2019/kafka-cluster-federation-at-uber/](https://www.confluent.io/kafka-summit-san-francisco-2019/kafka-cluster-federation-at-uber/)
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled3.png)
+![cluster federation](real-time-data-infrastructure-at-uber/Untitled3.png)
 
 Availability를 높이고, silger cluster failure에도 문제가 없도록 하기 위해, producer와 consumer로부터 cluster detail을 숨기는 federated kafka cluster setup을 만들었다. 유저는 어떤 topic이 어떤 cluster에 존재하는지 알 필요없이 logical cluster만 보면 된다. metadata server는 cluster와 topic의 metadata를 한곳으로 aggregate하여 client의 request를 phsical cluster로 라우팅 한다. cluster federation은 reliability 뿐만아니라 scalability도 향상시킨다. 경험적으로 한개 cluster 크기는 150미만의 node를 가지면 최적의 성능이 나왔다. federation을 통해 kafka는 cluster에 node가 꽉찰때 cluster들을 더 추가하는 것으로 horizontal scale이 가능했다. 새 Topic은 새로 추가된 cluster에 자연스럽게 들어간다. 또한 cluster federation은 topic management를 쉽게 해준다. Uber는 많은 수의 application과 client가 있어, live consumer가 있는 상태에서 cluster간에 topic을 migrate하는게 어렵다. 일반적으로 migration은 traffic을 새 cluster로 옮기는 manual coordination이 필요하므로 job을 재시작해야하지만 cluster federation은 application 재시작 없이 consumer traffic을 다른 physical cluster로 redirect 할 수 있다
 
@@ -94,7 +94,7 @@ Availability를 높이고, silger cluster failure에도 문제가 없도록 하�
 
 [https://eng.uber.com/reliable-reprocessing/](https://eng.uber.com/reliable-reprocessing/)
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled4.png)
+![dead letter queue](real-time-data-infrastructure-at-uber/Untitled4.png)
 
 일부 message는 downstream application이 처리하다 fail이 발생한다. Kafka에선 failed message를 핸들링할 두가지 방법이 있다. message를 버리거나, 그 다음 message를 blocking하게 만드는 무한한 재시도이다. 그러나 Uber 로직의 대부분은 data loss와 blocked processing을 허용하지 않는다. 이런 usecase를 해결하기 위해 도입된 것이 Kafka interface 위에 구현된 Dead Letter Queue strategy이다. topic consumer가 몇회 재시도를 해도 message를 처리하지 못하면, 이 message는 dead letter topic으로 publish된다. dead letter topic의 message는 유저의 선택에 따라 버려지거나 retry된다. DLQ를 통해 unprocessed message는 격리되고 live traffic에 영향을 끼치지 않는다.
 
@@ -104,7 +104,7 @@ Availability를 높이고, silger cluster failure에도 문제가 없도록 하�
 
 - Overview of the Kafka Consumer Proxy at Uber
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled5.png)
+![consumer proxy](real-time-data-infrastructure-at-uber/Untitled5.png)
 
 Kafka는 batch나 compression의 정교한 로직이 구현된 consumer library를 제공한다. 이런 client-side optimization이 consumer throughput을 향상시켜줘도, Uber와 같은 scale에서는 여전히 client management가 큰 챌린지이다. 몇만개의 kafka application이 동작하는 상황에서 유저의 디버깅을 지원해주는건 굉장히 어렵다. 모든 application에서 client library를 업그레이드 하는데 몇달이 걸리므로 개발 속도도 느려진다. 또한 많은 개발 언어를 쓰고있는데 client가 점점 복잡해지면 multi language support가 불가능하고, kafka architecture의 제약때문에 consumer group의 instance 수는 topic partition 갯수 이하로 제한하므로 consumer paralleism이 제약이 된다.
 
@@ -142,7 +142,7 @@ Uber는 Flink를 customer product를 위해 쓰거나, 각 도시의 시장 상�
 
 [https://eng.uber.com/athenax/](https://eng.uber.com/athenax/)
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled6.png)
+![athenax architecture](real-time-data-infrastructure-at-uber/Untitled6.png)
 
 Uber는 Flink framework에 FlinkSQL을 만들었다. FlinkSQL은 Apache Calcite SQL query를 efficient Flink job으로 변환해준다. SQL processor는 query를 reliable, efficient, distributed Flink application으로 컴파일하고, application의 전체 lifecycle을 관리하여 유저가 비즈니스 로직에만 집중하도록 해준다. 내부적으로 FlinkSQL은 SQL query를 logical plan으로 변환하고, query optimizer를 수행시킨 뒤, Flink job으로 변환될 수 있는 physical plan을 생성한다. 따라서 유저들은 production에서 streaming processing application을 scale에 관계없이 몇시간내에 실행시켜 볼 수 있다.
 
@@ -161,7 +161,7 @@ FlinkSQL은 presto같은 batch processing SQL system과는 다른 semantic을 �
 
 - The layers of the Unified Flink architecture at Uber
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled7.png)
+![The layers of the Unified Flink architecture at Uber](real-time-data-infrastructure-at-uber/Untitled7.png)
 
 streaming processing pipeline을 만들고 매니지 하기위해 유저들에게 두개의 platform을 제공하기 떄문에, Uber는 두 시스템의 공통점을 찾아내고 deployment, management, operation을 위해 unified architecture로 합쳤다. 새 unified platform은 여러 다른 챌린지들을 해겨했고, layered architecture에서 더 나은 exensibility와 scalability를 만들었다.
 
@@ -228,11 +228,11 @@ Uber는 long term storage로 HDFS를 쓰고 있다. kafka의 대부분 data는 a
 
 이 섹션에서는 Uber의 production에서 아래 그림에 표현된 4개 카테고리 (Dashboard, ML, Analytical Application, Adhoc Exploration)의 real time usecase에 대해 보여주고, 어떻게 여러 system을 활용해서 비즈니스 목표를 달성했는지 설명할것이다.
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled1.png)
+![An abstraction of the real-time data infrastructure and the overview of the components](real-time-data-infrastructure-at-uber/Untitled1.png)
 
 - The components used by the example usecases
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled8.png)
+![The components used by the example use cases](real-time-data-infrastructure-at-uber/Untitled8.png)
 
 ## 5.1 Analytical Application: Surge Pricing
 
@@ -276,7 +276,7 @@ mult-reion realtime archituecture의 근간에는 kafka client들의 data redund
 
 - The active-active setup for surge pricing
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled9.png)
+![The active-active setup for surge pricing](real-time-data-infrastructure-at-uber/Untitled9.png)
 
 Primary region에 재해가 발생하면, all-active service는 다른 region을 primary로 설정하고 surge pricing 계산을 다른 region으로 복구한다. 여기서 Flink job의 computation state가 region간에 복제를 하기에 너무 크기 때문에 각 region은 aggregate cluster로부터 input message를 받아 다시 연산하는 점이 중요하다. aggregate kafka에서 Flink job으로 들어가는 input이 모든 region에서 consistent하기 떄문에, output state도 동일하다. 이 방식은 각 region에 redundant pipeline을 운영하므로 compute-intensive 하다.
 
@@ -284,7 +284,7 @@ Primary region에 재해가 발생하면, all-active service는 다른 region을
 
 - The active-passive setup for stronger consistency
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled10.png)
+![The active-passive setup for stronger consistency](real-time-data-infrastructure-at-uber/Untitled10.png)
 
 Kafka topic의 offset에 의해 consumption progress가 표현되므로, active/passive strategy는 regionr간 consumer들의 offset synchronization이 큰 챌린지이다. uber의 많은 서비스들이 failover때 data loss를 허용하지 않으므로, 너무 많은 backlog를 파히려고 high watermark (latest message)로부터 재실행 할수도, low watermark(earliest message)로부터 재실행 할 수도 없다. region간 offset sychronization을 해결하기 위해 Uber는 정교한 offset management service를 만들었다. 위의 그림에서 uReplicator가 source cluster로부터 destination cluster으로 message를 복제할때, offset management service는 active-active DB에 source에서 destination으로 offset mapping을 checkpointing한다. 그러는동안 offset sync job은 주기적으로 active-passive consumer를 위해 region간에 offset을 동기화한다. 그래서 active-passive consumer가 한 region에서 다른 Region으로 복구되면, consumer는 최신의 synchronizaed offset을 읽고 consumption을 재개한다.
 
@@ -303,7 +303,7 @@ Backfill problem은 realtime bigdata processing에서 일반적이다. Lambda, K
 1. SQL based: 같은 SQL query에 대해 realtime(Kafka)과 offline dataset(Hive)에서 실행될 수 있도록 만들었다. FlinkSQL compiler는 SQL query를 두개의 Flink job으로 만든다. DataStream API와 DataSet API이다. Lambda Architecture와 유사하게 동작하지만 유저는 2개의 job이 아닌 1개의 job만을 사용하게 된다
 2. API based: 이 solution은 "Kappa+"라고 부른다. Kappa+ architecture는 Kappa architecture와 같이 stream processing logic을 재사용 할 수 있을뿐만아니라, 직접적으로 Hive와 같은 offline dataset을 읽을 수 있다. Kappa+ architecture는 streaming logic으로 batch data set을 처리하는것으로 여러 issue들을 해결한다. 첫번째는 boudned input의 start/end boundary를 지정하는것, 두번째는 쓰로틀링을 통해 offline dataset의 높은 throughput을 핸들링하는것, 마지막은 offline data가 out of order일 수 있으므로 buffering을 위해 더 큰 window가 필요할 수 있어 job memory를 튜닝하는것이 있다. 가장 중요한건 Kappa+ architecture로 같은 code이지만 간단한 config 변경을 통해 streaming과 batch data source에 대해 실행 할 수 있다는 것이다.
 
-![Untitled](real-time-data-infrastructure-at-uber/Untitled11.png)
+![data backfill](real-time-data-infrastructure-at-uber/Untitled11.png)
 
 # 9 Lesson Learned
 

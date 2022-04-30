@@ -79,7 +79,7 @@ backfill로 동작하면서도 original streaming job의 windowing과 watermarki
 
 - watermark가 흐를때마다 window를 trigger하는 kafka에 의해 수행되는 stateful streaming job. aggregation은 window 에 속하는 event단위로 적용 , result는 state store로 들어감
 
-![Untitled](Kappa%2B-Architecture/Untitled.png)
+![A simple stateful streaming job powered by a Kafka data source triggers windows every time the watermark advances. The aggregations are applied to events within the window and the result is then spilled onto the state store.](Kappa-plus-Architecture/Untitled.png)
 
 위의 job에 대한 backfill system을 위에서 언급한 principle을 바탕으로 두개의 방법을 합쳤고, 결과로 Spark source api를 사용해서 streaming source 역할을 하는 hive connector를 만들었다. 일단 trigger간에 event window안에서 kafak read를 hive query로 바꾸고싶었다. 이 시스템을 redesign 하면서 10 window마다 10초만큼의 data에 대해 hive query를  실행시키는건 비효율적이며, 불필요하다는 것도 깨달았다. 따라서 watermarking을 10초에서 2시간으로 늘려, event가 trigger될때마다 2시간치의 data를 hive에서 읽었다.
 
@@ -87,7 +87,7 @@ backfill로 동작하면서도 original streaming job의 windowing과 watermarki
 
 - backfill mode에서 위의 그림과 같은 stateful streaming job이다. 차이점은 unbounded kafak stream에서 hive로 query를 수행하는 것으로 바뀌었다.
 
-![Untitled](Kappa%2B-Architecture/Untitled1.png)
+![The same stateful streaming job as in Figure 1 in backfill mode, the only difference here being that instead of reading from an unbounded Kafka stream, we’re issuing explicit queries to Hive.](Kappa-plus-Architecture/Untitled1.png)
 
 backfill을 위해 kafka connector에서 hive로 바꿀때, 위에 설명한 principle들을 지키기 위해 기존 streaming job의 state persistence, windowing, triggering semantics를 저장했다. trigger간에 읽는 data 양을 조절할 수 있기 때문에 며칠에 걸쳐 hive에서 한번에 모든 data를 읽지않고, 서서히 backfill할 수도 있다. 또한 backfill job을 위한 별도의 resource를 넣지 않고도 prod stateful streaming job과 같은 config로 backfill이 가능하다.
 
