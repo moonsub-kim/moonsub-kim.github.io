@@ -52,7 +52,7 @@ external consistency: transaction의 commit 순서는 유저가 transaction을 �
 
 한 spanner deployment를 $universe$라고 부른다. global로 data를 저장하므로, running universe는 몇개밖에 없다. $zone$은 bigtable service의 deployment 단위이며 system이 동작할때에도 zone을 추가/제거 할 수 있다. zone간의 data replication도 가능하다. 한 data center에 여러개 zone이 phsically isolated될 수 있다.
 
-![Untitled](spanner/Untitled.png)
+![spanner server organization](spanner/Untitled.png)
 
 각 zone에 있는 $zonemaster$는 data를 몇천개의 $spanserver$에 할당하고, $spanserver$는 data serving을 한다. $location\ proxy$는 client가 data를 가진 spanserver를 찾을 수 있게 해준다. $universe\ master$는 singleton이며 모든 zone의 status를 수집한다. $placement\ driver$도 singleton이며, spanserver들과 주기적으로 communicate하면서 load balancing이나 replication constraint가 바뀌는 것으로 인해 data movement가 필요한 것들을 찾아낸다.
 
@@ -64,7 +64,7 @@ external consistency: transaction의 commit 순서는 유저가 transaction을 �
 
 bigtable과 다르게 spanner는 timestamp를 data에 할당하는데 이건 spanner가 KV store보다 multi-version DB에 가깝게 만든다. tablet state는 Colossus라는 GFS successor에 B-tree와 비슷한 file과 WAL에 저장된다.
 
-![Untitled](spanner/Untitled1.png)
+![spanserver software stack](spanner/Untitled1.png)
 
 각 spanserver는 각 tablet을 관리하는 Paxos state machine을 쓴다. Paxos state machine은 자신이 관리하는 tablet에 대한 metadata, log를 저장한다. Paxos implementation은 long-lived leader, time-based leader lease를 지원한다. write할때 log는 tablet log, paxos log 두개가 생기는데, 이건 하나만 쓸 수도 있다. Paxos는 pipeline되므로 WAN latency가 있어도 throughput이 올라가면서, write order는 Paxos가 보장해준다.
 
@@ -80,7 +80,7 @@ paxos leader는 two-phase locking을 위한 state를 가지는 $lock\ table$을 
 
 common prefix를 가지는 인접한 key들의 set을 $directory$로 만들 수 있다 (사실 용어는 bucket이 더 어울림). directory는 application이 key들에 대해 locality를 가지도록 해준다. directory는 또한 data placement의 단위이며 같은 replication config를 가진다. paxos group간 data가 이동할때 directory단위로 움직인다. data movement는 load balancing을 할때, 같이 자주 접근되는 directory를 한 group오로 옮길때 등의 이유로 directory를 옮긴다. directory가 옮기는 와중에도 operation은 available하다. bigtable tablet과 달리 spanner tablet은 row space에서 인접할 필요는 없으며 같이 자주 접근되는 tablet들을 한데 묶기 위해 이런 디자인을 했다.
 
-![Untitled](spanner/Untitled2.png)
+![directoreis are the unit of data movement between paxos groups](spanner/Untitled2.png)
 
 $Movedir$은 paxos group간 directory를 옮겨주는 backgroud task이며, replica를 추가/제거 할때도 쓰인다. background task이므로 ongoing r/w를 blocking하진 않는다. 하지만 data를 옮긴 사이에 조금의 data change가 생기는경우엔 transaction을 통해 src/dst paxos group에서 data를 옮기고 metadata를 업데이트한다.
 
@@ -94,27 +94,27 @@ spanner의 datamodel은 schematized semi-relational table, query language, trans
 
 Spanner data model은 relational하진 않다. row는 무조건 name(key)를 가져야 한다, 1개이상의 primary key가 무조건 필요하며 primary key list가 key, 다른 field들이 value로 동작한다. row는 key에 대해 value가 있어야지만(null도 가능) 존재한다고 본다. 이건 application이 key를 이용해서 locality를 설정할 수 있게 해준다.
 
-![Untitled](spanner/Untitled3.png)
+![example spanner schema for photo metadata](spanner/Untitled3.png)
 
 모든 table은 1개 이상의 talbe hierarchy를 가진다. client application은 `INTERLEAVE IN` 을 통해 hierarchy를 정의할 수 있다. hierarchy의 제일 위는 $directory\ table$이라고 한다. key $K$를 가지는 directory table의 row에 속하는 decendant table의 row들은 $K$로 시작하며 lexicographic order를 가지는 key이다. `ON DELETE CASCADE` 는 directory table의 row가 지워지면 children row도 지워지는 옵션이다. interleaving을 통해 table relationship에 대한 locality를 만들어 성능을 향상시켰다.
 
 # 3. TrueTime
 
-![Untitled](spanner/Untitled4.png)
+![truetime api](spanner/Untitled4.png)
 
 TrueTime은 $TTinterval$로 time을 표현하는데, 얘는 interval과 bounded time uncertainty를 포함한다. $TTinerval$은 $TTstamp$ type 이다($TT.now()$의 리턴 참조). $TT.now()$는 $TT.now()$가 호출 된 시간이 포함되는 $TTinterval$을 리턴한다. $TT.after()$와 $TT.before()$는 $TT.now()$의 wrapper method 이다. event $e$ 의 absolute time은 $t_{abs}(e)$ 함수로 나타낸다. TrueTime은 $e_{now}$ 가 invocation일때, $tt=TT.now()$, $tt.earliest \leq t_{abs}(e_{now}) \leq tt.latest$를 보장한다.
 
 Truetime의 시간은 거의 오차가 없도록 설계되었다 (논문참조.. 아무튼 보장됨.. GPS, atomic clock으로 어쩌구저쩌구.. redundancy 붙여서 어쩌구저쩌구.. 아무튼 깨질일 없게 만들어줌.. 여러 datacenter에 걸쳐서 cock sync를 함..).
 
-![Untitled](spanner/Untitled5.png)
+![truetime architecture](spanner/Untitled5.png)
 
-![Untitled](spanner/Untitled6.png)
+![truetime implementation](spanner/Untitled6.png)
 
 구글의 머신 시간 오차는 200us/s 이다?? [https://youtu.be/C75kpQszAjs?t=1415](https://youtu.be/C75kpQszAjs?t=1415)
 
 [https://youtu.be/nvlt0dA7rsQ?t=867](https://youtu.be/nvlt0dA7rsQ?t=867)
 
-![Untitled](spanner/Untitled7.png)
+![truetime server rack](spanner/Untitled7.png)
 
 # 4. Concurrency Control
 
@@ -122,7 +122,7 @@ paxos write (paxos group내의 write, 즉 한 파티션에서 일어나는 write
 
 ## 4.1 Timestamp Management
 
-![Untitled](spanner/Untitled8.png)
+![types of reads and writes in spanner and how they compare](spanner/Untitled8.png)
 
 read-only transaction은 snapshot isolation으로 성능 향상을 한다. read-only transaction의 read는 system이 선택한 timestamp로, lock 없이 데이터를 read해서 incoming write가 block되지 않는다. read를 수행하는 replica는 충분히 up-to-date하다 (왜 충분히를 붙였지).
 
@@ -174,7 +174,7 @@ $s_{read}=TT.now().latest$ 로 설정한다. 하지만 $t_{safe} < TT.now().late
 
 Bigtable 처럼 transactional write는 commit전까지 buffer에 남아있는다. 따라서 transactional read는 transactional write를 볼 수 없다.
 
-![Untitled](spanner/Untitled9.png)
+![read-write transactions](spanner/Untitled9.png)
 
 [https://youtu.be/ZulDvY429B8?t=1445](https://youtu.be/ZulDvY429B8?t=1445)
 
@@ -226,7 +226,7 @@ spanner에서는 recursive directory를 지원하고, RPC로 recursive get을 �
 
 GFS → colossus: bigtable위에 올라가있음
 
-![Untitled](spanner/Untitled10.png)
+![spanner architecture](spanner/Untitled10.png)
 
 write 홀수개 서버로 이루어진 paxos group , write가 들어오면 절반이상이 성공하면 리턴 (dynamodb랑똑같)
 

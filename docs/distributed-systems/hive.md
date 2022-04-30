@@ -24,7 +24,7 @@ map-reduce를 해주는 Hadoop은 생산성이 낮았다. 유저가 코드를 �
 
 # 4. System Architecture and Components
 
-![Untitled](hive/Untitled.png)
+![hive system architecture](hive/Untitled.png)
 
 - Metastore: table, column, partition 등에 대한 metadata와 system catalog 저장
 - Driver: HiveQL statement의 lifecycle관리, session handle과 통계 유지

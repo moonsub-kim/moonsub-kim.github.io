@@ -110,7 +110,7 @@ client와 chunkserver는 data를 cache하지 않는다. 대부분 application이
 
 ## 2.4 Single Master
 
-![Untitled](gfs/Untitled.png)
+![gfs architecture](gfs/Untitled.png)
 
 single master를 가지는것은 design을 단순하게 해주고, master가 global knowledge를 이용해 정교한 chunk placement 와 replication decision을 하게 해준다. 하지만 bottleneck이 발생하지 않도록 read,write에서 master의 critical path를 최소화 해야한다. client는 절대로 master를 통해서 data를 접근하지 않는다. client는 master에게 어떤 chunkserver와 통신하면 되는지 물어보고, 이 정보를 일정기간 cache하고, chunkserver와 직접 통신한다.
 
@@ -174,7 +174,7 @@ GFS는 distributed system에서 상대적으로 구현하는데 쉽고 효율적
 
 file namespace mutation (e.g., file creation)은 atomic하다. mutation은 master에서 별도로 핸들링된다. namespace locking은 atomicity와 correctness를 보장하고 (Section 4.1), operation log는 이런 operation의 global total order를 가지고 있다 (section 2.6.3).
 
-![Untitled](gfs/Untitled1.png)
+![file region state after mutation](gfs/Untitled1.png)
 
 data mutation이후 file region의 상태는 mutation type, 성공/실패 여부, concurrent mutation이 있는지에 따라 달라진다. Table 1은 summary이다. file region은 모든 client가 어떤 replica에서 읽던지 상관없이 같은 data를 볼 수 있으면 $consistent$ 이다. region은 file data mutation 이후에 region이 consistent해지면 $defined$ 이다. 그리고 client는 mutation이 만든 모든 내용을 볼 수 있게 된다.
 
@@ -210,7 +210,7 @@ mutation은 write, append로 chunk의 metadata나 content를 수정하는 operat
 
 lease mechanism은 master의 managing overhead를 최소화하기 위해 디자인되었다. lease는 60초의 initial timeout을 가지지만, chunk가 mutate되는동안 primary는 master에게 lease를 무한정으로 연장을 요청 할 수 있다. 이 extension request와 grant response는 chunkserver와 master간 주고받는 $HeartBeat$ message에 piggyback된다. master는 때때로 lease가 expire되기전에 revoke한다(master가 파일 이름이 바뀌는것을 disable로 설정하는경우 등). 또한 master가 primary와 통신이 끊어지더라도 old lease를 expire시키고 다른 replica에게 new lease를 준다.
 
-![Untitled](gfs/Untitled2.png)
+![write control and data flow](gfs/Untitled2.png)
 
 Figure 2는 lease process를 나타낸다.
 

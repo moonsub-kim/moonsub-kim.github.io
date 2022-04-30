@@ -30,7 +30,7 @@ Raft는 [Viewstamped Replication](https://www.google.com/search?q=Viewstamped+re
 
 consensusm algorithm은 $replicated\ state\ machine$에서 생겨났다. 여러 서버에서 동작하는 state machine은 같은 상태를 복제하고 일부 서버가 다운데어도 잘 동작하도록 한다. Replicated state machine은 distributed system에서 fault-tolerance 문제를 해결한다. 예릴들어 single cluster leader를 가지는 GFS, HDFS, RAMCloud같은 large-scale system은 leader election을 관리하고 leader crash에서도 tolerent하기 위한 정보들을 저장하는 replicated state machine을 쓴다. chubby, zookeeper도 이에 해당한다.
 
-![Untitled](raft/Untitled.png)
+![replicated state machine architecture](raft/Untitled.png)
 
 replicated state machine은 일반적으로 replicated log를 이용한다. 각 서버는 in odrer로 state machine을 실행시키게 될 command들을 담고있는 log를 저장한다. 각 log는 같은 순서로 같은 command들을 저장해서 각 state machine이 같은 순서대로 command를 실행한다. state machine이 deterministic하므로 같은 state에서 같은 연산을 적용하면 같은 결과가 나온다.
 
@@ -64,7 +64,7 @@ Raft를 design하는데 여러가지 대안이 생기는 지점이 많았다. �
 
 두번째는 고려해야할 state수를 줄여 state space를 단순화 해서, system을 보다 일관성있게하고 가능하다면 non-determinism을 없앤다. 특히 log에는 hole을 허용하지 않고, raft는 로그가 서로 inconsistent하지않는 방식을 제한한다. non-determinism을 없애기 위해 시도했지만 일부 non-determinism이 understandability를 높여주는 일부 케이스가 있었다. 특히 randomized approach는 non-determinism을 만들지만 가능한 모든 선택을 비슷한 방식으로 처리해서 state space를 감소시킨다. Raft는 randomization을 leader election에서 사용한다.
 
-![Untitled](raft/Untitled1.png)
+![A condensed summary of the raft consensus algorithm](raft/Untitled1.png)
 
 # 5. The Raft consensus algorithm
 
@@ -78,19 +78,19 @@ Raft는 consensus 문제를 3개의 subproblem으로 쪼갠다
 - **Log replication**: leader는 log entry를 client로 받고, server들에게 replicate한다 (Section 5.3).
 - **Safety**: Figure 3, server가 특정 log entry를 자신 state machine에 apply치면, 같은 log index에서 다른 command를 apply친 server가 없어야 한다 (Section 5.4, 순서 보장)
 
-![Untitled](raft/Untitled2.png)
+![raft guarantees that each of these properties is true at all times](raft/Untitled2.png)
 
 ## 5.1 Raft Basics
 
 각 server는 $leader,\ follower,\ candidate$ state 중 한개를 가진다. 평소에는 하나의 leader, 나머지 모두는 follower가 된다.
 
-![Untitled](raft/Untitled3.png)
+![server states](raft/Untitled3.png)
 
 - Follower는 request를 던지지 않고, leader나 candidate으로부터 응답만 한다.
 - Leader는 모든 client request를 처리한다. leader가 follower에게 요청을 던지는경우엔 follower가 leader로 redirect시킨다.
 - Candidate은 새 leader를 뽑을때 사용된다.
 
-![Untitled](raft/Untitled4.png)
+![time is divided into terms and each term begins with an election](raft/Untitled4.png)
 
 Raft는 시간을 $term$단위로 쪼갠다. term은 consecutive integer로 표현된다. 각 term은 1개 이상의 candidate이 leader가되려고 시도하는 $election$에서 시작한다 (Section 5.2). 한 candidate이 이기면 term의 남은 시간동안 leader가 된다. 때때로 split vote가 발생하는데, 이때 term은 leader를 만들지 않고 새 term을 시작하여 특정 term에 최대 1개의 leader만 있도록 한다.
 
@@ -122,7 +122,7 @@ Raft는 randomized election timeout을 써서 처음에 split vote가 생겼더�
 
 leader가 선출되면 client request를 받기 시작한다. 각 client request는 replicated state machine에 에도 적용될 command를 포함하고 있다. leader는 command를 log entry로 만들고 AppendEntries RPC를 병렬로 호출해서 각 server에 log entry가 replicate되도록 한다. log entry가 replicate되면leader는 log entry를 state machine에 적용하고 result를 리턴한다. follower가 crash나거나 느리게 동작거나 network가 끊어지면 ledaer는 무한히 AppendEntries RPC를 재시도한다. client에게 응답한이후에도 모든 follower가 log entry를 저장할때까지 계속 재시도한다.
 
-![Untitled](raft/Untitled5.png)
+![logs are composed of entries](raft/Untitled5.png)
 
 Figure 6에서 각 log entry는 term number와 command를 저장한다. log entry의 term number는 log간 inconsistency를 확인하기 위한것이다 (Figure 3 참조). 또한 각 log entry는 log position을 식별하기 위한 integer index를 가진다.
 
@@ -137,7 +137,7 @@ Raft log mechanism은 여러 server의 log들이 high coherence를 가지도록 
 
 leader election이 아닌 평소 상황엣 leader log와 follower log는 consistent하게 유지되어 AppendEntries RPC가 실패하지 않는다 (term이 달라지지 않으므로). 하지만 leader failure는 inconsistent한 상황을 만든다 (old leader가 모든 log entry를 replicate하지 못하므로). inconsistency는 여러 leader, follower failure로 악화될 수 있다.
 
-![Untitled](raft/Untitled6.png)
+![when the leader at the top comes to power](raft/Untitled6.png)
 
 Figure 7은 follower log가 새 leader log와 다른 모습을 보여준다. leader에는 있지만 follower에는 없는 Log entry, follower에만 있는 log entry, 같은 index인데 서로 다른 log entry가 생길 수 있다. 이런 상황은 여러 term에 걸쳐서 일어날 수 있다.
 
@@ -168,7 +168,7 @@ Raft는 두 log (candidate, server)가 up-to-date한지 확인하기 위해 last
 
 ### 5.4.2 Committing Entries from Previous Terms
 
-![Untitled](raft/Untitled7.png)
+![a time sequence showing why a leader cannot determin commitment using log entries from older temrs](raft/Untitled7.png)
 
 Section 5.3에서 말한것처럼 leader는 현재 term의 entry가 절반 이상의 server에게 exactly-once로 commit된것을 알고 있다. leader가 log entry를 commit하기전에 crash가 발생하면, 그 다음 leader는 entry replication을 마지 완료시킨다. 하지만 leader는 이전 term에서 발생한 log entry가 절반 이상의 server에 ‘exactly-once’로 commit 되었다고 판단할 수 없다. Figure 8은 old log entry가 절반 이상의 서버에 저장되어있지만, 그 다음 Leader에 의해 overwrite되는 상황을 보여준다.
 
@@ -180,7 +180,7 @@ Raft는 log entry가 leader가 이전 term의 log entry를 replicate할때 이�
 
 Leader Completeness Property가 유지되지 않는다고 가정하고 반례를 통해 증명할 것이다. term T의 leader $leader_T$가 T에서 log entry를 commit하지만 이 log entry가 미래의 term에 저장되지 않는 상황을 가정한다 ($U>T$ 인 leader $leader_U$가 log entry를 저장하지 않은 상황).
 
-![Untitled](raft/Untitled8.png)
+![if s1 commits a new log entry from its term, and s5 is elected leader for a later term u, then there must be at least one server that accepted the log entry and also voted for s5](raft/Untitled8.png)
 
 1. $leader_U$의 log에서 commited entry가 없어야 한다. (leader는 log entry를 절대 지우거나, overwrite하지않음)
 2. $leader_T$ 가 절반 이상의 서버에 log entry를 replicate 했고, $leader_U$는 절반 이상의 서버($voter$)로부터 vote를 받았따. 따라서 최소 한개 server는 $leader_T$의 log entry를 받았고, $leader_U$에게 투표했다. $voter$가 가정에 대한 반례를 보기 위한 ‘키’ 이다.
@@ -222,7 +222,7 @@ $broadcastTime$과 $MTBF$는 시스템이 가지는 속성이지만 $electionTim
 
 안전하게 config change를 만들기 위해, 같은 term에서 두 리더가 생기는 상황이 만들어지면 안된다. 또한 한 server가 old config에서 새config로변경하는 어떤 방식이던지 모두 unsafe하다. 따라서 atomic하게 모든 server를 한번에 바꾸는것은 불가능하고 cluster는 transition동안 두개의 config를 가질 수 있다. 따라서 이상황에 old config에대한 cluster, new config에 대한 cluster 두개로 분리 될 수 있다.
 
-![Untitled](raft/Untitled9.png)
+![switching directly from one configuration to another is unsafe because different servers will switch a different times](raft/Untitled9.png)
 
 safety를 보장하기 위해 config change는 two-phase approach를 쓴다. two-phase를 구현하는 다양한 방법들이 있는데, viewstamped replication은 first phase에 old config를 가지는 server가 client request를 처리하지 못하도록 disable하고, second phase에 new config를 적용하는 방법을 쓴다. Raft에서는 first phase에 cluster를 $joint\ consensus$라고 부르는 transitional config로 전환하고, joint consensus가 commit되면 system은 새 config로 또 한번 전환한다.
 
@@ -234,7 +234,7 @@ joint consensus는 old, new config를 합친다
 
 join consensus는 각 server가 서로 다른 시각에 safe하게 config를 바꿀 수 있게 해준다. 또한 cluster가 config change도중에도 client request를 받게 해준다.
 
-![Untitled](raft/Untitled10.png)
+![timeline for a configuration change](raft/Untitled10.png)
 
 cluster config는 replicated log에 special entry로 처리된다. leader가 $C_{old}$에서 $C_{new}$로 config change 요청을 받으면, leader는 $C_{old,new}$ config(joint config)를 replicate 한다. server가 새 config entry를 log에 저장하면 server는 모든 future decision에 이 config를 쓰게된다. 즉 server는 config가 commit되지않더라도 config를 쓴다. 이건 leader가 $C_{old,new}$를 이용해서 $C_{old,new}$가 언제 commit될지를 결정한다는 것을 의미한다(???). 이떄 leader failure가 발생하면 새 leader는 winning candidate이 $C_{old,new}$를 가지고있으면 $C_{old,new}$를 config로, $C_{old,new}$를 받지 않았으면 $C_{old}$를 config로 쓴다. 또한 이때 $C_{new}$로 decision을 내릴 수 없다.
 
@@ -256,13 +256,13 @@ snapshot은 log compaction을 하는 가장 간단한 approach이다. snapshot�
 
 log cleaning [[The Design and Implementation of a Log-Structured File System](https://people.eecs.berkeley.edu/~brewer/cs262/LFS.pdf)]이나 LSM tree [[The log-structured merge-tree](https://www.cs.umb.edu/~poneil/lsmtree.pdf), [Bigtable](https://static.googleusercontent.com/media/research.google.com/ko//archive/bigtable-osdi06.pdf)]같은 incremental approach도 가능하다. incremental approach는 한번 compaction을할때 data의 일부에 대해서만 동작하므로 시간이 지나면서 compaction load가 고르게 분산된다. data가 지워지거나 overwritten된 region을 선택한 뒤 live object로 rewrite시키는 방식으로 compaction을 한다. 따라서 모든 data에 대해 작동하는 snapshot에 비해선 좀더 복잡하다.
 
-![Untitled](raft/Untitled11.png)
+![a server replaces the committed entries in its log with a new snapshot, which stores just the current state](raft/Untitled11.png)
 
 Raft의 snapshot은 server마다 독립적으로 진행되고 snapshot대상의 log entry까지를 반영한 state를 저장한다. 또한 $last\ included\ index$, $last\ included\ term$을 따로 저장하여 AppendEntries RPC에서 snapshot 직후에 있는 log entry(그림에서 6번)에 대해 consistency check를 하기위해 (previous index, term이 필요) 쓰인다. 또한 snapshot의 last index 기준의 config도 저장한다.
 
 leader가 snapshot을 직접 server에게 보내야할 때도 있다. leader가 이미 지운 log entry를 server가 원하는 경우이다. 정확히는 slow or new joining server에서 발생하고, 일반적인 상황에서는 server들이 leader log를 잘 따라가고 있으므로 발생하진 않는다.
 
-![Untitled](raft/Untitled12.png)
+![a summary of the installsnapshot rpc](raft/Untitled12.png)
 
 Follower가 InstallSnapshot RPC를 받는다. 일반적으로 snapshot은 follower가 가지는 log보다 새 log들을 가지고 있으니 전체 log를 버린다. snapshot보다 follower log가 더 앞서있다면, snapshot까지 해당하는 log는 버리고, snapshot 미래의 log들은 유지한다. snapshot은 Raft가 strong leader를 가지고있다는것을 보여준다. strong leader는 decision conflict를 피할수 있게 해준다. dataflow도 leader → follower로 흐른다.
 

@@ -56,7 +56,7 @@ zookeeper는 watch를 polling없이 시간에 대한 변경을 노티받는 식�
 
 zookeeper data model에서 hierarchical namespace는 다른 application의 namespace에 대한 subtree를 생성하고, 접근권한을 설정하는데 쓰인다. 또한 client에서 high level primitive를 만드는데에도 쓰인다.
 
-![Untitled](zookeeper/Untitled.png)
+![illustration of zookeeper hierarchical name space](zookeeper/Untitled.png)
 
 app1, app2의 서로다른 application이 존재하고, 이중 app1은 group membership protocol을 구현하는데, process $p_i$가 `/app1/p_1` 을 가지는 구조가 될 수 있다.
 
@@ -183,7 +183,7 @@ double barrier는 client가 computation의 시작/끝을 sync할 수 있게 해�
 
 # 4. ZooKeeper Implementation
 
-![Untitled](zookeeper/Untitled1.png)
+![the components of the zookeeper service](zookeeper/Untitled1.png)
 
 zookeeper는 각서버에 data를 replicate하여 high availability를 만든다. request를 받으면 server는 execution을 준비하고(request processor), write request인경우 coordination이 필요하므로 aggrement protocol을 이용한다 (atomic broadcast). 마지막으로 server는 모든 server에 replicate되는 db에 변경사항을 commit한다. read request가 오면 각 server는 local database에서 읽어서 response를 리턴한다.
 

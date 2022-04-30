@@ -34,7 +34,7 @@ nav_order: 5
 
 - amazon의 service oriented architecture (아마도 e-commerce)
 
-![Untitled](dynamo/Untitled.png)
+![server-oriented architecutr of amazon's platform](dynamo/Untitled.png)
 
 한 요청이 들어올떄 수많은 서버를 거치므로 SLA가 중요하다. 어떤 서비스는 자신의 state를 저장하고, aggregator service는 대부분 stateless, caching을 한다.
 
@@ -94,7 +94,7 @@ challenge는 1) 각 node 할당을 random으로 하면 non-uniform distribution�
 
 ## 4.3 Replication
 
-![Untitled](dynamo/Untitled1.png)
+![partitioning and replication of keys in dynamo ring](dynamo/Untitled1.png)
 
 configurable한 N($per\text{-}instance$)개 host에 replicate된다. key $k$는 coordinator node에게 할당되는데, coordinatior노드는 N-1의 clockwise로 successor node에할당시킨다. 따라서 각 node기준으로는 N개의 prececessor를 커버한다. 특정 key에 대한 data를 책임지는 node list를 $preference\ list$라 부른다. 모든 node 각각이 특정 key에 대해 어떤 node로 routing할수 있는지 알아야 한다. 만약 virtual node로 preference list를 유지하면 N개미만의 physical node에 할당되므로 availability가 떨어진다. 따라서 preference list는 **distinct physical sucessor node list**가 된다.
 
@@ -112,7 +112,7 @@ Dynamo는 서로 다른 version간 causality를 확인하기 위해 vector clock
 
 client가 object update를 원하면 version도 명시해야한다. 이건 이전 read operation에서 들어온 context에 포함되어있다. dynamo는 read request를 처리할때 syntactically reconcile 되지않은 branch를 보면 모든 object와 context에 version정보를 넣어 리턴한다. 이 context를 쓰는 update는 여러 version branch를 합쳐준다고 보고, branch는 single new version으로 다시 합쳐진다.
 
-![Untitled](dynamo/Untitled2.png)
+![version evolution of an object over time](dynamo/Untitled2.png)
 
 `D1, D2, ... D5` 는 한 object에 대한 서로 다른 version, `[Sx, 1]`의 Sx 요청을 처리하는 node,  1은 vector clock이다.
 
@@ -140,7 +140,7 @@ get()을 coordinator가 N highest-ranked reachable node에서 모든 existing ve
 
 Dynamo가 server failure, network partition에서 unavailable해진다면, durability는 떨어졌을 것이다. Dynamo는 strict quorum membership 대신 sloppy quorum을 쓴다. 모든 r/w operation은 preference list의 first N healty node에서 수행되고, ring을 walk할때 언제나 first N node를 보게 되는것은 아니다.
 
-![Untitled](dynamo/Untitled1.png)
+![veresion evolution of an object over time](dynamo/Untitled1.png)
 
 N=3이라고 했을때, node A가 write동안 unreachable해지면 A가 가지고있던 replica는 D로 가게 된다. 이 replica는 이전에 어떤 node가 받았어야 했는지 metadata에 대한 hint가 있다 (이 케이스에선 A). hinted replica를 받은 node는 separate local db에 replica를 저장한다. A가 복구된것을 확인하면 D는 replica를 A로 보내주고, 이 replica를 지울수 있게 된다. 따라서 hinted handoff를 통해 r/w operation이 temporal failure에서도 실패하지 않게 해준다.
 
@@ -170,7 +170,7 @@ Dynamo ring에 inter-node communication을 만드는 client 요청이 주기적�
 
 node X가 system에 추가되면 ring에 뿌려진 token을 할당받는다. node X에 할당된 key range들에 대해, 이미 해당 범위에 대해 처리를 하고있던 node (≤ N)가 있을 것이다. node X가 추가되어서 일부 기존 node는 더이상 key range 일부를 유지할 필요가 없고 X로 전달해줘야 한다.
 
-![Untitled](dynamo/Untitled1.png)
+![partitioning and replication of keys in dynamo ring](dynamo/Untitled1.png)
 
 X가 system에 들어올때 `(F, G], (G, A], (A, X]` 의 key를 저장한다고 하자. 그러면 node B, C, D는 위 범위와 겹치는 range를 저장할필요가 없다 (B는 F가 coordinate하는 key, C는 G의 key, D는 A의 key). 따라서 B, C, D는 필요없는 key range를 X로 보낸다. node가 지워질때에도 비슷하다.
 
@@ -198,7 +198,7 @@ dynamo의 큰 이점은 N, R, W를 튜닝해서 필요로하는 performance, ava
 
 dynamo는 uniform key distribution에서 uniform load distribution을 제공하지만, skey된 key도 어느정도의 볼륨이 있으므로 그것들이 여러 node로 퍼지게 되므로 (virtual node + replication factor) uniform load distribtuion이 나타난다고 가정한다. 이 섹션에서는 load imbalance와 load distribution에 대한 partitioning strategy를 볼 것이다.
 
-![Untitled](dynamo/Untitled3.png)
+![partitioning and placement of keys in the three strategies](dynamo/Untitled3.png)
 
 - **Strategy 1: $T$ random tokens per node and partition by token value**
 Section 4.2에서 설명하였음. default strategy이다. token이 ramdom으로 선택되므로 key range도 달라진다. node가 들어오고 나갈때 token set과 key range도 바뀐다. 각 node에서 membership을 유지하기 위한 space는 node 수가 증가할수록 커진다. 이 strategey의 문제점중 하나는 새 node가 들어올때 다른 node에서 key range를 “steal” 해야한다. 기존 node는 새 node에게 key range만큼의 data를 전달하기 위해 local storage를 스캔해야 한다. scan은 tricky하며(원래 key로만 접근가능하므로), resource intensive operation이고, customer request performance에 영향을 주지 않도록 background로 동작해야한다. 따라서 낮은 우선순위로 동작할 수 밖에 없다. 하지만 node가 바쁠때 이 bootstrapping process는 엄청 느려지고 하루가 걸릴때도 있었다. 다른 문제점은 node가 들어오거나 나갈때 많은 node의 key range가 바뀌고 새 range에 대해merkle tree를 재연산해야하는 큰 부담이 있다. 또한 key range에 randomness가 있어 전체 key space를 snapshot찍는게 쉽지 않고 archive를 하는것이 복잡해진다. 그래서 archive할때 각 node마다 따로따로 key range만큼 조회하게 되는데 너무 비효율적이다.
