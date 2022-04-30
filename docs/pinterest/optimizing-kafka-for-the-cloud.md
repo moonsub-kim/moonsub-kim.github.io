@@ -22,7 +22,7 @@ HDFS와 같은 분산시스템은 데이터센터 안에서 여러 랙에 걸쳐
 
 Pinterest에서는 Kafka를 [user action counting](https://medium.com/pinterest-engineering/building-a-real-time-user-action-counting-system-for-ads-88a60d9c9a)이나 CDC 같이 몇개의 주요 서비스를 위해 scalable, fault tolerant distributed message bus로 사용한다. Kafka를 매우 큰 [스케일로](https://medium.com/pinterest-engineering/how-pinterest-runs-kafka-at-scale-ff9c6f735be) 운영하고 있기 때문에, AZ transfer cost에대해 인지할 필요가 있고, 가능한한 효율적으로 동작해야하고, AZ간에 data전송되는 양을 줄일 필요가 있다.
 
-![Untitled](optimizing-kafka-for-the-cloud/Untitled.png)
+![Architecture](optimizing-kafka-for-the-cloud/Untitled.png)
 
 Kafka cluster가 여러 AZ에 걸친 broker들을 가지면, 세종류의 cross AZ network traffic이 생긴다
 
@@ -30,9 +30,9 @@ Kafka cluster가 여러 AZ에 걸친 broker들을 가지면, 세종류의 cross 
 2. Traffic from Producers in different AZs
 3. Traffic from Consumers in different AZs
 
-1번은 fault tolerance를 위해 필요하지만, 2번과 3번은 원하지 않는 cost이
+1번은 fault tolerance를 위해 필요하지만, 2번과 3번은 원하지 않는 cost이다.
 
-![Untitled](optimizing-kafka-for-the-cloud/Untitled1.png)
+![problem](optimizing-kafka-for-the-cloud/Untitled1.png)
 
 # Design
 
@@ -64,7 +64,7 @@ Pinterest의 S3 transporter는 AZ info를 Zookeeper로 lookup, publish 한다. �
 
 # Results
 
-![Untitled](optimizing-kafka-for-the-cloud/Untitled2.png)
+![result](optimizing-kafka-for-the-cloud/Untitled2.png)
 
 AZ aware S3 transporter를 production에 배포해서 logging에 대해서는 AZ transfer cost가 25% 줄어들었고 천천히 Rollout하고있기때문에 cost는 더 줄어들것이다.
 
