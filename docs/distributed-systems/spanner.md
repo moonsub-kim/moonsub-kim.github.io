@@ -173,7 +173,7 @@ $s_{read}=TT.now().latest$ 로 설정한다. 하지만 $t_{safe} < TT.now().late
 
 Bigtable 처럼 transactional write는 commit전까지 buffer에 남아있는다. 따라서 transactional read는 transactional write를 볼 수 없다.
 
-![[https://youtu.be/ZulDvY429B8?t=1445](https://youtu.be/ZulDvY429B8?t=1445)](spanner/Untitled9.png)
+![Untitled](spanner/Untitled9.png)
 
 [https://youtu.be/ZulDvY429B8?t=1445](https://youtu.be/ZulDvY429B8?t=1445)
 
