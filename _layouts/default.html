@@ -221,7 +221,7 @@ layout: table_wrappers
                 {%- if node.last_modified_date -%}&nbsp; ({{ node.last_modified_date }}){%- endif -%}
                 {%- if node.has_children -%}
                   {%- assign children_list = pages_list | where: "parent", node.title -%}
-                  <ul class="nav-list ">
+                  <ul class="nav-list" style="margin-top: 0px;">
                   {%- for child in children_list -%}
                     {%- unless child.nav_exclude -%}
                     <li class="nav-list">
@@ -231,7 +231,7 @@ layout: table_wrappers
                       {%- if child.last_modified_date -%}&nbsp; - ({{ child.last_modified_date }}){%- endif -%}
                       {%- if child.has_children -%}
                         {%- assign grand_children_list = pages_list | where: "parent", child.title | where: "grand_parent", node.title -%}
-                        <ul class="nav-list">
+                        <ul class="nav-list" style="margin-top: 0px;">
                         {%- for grand_child in grand_children_list -%}
                           {%- unless grand_child.nav_exclude -%}
                           <li class="nav-list">
