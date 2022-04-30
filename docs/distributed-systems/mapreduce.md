@@ -2,6 +2,7 @@
 title: MapReduce (OSDI '04)
 parent: Distributed Systems
 last_modified_date: 2022-01-03
+nav_order: 0
 ---
 # MapReduce (OSDI ‘04)
 

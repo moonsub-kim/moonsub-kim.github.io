@@ -2,6 +2,7 @@
 title: Dynamo (OSDI ‘07)
 parent: Distributed Systems
 last_modified_date: 2022-02-11
+nav_order: 5
 ---
 # Dynamo (OSDI ‘07)
 

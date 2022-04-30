@@ -2,6 +2,7 @@
 title: ZooKeeper (ATC '10)
 parent: Distributed Systems
 last_modified_date: 2022-02-03
+nav_order: 4
 ---
 # Zookeeper (ATC ‘10)
 

@@ -2,6 +2,7 @@
 title: DynamoDB
 parent: Distributed Systems
 last_modified_date: 2022-02-22
+nav_order: 6
 ---
 # DynamoDB
 

@@ -2,6 +2,7 @@
 title: Fault-Tolerant VM (SIGOPS ‘10)
 parent: Distributed Systems
 last_modified_date: 2022-01-16
+nav_order: 2
 ---
 # Fault-Tolerant VM (SIGOPS ‘10)
 

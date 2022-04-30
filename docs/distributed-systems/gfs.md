@@ -2,6 +2,7 @@
 title: GFS (SOSP '03)
 parent: Distributed Systems
 last_modified_date: 2022-01-09
+nav_order: 1
 ---
 # GFS (SOSP ‘03)
 

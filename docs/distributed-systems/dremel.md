@@ -2,6 +2,7 @@
 title: Dremel (VLDB ‘10)
 parent: Distributed Systems
 last_modified_date: 2022-04-03
+nav_order: 11
 ---
 # Dremel (VLDB ‘10)
 

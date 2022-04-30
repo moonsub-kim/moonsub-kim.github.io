@@ -2,6 +2,7 @@
 title: Presto (ICDE '19)
 parent: Distributed Systems
 last_modified_date: 2022-04-02
+nav_order: 10
 ---
 
 # Presto (ICDE ‘19)

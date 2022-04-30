@@ -2,6 +2,7 @@
 title: Raft (ATC '14)
 parent: Distributed Systems
 last_modified_date: 2022-01-29
+nav_order: 3
 ---
 # Raft (ATC ‘14)
 

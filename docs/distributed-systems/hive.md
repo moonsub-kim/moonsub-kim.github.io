@@ -2,6 +2,7 @@
 title: Hive (ICDE '10)
 parent: Distributed Systems
 last_modified_date: 2022-03-28
+nav_order: 9
 ---
 # Hive (ICDE ‘10)
 
