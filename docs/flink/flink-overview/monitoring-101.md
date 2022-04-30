@@ -41,9 +41,9 @@ Flink는 아래와같은 built-in metric을 제공한다
 | numberOfCompletedCheckpoints | job | 성공한 checkpoint 횟수 |
 | numberOfFailedCheckpoints | job | 실패한 checkpoint 횟수 |
 
-![Untitled](monitoring-101/Untitled.png)
+![general health 1](monitoring-101/Untitled.png)
 
-![Untitled](monitoring-101/Untitled1.png)
+![general health 2](monitoring-101/Untitled1.png)
 
 - alerts
     - `ΔfullRestarts > threshold`
@@ -62,7 +62,7 @@ application이 실제로 잘 진행되는지 upstream system을 잘 따라가는
 | numRecordsOutPerSecond | task | task가 초당 보내는 record 갯수 |
 | numRecordsOutPerSecond | operator | operator가 초당 보내는 record 갯수 |
 
-![Untitled](monitoring-101/Untitled2.png)
+![throughput](monitoring-101/Untitled2.png)
 
 - alerts
     - `recordsOutPerSecond = 0` (sink operator 제외)
@@ -80,7 +80,7 @@ event time semantic을 쓰는 application들은 watermark가 시간에 따라 �
 | --- | --- | --- |
 | currentOutputWatermark | operator | operator가 emit한 마지막 watermark |
 
-![Untitled](monitoring-101/Untitled3.png)
+![progress](monitoring-101/Untitled3.png)
 
 - alerts
     - `currentProcessingTime - currentOutputWatermark > threshold`
@@ -119,7 +119,7 @@ Flink는 [Latency Tracking](https://nightlies.apache.org/flink/flink-docs-releas
 | latency | operator | soruce operator에서 해당 operator까지 latency |
 | restartingTime | job | restart한 뒤로부터 시간 |
 
-![Untitled](monitoring-101/Untitled4.png)
+![monitoring latency](monitoring-101/Untitled4.png)
 
 # JVM Metrics
 
@@ -132,9 +132,9 @@ Flink는 [Latency Tracking](https://nightlies.apache.org/flink/flink-docs-releas
 
 [https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/metrics/#memory](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/metrics/#memory)
 
-![Untitled](monitoring-101/Untitled5.png)
+![jvm metrics 1](monitoring-101/Untitled5.png)
 
-![Untitled](monitoring-101/Untitled6.png)
+![jvm metrics 2](monitoring-101/Untitled6.png)
 
 - alert
     - `container memory limit < container memory + safty margin`
@@ -155,6 +155,6 @@ TaskManager의 CPU를 모니터링 해야한다. TaskManager CPU가 높으면 �
 
 [https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/metrics/#cpu](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/metrics/#cpu)
 
-![Untitled](monitoring-101/Untitled7.png)
+![cpu](monitoring-101/Untitled7.png)
 
 ##

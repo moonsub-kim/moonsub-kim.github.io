@@ -20,13 +20,11 @@ nav_order: 1
 
 [https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/)
 
-MapReduce의 확장팩(Spark)의 확장팩
-
 **Stateful** stream processing
 
-![Untitled](flink-exactly-once-images/Untitled.png)
+![flink code example](flink-exactly-once-images/Untitled.png)
 
-![Untitled](flink-exactly-once-images/Untitled1.png)
+![flink dataflow example](flink-exactly-once-images/Untitled1.png)
 
 ## MapReduce (2004)
 
@@ -43,13 +41,13 @@ As a reaction to this complexity, we designed a new abstraction that allows us t
 We realized that most of our computations involved applying a map operation to each logical “record” in our input in order to compute a set of intermediate key/value pairs, and then applying a reduce operation to all the values that shared the same key, in order to combine the derived data appropriately.
 > 
 
-![Untitled](flink-exactly-once-images/Untitled2.png)
+![map reduce overview](flink-exactly-once-images/Untitled2.png)
 
 ## Architecture
 
 [https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/concepts/flink-architecture/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/concepts/flink-architecture/)
 
-![Untitled](flink-exactly-once-images/Untitled3.png)
+![flink architecture](flink-exactly-once-images/Untitled3.png)
 
 # Realtime Exactly-Once Ad Event Processing at Uber
 
@@ -59,7 +57,7 @@ We realized that most of our computations involved applying a map operation to e
 - event를 중복집계해서는 안된다. 광고성과를 부풀려서 보여주게 된다
 - attribution 또한 100% 정확해야 한다
 
-![Untitled](flink-exactly-once-images/Untitled4.png)
+![uber architecture for exactly-once](flink-exactly-once-images/Untitled4.png)
 
 - Flink는 exactly-once를 지원하고, consumer service가 `read_commited` message만 읽으면 end-to-end exactly-once 완성
 - attribution을 넣으려면 data enrichment가 필요하므로 외부 db에서 읽는 경우도 있음
@@ -91,13 +89,13 @@ kafka streams API에서 stream processing을 하면 exactly-once를 지원한다
 
 ## Exactly-Once Processing in Flink
 
-![Untitled](flink-exactly-once-images/Untitled5.png)
+![prepare step in the two-phase commit](flink-exactly-once-images/Untitled5.png)
 
 - checkpoint **barrier** 를 datasource channel에 주입
 - task들은 barrier를 받을때마다 state backend에 현재 snapshot을 저장
 - sink task는 Kafka에 pre-commit
 
-![Untitled](flink-exactly-once-images/Untitled6.png)
+![commit step in the two-phase commit](flink-exactly-once-images/Untitled6.png)
 
 - 모든 pre-commit이 완료되면 jobmanager는 모든 task에게 pre-commit이 완료되었음을 전달
 - sink task는 commit을 호출
@@ -112,10 +110,10 @@ distributed system에서 asynchronous global snapshot을 만드는 알고리즘
 - snapshot을 생성하는동안 program이 멈춰있지 않아도 됨 (asynchronous)
 - master node가 없음 - spof에서 자유로워진다
 
-1. $P_i$: 독립적으로 실행되는 프로세스
+1. $P_i$ : 독립적으로 실행되는 프로세스
 2. dot: 이벤트 발생
 3. 화살표: process간 이벤트 전달
-4. $C_{ji}$: $P_j$에서 $P_i$로 이벤트를 전달하는 채널
+4. $C_{ji}$ : $P_j$ 에서 $P_i$ 로 이벤트를 전달하는 채널
 
 ![Untitled](flink-exactly-once-images/Untitled7.png)
 

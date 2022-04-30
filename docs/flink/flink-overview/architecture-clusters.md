@@ -13,7 +13,7 @@ nav_order: 3
 
 Flink runtime은 1개의 Job Manager와 1개 이상의 TaskManager로 구성된다.
 
-![Untitled](architecture-clusters/Untitled.png)
+![architecture](architecture-clusters/Untitled.png)
 
 Client는 runtime의 일부분이 아니고, jobmanager에 dataflow를 보내기 위한 용도이다. dataflow를 전송하면 client는 (detach mode일때) disconnect하거나, (attatched mode일때) progress report를 받기위해 connection을 물고 있을 수 있다.
 
@@ -37,13 +37,13 @@ dataflow를 실행하고 data stream에 대한 buffer, exchange역할을 한다.
 
 # Tasks and Operator Chains
 
-distributed execution에서 Flink는 operator subtask를 task로 묶는다. 각 Task는 한개 trhead에서 실행되고, 따라서 task로 묶인 chaining operator는 thread간 데이터를 넘기거나 버퍼로 만드는 오버헤드 감소, latency가 줄어들고 throughput상승 등의 최적화가 일어난다. chaining은 configure할 수 있다.
+distributed execution에서 Flink는 operator subtask를 task로 묶는다. 각 Task는 한개 thread에서 실행되고, 따라서 task로 묶인 chaining operator는 thread간 데이터를 넘기거나 버퍼로 만드는 오버헤드 감소, latency가 줄어들고 throughput상승 등의 최적화가 일어난다. chaining은 configure할 수 있다.
 
 [https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/datastream/operators/overview/#task-chaining-and-resource-groups](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/datastream/operators/overview/#task-chaining-and-resource-groups)
 
-아래 예시 dataflow는 5개의 subtask를 실행하므로 5개의 trhead를 쓴다
+아래 예시 dataflow는 5개의 subtask를 실행하므로 5개의 thread를 쓴다
 
-![Untitled](architecture-clusters/Untitled1.png)
+![workflow](architecture-clusters/Untitled1.png)
 
 # Task Slots and Resources
 
@@ -53,7 +53,7 @@ distributed execution에서 Flink는 operator subtask를 task로 묶는다. 각 
 
 task slot 갯수를 조정하여 user는 어떻게 subtask가 다른 subtask와 isolate하는지 설정할 수있다. TaskManager당 1개 slot을 쓰면 각 task group은 서로 분리된 JVM에서 동작한다. 여러개 slot을 쓰면 subtask들은 같은 JVM위에서 동작하며 TCP connection (multiplexing)과 heartbeat message를 공유한다. subtask들은 또한 dataset, datastructure도 공유할수 있어 task단위에서 발생하는 overhead를 줄이게 된다.
 
-![Untitled](architecture-clusters/Untitled2.png)
+![task slot](architecture-clusters/Untitled2.png)
 
 Flink는 같은 job에 있지만 다른 task에 속한 subtask일지라도 subtask들이 slot을 공유하는걸 기본값으로 한다. (서로다른 stage에 있는 subtask들도 slot을 공유한다는말?) 따라서 한개 slot이 job 전체 pipeline에 관여할 수도 있다. 이 방식은 아래의 이점이 있다
 

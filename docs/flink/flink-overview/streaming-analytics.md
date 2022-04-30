@@ -118,7 +118,7 @@ stream.
 
 Flink는 아래와같은 built-in window assigner가 있다
 
-![Untitled](streaming-analytics/Untitled.png)
+![window assigners](streaming-analytics/Untitled.png)
 
 - Tumbling time windows
     - 분당 page view
