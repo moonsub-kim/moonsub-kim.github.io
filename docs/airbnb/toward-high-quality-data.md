@@ -60,14 +60,14 @@ nav_order: 6
 
 2019년
 
-![Untitled](toward-high-quality-data/Untitled.png)
+![Airbnb orgnization in 2019](toward-high-quality-data/Untitled.png)
 
 - **Software Engineer**: log data를 만들고, data warehose table과 pipeline을 관리하였음
 - **Data Scientist**: 거의 모든것을 다했음
 
 현재
 
-![Untitled](toward-high-quality-data/Untitled1.png)
+![Airbnb orgnization in now](toward-high-quality-data/Untitled1.png)
 
 - **Software Engineer**: log, production data 생성
 - **Data engineer**: product team에 속해있고 Software Engineer와 협업함
@@ -122,13 +122,13 @@ Building the Community
 
 ### 예시: Active Listings
 
-![Untitled](toward-high-quality-data/Untitled2.png)
+![example 1](toward-high-quality-data/Untitled2.png)
 
-![Untitled](toward-high-quality-data/Untitled3.png)
+![example 2](toward-high-quality-data/Untitled3.png)
 
-![Untitled](toward-high-quality-data/Untitled4.png)
+![example 3](toward-high-quality-data/Untitled4.png)
 
-![Untitled](toward-high-quality-data/Untitled5.png)
+![example 4](toward-high-quality-data/Untitled5.png)
 
 ## Skills Required to Up-level Data Quality
 
@@ -155,7 +155,7 @@ Building the Community
 
 ## Airbnb's Warehouse Architecture
 
-![Untitled](toward-high-quality-data/Untitled6.png)
+![airbnb's warehouse architecture](toward-high-quality-data/Untitled6.png)
 
 ## Minerva Output
 
@@ -171,11 +171,11 @@ Building the Community
 
 ## Data LifeCycle
 
-![Untitled](toward-high-quality-data/Untitled7.png)
+![data lifecycle](toward-high-quality-data/Untitled7.png)
 
 ## Understanding consumption
 
-![Untitled](toward-high-quality-data/Untitled8.png)
+![understanding consumption](toward-high-quality-data/Untitled8.png)
 
 위 그림에 나온것같은 정보들을 모두 수집함
 
@@ -198,16 +198,16 @@ Building the Community
 
 ## An integrated Solution
 
-![Untitled](toward-high-quality-data/Untitled9.png)
+![an integrated solution](toward-high-quality-data/Untitled9.png)
 
-![Untitled](toward-high-quality-data/Untitled10.png)
+![deprecated message in dataportal1](toward-high-quality-data/Untitled10.png)
 
-![Untitled](toward-high-quality-data/Untitled11.png)
+![deprecated message in dataportal2](toward-high-quality-data/Untitled11.png)
 
-![Untitled](toward-high-quality-data/Untitled12.png)
+![deprecated message in superset](toward-high-quality-data/Untitled12.png)
 
-![Untitled](toward-high-quality-data/Untitled13.png)
+![deprecated message in cli](toward-high-quality-data/Untitled13.png)
 
-![Untitled](toward-high-quality-data/Untitled14.png)
+![deprecated message in mail](toward-high-quality-data/Untitled14.png)
 
 -

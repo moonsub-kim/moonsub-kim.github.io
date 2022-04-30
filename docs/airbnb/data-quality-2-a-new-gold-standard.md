@@ -14,7 +14,7 @@ nav_order: 1
 
 이전 포스팅에서 airbnb 조직이 어떻게 성장했는지, DQ challenge를 어떻게 극복햇는지 overview를 썼다. 이 포스트에선 DQ를 보장하는 "Gold Standard"를 만드는 Midas process에 대해 설명한다.
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled.png)
+![certified by midas](data-quality-2-a-new-gold-standard/Untitled.png)
 
 # Defining the Gold Standard
 
@@ -56,15 +56,17 @@ certification process는 여러 관점의 Data Quality를 보장한다
 
 data가 certified되면, 다양한 data tool에서 별도로 표시된다.
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled1.png)
+![Fig 1: Midas badging next to metric and table names in Dataportal, Airbnb’s data discovery tool.](data-quality-2-a-new-gold-standard/Untitled1.png)
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled2.png)
+![Fig 2: Midas badging for metrics in Airbnb’s Experimentation Reporting Framework (ERF).](data-quality-2-a-new-gold-standard/Untitled2.png)
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled3.png)
+![Fig 3: Pop-up with Midas context in Airbnb’s internal data tools.](data-quality-2-a-new-gold-standard/Untitled3.png)
 
 # The Midas Certification Process
 
 midas certification process는 각각의 비즈니스 컨셉이나 feature에 해당하는 data table/metric으로 구성된 데이터모델에 대한 프로젝트별로 진행된다. 데이터모델에 대한 바운더리를 정의할 명확한 기준은 없지만, 이정도의 abtraction으로 data table, pipeline, metric을 aggreagate하면 offline data warehouse를 더 효과적으로 구성, 설계, 유지할 수 있다.
+
+![Figure 4: An overview of the nine steps in the Midas Certification process.](data-quality-2-a-new-gold-standard/Untitled4.png)
 
 ## Broad Stakeholder Input
 
@@ -80,24 +82,24 @@ Midas process의 첫번째는 pipeline, table, metric대 tech spec과 data model
 
 - design spec의 위쪽에는, owner와 reviewer를 명시한다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled4.png)
+![Fig 5: Owners and reviewers are formalized in the heading for each Midas design spec.](data-quality-2-a-new-gold-standard/Untitled5.png)
 
 - 첫번째 섹션에는 datamodel에 포함된 headline metric과 business definition, 메트릭을 이해하는데 필요한 디테일을 명시한다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled5.png)
+![Fig 6: An example Metric Definitions section from a Midas design spec.](data-quality-2-a-new-gold-standard/Untitled6.png)
 
 - 두번째 섹션은 data model에 포함되는 테이블을 만드는데 필요한 파이프라인 요약을 나타낸다
     - tool table이 뭘까
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled6.png)
+![Fig 7: Example pipeline overview section from a Midas design spec.](data-quality-2-a-new-gold-standard/Untitled7.png)
 
 - 그 밑에, 만들어질 테이블 스키마를 보여준다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled7.png)
+![Fig 8: Example table schema details from a Midas design spec.](data-quality-2-a-new-gold-standard/Untitled8.png)
 
 - 마지막 섹션은, pipeline validation을 위한 DQ check를 보여준다
 
-![Untitled](data-quality-2-a-new-gold-standard/Untitled8.png)
+![Fig 9: Example section on data quality checks details from a Midas design spec.](data-quality-2-a-new-gold-standard/Untitled9.png)
 
 이 예시는 단순하게 표현했지만, 실제로는 메트릭과 파이프라인 디테일에 대한 자세한 스펙을 작성하며, 긴것들은 20페이지를 넘길때도 있다... 이러한 문서화는 많은 시간이 필요하지만, data model이 제대로 설계되고, 여러 stakeholder가 design input(요구사항 등)을 넣게 만들어주며, 소수만 알던 데이터 스펙을 많은 사람들이 알수 있게 해준다.
 

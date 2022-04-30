@@ -24,7 +24,7 @@ Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 
 
 2010년 초에 airbnb가 성장함에 따라, 더 많은 data scientist들이 회사에 들어왔고([At Airbnb, Data Science Belongs Everywhere](https://medium.com/airbnb-engineering/at-airbnb-data-science-belongs-everywhere-917250c6beba)), 데이터는 볼륨과 variety 모두다 증가했다. 이때쯤에 우리는 데이터 인프라를 업그레이드,안정화([Data Infrastructure at Airbnb](https://medium.com/airbnb-engineering/at-airbnb-data-science-belongs-everywhere-917250c6beba))를 하였다. Chronos에서 workflow orchestration을 위해 자체개발한 opensource인 Airflow([Airflow: a workflow management platform](https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8))로 옮겨갔고, `core_data` 라고 불리는 중요 데이터 테이블 셋을 구축했다.
 
-![Untitled](minerva-1-metric-consistency/Untitled.png)
+![Airbnb and the data that fuels it has grown substantially over the years.](minerva-1-metric-consistency/Untitled.png)
 
 `core_data` 가 베이스가 되면서, 분석이 활성화가 되었다.
 
@@ -41,7 +41,7 @@ Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 
 
 - core_data 로부터 파생된 테이블들에서 생기는 삽질
 
-![Untitled](minerva-1-metric-consistency/Untitled1.png)
+![Proliferation of derived tables built on top of `core_data` caused some serious growing pains.](minerva-1-metric-consistency/Untitled1.png)
 
 data consumer들로부터, 간단한 비즈니스 퀘스천에 대한 서로 다른 숫자가 나오지만 어떤 숫자가 맞는지 알 방법이 없었다는 불만을 들었다. 예를들면, 어떤 도시가 전주에 비해서 부킹이 많은지 묻게 된다면, data scientist와 finance팀은 약간 다른 테이블/메트릭/비즈니스로직을 사용해서 서로 다른 답을 내놓는 상황이었다. 시간이 지나면서 data scientist조차 자신의 데이터를 추측하게되면서 data quality는 떨어지고 의사결정권자에게 데이터의 신뢰를 떨어트리게 됐다.
 
@@ -55,13 +55,13 @@ data consumer들로부터, 간단한 비즈니스 퀘스천에 대한 서로 다
 
 - Minerva는 data warehouse architecture에서 중요한 역할을 한다.
 
-![Untitled](minerva-1-metric-consistency/Untitled2.png)
+![Minerva, Airbnb’s metric platform, plays a central role in Airbnb’s new data warehouse architecture.](minerva-1-metric-consistency/Untitled2.png)
 
 현재 Minerva에는 12000개 이상의 메트릭, 4000개 이상의 디멘전이 있고, 다양한 기능..(Data, Product Management, Finance, Engineering)과 팀(Core Product, Trust, Payments)에 걸쳐있다. Minerva는 대부분의 팀이 분석, 리포팅, 실험등에서 사용하는 프레임워크가 되었다.
 
 - Minerva를 도입한 다른 사내 서비스
 
-![Untitled](minerva-1-metric-consistency/Untitled3.png)
+![Adoption of Minerva at Airbnb has grown tremendously in the past two years.](minerva-1-metric-consistency/Untitled3.png)
 
 # Data Production in Minerva
 
@@ -69,7 +69,7 @@ Minerva는 오픈소스로 만들어져있다. Minerva에서 workflow orchestrat
 
 - Minerva는 메트릭의 전체 lifecycle을 관리한다
 
-![Untitled](minerva-1-metric-consistency/Untitled4.png)
+![Minerva manages the entire lifecycle of metrics at Airbnb.](minerva-1-metric-consistency/Untitled4.png)
 
 - **Metric Definition**: Minerva는 전사원이 업뎃할수있는 git repo에서 key business metric, dimension, dimension, 다른 metadata를 정의한다.
 - **Validated Workflow**: Minerva의 개발과정은 code review, static validation, test run등 data engineering best practices를 강제하고 있다.
@@ -86,19 +86,19 @@ Minerva는 오픈소스로 만들어져있다. Minerva에서 workflow orchestrat
 
 Minerva의 비전은 유저들이 "metric을 한번 정의하면 어디서든 쓸 수 있도록" 만들자이다. 즉 Minerva에서 생성된 metric은 다양한 툴에서 쉽게 접근가능해야한다. 데이터 팀은 다른 팀과 협업해서 Minerva위에 이와 같은 니즈를 충족하는 생태계를 만들었다.
 
-![Untitled](minerva-1-metric-consistency/Untitled5.png)
+![Minerva’s vision is “define once, use everywhere”.](minerva-1-metric-consistency/Untitled5.png)
 
 ## Data Cataloging
 
 Analytics product team과 협업해서 모든 Minerva metric, dimension을 인덱싱하는 airbnb의 data cataloging service인 Dataportal을 만들었다. 유저가 metric을 검색하면 Minerva metric이 검색결과에서 가장 높게 나온다. Dataportral은 certification status, ownership등의 contextual info를 제공하여 유저가 metric의 중요도를 인지할 수 있다. 대부분 비개발 직군에게 Dataportal은 Minerva metric을 접근하는데 큰 도움을 주고 있다.
 
-![Untitled](minerva-1-metric-consistency/Untitled6.png)
+![Minerva metrics are indexed and catalogued in the Dataportal UI.](minerva-1-metric-consistency/Untitled6.png)
 
 ## Data Exploration
 
 Dataportal의 검색결과에서 metric을 누르면, 바로 쓸 수있는 Metric Explorer를 보여준다. 이 페이지에선 유저는 group by나 filter등으로 데이터를 쪼개보거나 드릴다운 할 수 있다. 데이터를 더 깊게 들여다보고싶으면 superset 버튼을 클릭하면 된다. 또한 Metric Explorer는 metric owner, historical landing time, metric description을 제공해준다. 이런 이점은 개발직군, 비개발직군 모두 데이터를 쉽게 까볼 수 있는 이점을 제공한다.
 
-![Untitled](minerva-1-metric-consistency/Untitled7.png)
+![Users can investigate trends and anomalies in Metric Explorer and Superset seamlessly.](minerva-1-metric-consistency/Untitled7.png)
 
 ## A/B Testing
 
@@ -108,7 +108,7 @@ Dataportal의 검색결과에서 metric을 누르면, 바로 쓸 수있는 Metri
 
 airbnb는 비즈니스 성과를 매주, 매월, 매분기 리뷰하며 리더들은 비즈니스의 상황에대해 토론한다. 이런 미팅들은 high-level이며 간결한 executive report를 필요로 한다. 데이터는 aggregated되고, 트렌드는 그래프로 그려지고, metric은 월단위 집계나, YoY같은 식으로 보여진다.
 
-![Untitled](minerva-1-metric-consistency/Untitled8.png)
+![Here is an example of the reporting configuration for COVID-19 dashboard, built on top of Minerva.](minerva-1-metric-consistency/Untitled8.png)
 
 이런 리포팅을 위해 eXecutive Reporting Framework(XRF)를 만들었다. XRF는 Minerva metric과 dimension을 선택하면, 이 데이터들을 타임시리즈로 aggregation하여 리포트형태의 결과물을 준다. XRF는 많은양의 수작업들을 자동화했고, 분석과 실험에 쓰이던 Minerva metric을 그대로 사용하므로 높은 신뢰도의 리포트를 만들어 준다.
 
@@ -116,7 +116,7 @@ airbnb는 비즈니스 성과를 매주, 매월, 매분기 리뷰하며 리더�
 
 Minerva API를통해 R, Python client로 Minerva data를 쉽게 조회할 수 있고 노트북 환경에서 쉽게 사용할 수 있도록 만들어 준다. 여기서 중요한것은, 노트북 환경의 데이터는 다른 data tool과 똑같은 일관성을 주어 data scientist가 분석의 난이도에 따라 적절한 툴을 선택할 수 있는 것이다.
 
-![Untitled](minerva-1-metric-consistency/Untitled9.png)
+![A data scientist can use our Python client to retrieve aggregated data in Minerva and conduct analyses.](minerva-1-metric-consistency/Untitled9.png)
 
 # How We Responded To the COVID-19 Crisis with Minerva Data
 
@@ -124,7 +124,7 @@ Minerva API를통해 R, Python client로 Minerva data를 쉽게 조회할 수 �
 
 2020년 3월애 국제 여행은 covid-19로 인해 완전히 셧다운되었다. 거의 하룻밤사이에 대부분의 예약은 급감하고 취소는 급증했다. 이 상황은 airbnb에겐 두려웠고, 많은 비즈니스 퀘스천을 만들었다. "어떻게 코로나 바이러스가 예약에 영향을 미치는가?" "점유율에 어떤 영향을 미치는가?" "취소가 증가하는것으로 재정의 영향은 어떻게 됐는가?" "코로나가 여행거리 관점에서 어떻게 여행의 수요를 변화시켰는가?" 우리는 이런 퀘스천들을 빠르고 정확하게 알아야 했다.
 
-![Untitled](minerva-1-metric-consistency/Untitled10.png)
+![We were able to dramatically shorten the time from data curation to insight discovery and assess the impact of COVID-19 on Airbnb’s business because of Minerva!](minerva-1-metric-consistency/Untitled10.png)
 
 이런 질문이 쏟아지면서 데이터 팀은 질문들을 모으고 어떻게 데이터를 활용하여 답을 얻을지 논의했다. 결정적으로 supply, demand, finance, customer support등 대부분의 주요 비즈니스 metric, dimension은 이미 Minerva에 있었다. central analytics 팀은 executive dashboard를 만들수 있었고, 며칠내에 초기 버전의 대시보드를 만들 수 있었다. covid-19 대시보드는 빠르게 SSOT로 자리잡았고 리더들의 면밀한 리뷰를 받았다. 그래서 이 대시보드는 11000뷰와 1500명의 viewer를 찍었으며 2020년에 superset에서 가장 많이 본 대시보드로 기록됐다.
 

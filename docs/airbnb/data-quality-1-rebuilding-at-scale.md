@@ -95,7 +95,7 @@ DQ check,1 anomaly detection을 하기 위한 툴을 만들고 파이프라인�
 
 data warehouse를 다시 구축하면서, data model간의 응집력을 보장하고, high quality를 유지하기 위한 메커니즘이 필요했다. 또한 end user가 신뢰할수있는 dataset을 표현할수있는 더 좋은 방법이 필요했다. 이를 위해 airbnb는 Midas certification process를 만들었다.
 
-![Untitled](data-quality-1-rebuilding-at-scale/Untitled.png)
+![Diagram of the Midas certification process, described in detail below.](data-quality-1-rebuilding-at-scale/Untitled.png)
 
 - (1 - 2) Design spec을 통해 pipeline을 만들기 전에 stakeholder들이 align한다. design doc은 다른 사람도 이해할 수 있는metric, demension, table schema, pipeline diagram을 설명하며, 모호한 비즈니스 로직과 가정들에 대해 명시한다.
 - (3 - 6) Design doc이 approve되면 DE가 spec에따라서 dataset과 pipeline을 만든다. 최종 데이터와 코드는 리뷰를 받고, certification이 부여된다.

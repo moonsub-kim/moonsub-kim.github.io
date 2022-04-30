@@ -66,7 +66,7 @@ Wall은 offling DQ check 작성을 위한 잘 포장된 방식이다 (yaml로 �
 
 Wall framework는 확장성있게 설계되었다. WallAPIManager, WallConfigManager, WallConfigModel로 구성된다
 
-![Untitled](data-quality-3-prevent-data-bugs/Untitled.png)
+![Wall internal architecture](data-quality-3-prevent-data-bugs/Untitled.png)
 
 ## WallAPIManager
 
@@ -111,7 +111,7 @@ Once the checks all pass the partition is moved into the production table.
 
 high level로 볼때, 유저는 yaml config를 작성하고 dag에서 wall api를 호출한다.
 
-![Untitled](data-quality-3-prevent-data-bugs/Untitled1.png)
+![High level diagram of how users interact with Wall.](data-quality-3-prevent-data-bugs/Untitled1.png)
 
 check 예제
 
@@ -184,6 +184,6 @@ airflow test wall_tutorials_00.my_wall_task EmptyPartitionCheck_foo.foo_bar {ds}
 
 Wall framework를 airbnb의 전체 data ecosystem에 통합하는건 장기적인 성공을 위한 중요한 키이다. airflow가 아닌 다른 data tool들이 쉽게 연동하기 위해, check stage의 결과를 kafka event로 퍼블리쉬하고, 다른 data tool들이 subscribe한다
 
-![Untitled](data-quality-3-prevent-data-bugs/Untitled2.png)
+![Wall in Airbnb’s data ecosystem](data-quality-3-prevent-data-bugs/Untitled2.png)
 
 # Conclusion
