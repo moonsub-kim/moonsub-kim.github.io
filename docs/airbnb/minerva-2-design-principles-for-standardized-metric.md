@@ -19,7 +19,7 @@ nav_order: 4
 - **Standardized**: Data는 single place에 명시적으로, 난해하지 않게 정의되어야 한다. 어느 누구나 definition을 보고 명백하게 이해할수 있어야한다.
 - **Declarative**: 유저는 "어떻게"가 아닌 "무엇"을 정의해야 한다. 어떻게 메트릭을 계산할지, 저장할지, 서빙할지는 end user로부터 숨겨져야 한다.
 - **Scalable**: Minerva는 computing과 operation 측면에서 둘다 scalable해야 한다.
-- **Consistent**: data는 언제나 consistent해야한다. 만약 definition이나 비즌시ㅡ 로직이 바뀌면, backfill은 자동적으로 수행되고, data는 up-to-date해야한다
+- **Consistent**: data는 언제나 consistent해야한다. 만약 definition이나 비즈니스 로직이 바뀌면, backfill은 자동적으로 수행되고, data는 up-to-date해야한다
 - **High available**: 기존 데이터셋은 downtime없이 바로 바뀔수 있고, data consumption에대해 최소한의 interruption이 생기도록 replace되어야 한다
 - **Well tested**: 유저는 데이터 변경에 대해 prod에 붙이기 전에 변경사항을 프로토타이핑하고 검증할수 있어야 한다
 
