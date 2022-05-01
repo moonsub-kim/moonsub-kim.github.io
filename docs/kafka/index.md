@@ -16,3 +16,5 @@ nav_order: 4
   [[TBD] Exactly-once Semantics across Multiple Kafka Instances Is Possible*](https://towardsdatascience.com/exactly-once-semantics-across-multiple-kafka-instances-is-possible-20bf900c29cf)
 
   [[TBD] The thing about Apache Kafka internals!](https://towardsdatascience.com/the-thing-about-apache-kafka-internals-5ae69c17985f)
+
+  [Kafka No Longer Requires ZooKeeper](https://towardsdatascience.com/kafka-no-longer-requires-zookeeper-ebfbf3862104)

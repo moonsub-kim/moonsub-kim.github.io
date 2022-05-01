@@ -3,14 +3,13 @@ title: Fault-Tolerant VM (SIGOPS ‘10)
 parent: Distributed Systems
 last_modified_date: 2022-01-16
 nav_order: 2
+description: "VMWare의 [The Design of a Practical System for Fault-Tolerant Virtual Machines (SIGOPS '10)](https://www.youtube.com/watch?v=yvBR71D0nAQ) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Fault-Tolerant VM (SIGOPS ‘10)
 
-
-
-[http://nil.csail.mit.edu/6.824/2021/papers/vm-ft.pdf](http://nil.csail.mit.edu/6.824/2021/papers/vm-ft.pdf)
-
-# 1. Introduction
+## 1. Introduction
 
 fault tolerant server를 구현하는 일반적인 방식은 primary/backup 이다. backup server는 primary server가 fail할때 바로 take over할 수 있게 언제나 available하다. 언제나 backup server state는 primary server와 같아야 한다. 따라서 backup server는 primary server에 failure가 발생했을때 즉시 take over 할 수있다. 이 방식은 failure가 외부 client에게 숨겨지도록 하고 data loss도 생기지 않는다. backup server로 state를 복제하는 방식중 하나는CPU, mem, IO device 등 primary state 에 대한 모든 change를 지속적으로 backup에게 전달한다. 그러나 특히 memory같이 state를 전달하기 위한 bandwidth requirement가 매우 크다.
 
@@ -22,7 +21,7 @@ physical server의 deterministic execution을 보장하기 위한 coordination�
 
 primary/backup approach로 fault-tolerant VM을 VMware vSphere 4.0 에서 구현했다. VMware vSphere 4.0은 virtualized x86 VM을 실행시킬 수 있으므로, 모든 x86 OS를 fault tolerant 하게 만든다. 또한 deterministic replay를 통해 primary execution을 레코딩하여 backup이 primary execution과 똑같이 수행하도록 보장한다. VMware vSphere FT (Fault Tolerance)는 deterministic replay를 기반으로 하지만 fault-tolerant system을 만들기 위해 extra protocol, functionality를 추가했다. hardware fault-tolerance 뿐만 아니라 system은 local cluster에서 새 backup VM을 실행시키는 것으로 failure 이후에 redundancy를 자동적으로 복구한다.
 
-# 2. Basic FT Design
+## 2. Basic FT Design
 
 ![basic ft configuration](fault-tolerant-vm/Untitled.png)
 
@@ -32,13 +31,13 @@ primary VM이 받는 모든 input은 $logging\ channel$이라는 network connect
 
 primary나 backup이 failure인지 확인하기 위해 system은 서로 엮인 서버들간에 heartbeat와 logging channel traffic을 monitoring한다. 또한 primary와 backup이 connection이 끊어질때에도 primary, backup이 execution을 take over해야 한다.
 
-## 2.1 Deterministic Replay Implementation
+### 2.1 Deterministic Replay Implementation
 
 server execution을 replicate하는것은 deterministic state machine을 replicate하는 것으로 모델링 할 수 있다. 만약 두 deterministic state machine이 같은 initial sate에서 시작하고  같은 순서로 같은 input을 받으면, 두 state machine은 같은 state sequence를 가지며 같은 output을 만든다. VM은 network package, disk read, keyboard, mouse같은 다양한 input을 가진다. interrupt처럼 non-deterministic event와 clock cycle counter를 읽는것처럼 non-deterministic operation 또한 VM state에 영향을 미친다. 이것들은 VM execution을 replicate하는데 세가지 요구사항을 보여준다. 1) backup VM에 deterministic execution을 보장하기 위해 모든 input과 non-deterministism을 캡쳐해야 한다. 2) input과 non-deterministism을 backup VM에 적용해야 한다. 3) performance 저하가 최소화 되어야 한다. 또한 x86의 많은 complex operation가 undefined이므로 non-deterministic하다. 같은 state를 만들기 위해 undefined side effect를 캡쳐하고 replay하는것은 다른 challenge를 만든다.
 
 VMware deterministic replay는 VMware vSpheere 위의 x86 VM에서 위와같은 functionality를 제공한다. deterministic replay는 VM input과 VM execution과 연관된 모든 가능한 non-deterministism을 stream에 레코딩하여 log file로 write한다. VM execution은 backup VM이 log file을 읽는 것으로 정확히 replay될 수 있다. non-deterministic operation에서 additional information은 operation이 같은 state change와 output으로 reproduce되기 위해 log로 남긴다. timer나 IO completion interrupt같은 non-deterministic event에 대해서는 event를 발생시킨 instruction 또한 레코딩된다. replay동안에 event는 instruction stream 안에서 primary와 같은 point에 deliver된다. VMware deterministic replay는 효율적인 event recording과 event delivery machanism을 구현했다. [Hypervised fault-tolerance](https://www.cs.cornell.edu/fbs/publications/vft.sosp.pdf) 에서는 VM execution을 non-deterministic event가 epoch 끝에서만 deliver되므로 epoch까지 내려갔다. epoch의 개념은 event를 발생시킨 정확한 instruction에 interrupt를 전달하는것은 비싼 비용이 들기 떄문에 batching을 쓰는것으로 보였다. 하지만 event delivery mechanism은 VMware deterministic replay가 epoch를 쓸 필요가 없을만큼 충분히 효율적이다. 각 interrupt는 발생하는 시점과 함께 레코딩 되고 replay되는 동안 적절한 instruction에 deliver된다.
 
-## 2.2 FT Protocol
+### 2.2 FT Protocol
 
 VMware FT는 log entry를 만들고 log를 disk에 쓰지 않고 logging channel을 통해 backup VM에 전달하기 위해 deterministic replay를 쓴다. backup VM은 realtime으로 log를 replay해서 primary VM과 똑같이 만든다. 하지만 fault tolerance 를 보장하기 위해 log entry에 strict FT protocol이 필요하다.
 
@@ -62,7 +61,7 @@ Figure 2는 FT protocol의 Output Requirement에 대한 예시로 primary, backu
 
 failover 상황에서 모든 output이 exactly-once로 생성되는것을 보장하지는 않는다. primary가 output을 보낼때 two-phase commit이 들어간 transaction을 쓰지 않고는 failover할때 backup이 output을 보내기 전인지, 후인지 알 수 없다. 운좋게도 network infra (일반적으로 TCP)는  lost packet이나 duplicate package에 대해 처리하도록 디자인 되어있다. primary로 오는 incoming packet은 primary failure에서 사라질 수 있고 따라서 backup으로 전달되지 않게된다는 점이 있다. 하지만 incoming packet은 server failure와 관계없는 여러 이유로 사라질 수 있으므로 network infra, os, application은 모두 lost packet을 보장하도록 만들어져있다.
 
-## 2.3 Detecting and Responding to Failure
+### 2.3 Detecting and Responding to Failure
 
 위에서 말한것 처럼 primary, backup VM은 다른 VM이 failure가 발생할 수 있으므로 최대한 빠르게 응답해야 한다. backup VM failure에서 primary VM은 $go\ live$(log entry 보내는것을 멈춰 recording mode를 끔)가 되고 normal start를 한다. primary VM failure에서 backup VM은 $go\ live$와 비슷하지만 더 복잡한 일을 한다. execution lag때문에 backup VM은 많은 log entry가 있게 되지만, backup VM이 실행하기에 적절한 지점에 닿지 때문에 아직 log를 consume하지 않았다. backup VM은 Log entry에서 last log entry를 consume할때까지 replay 해야 한다. 그 이후 backup VM은 replaying mode를 멈추고  normal VM으로 시작하여, backup VM은 primary VM으로 승격된다. 이제 더이상 backup VM이 없으므로 primary VM은 output을 외부로 보낸다. normal mode로 변경되는 동안 device-specific operation이 적절히 발생하도록 output을 보내는것을 필요로한다. 특히 networking에서 VMware FT는 새 primary VM의 MAC address를 network에 알려서 physical network switch가 새 primary VM의 위치를 알게 만든다. 또한 새 primary VM은 일부 disk IO를 다시 해야 할 수 있다 (Section 3.4).
 
@@ -72,11 +71,11 @@ primary, backup VM의 failure를 감지하는 여러 방법이 있다. VMware FT
 
 failure가 발생하고 VM중 하나가 $go\ live$가 되면 VMware FT는 redundancy로 복구해서 새 backup VM을 다른 Host에 실행시킨다(Section 3.1).
 
-# 3. Practical Implementations of FT
+## 3. Practical Implementations of FT
 
 Section 2는 FT의 design, protocol을 보여줬지만, usable, robust, automatic system을 만들기 위해 많은 다른 component들이 design되어야 한다.
 
-## 3.1 Starting and Restarting FT VMs
+### 3.1 Starting and Restarting FT VMs
 
 additional component중 하나는 primary VM과 같은 state로 backup VM을 시작하는 메커니즘이다. 이 메커니즘은 또한 failure에서 backup VM을 재시작 할때 사용될 수 있다. 이 메커니즘은 ㄴstarting up state뿐만 아니라 arbitrary state에 있는 running primary VM실행하는데 쓸 수 있어야 한다. 또한 이 메커니즘이 client에 악영향을 주지 않기 위해 primary VM의 execution을 최대한 방해하지 않도록 해야한다.
 
@@ -84,7 +83,7 @@ VMware FT는 VMotion functionality를 적용했다. VMware VMotion은 한 서버
 
 backup VM을 시작할때 고려해야할 것은 어떤 server에서 실행하는가 이다. Fault-tolerant VM은 shared storage를 접근하는 cluster에서 실행되므로 모든 VM은 cluster의 모둔 서버에서 실행할 수 있다. 이 flexibility는 VMware vSpheere가 1개 이상의 서버가 failure일때에도 FT redundancy를 복구할 수 있게 해준다. VMware vSphere는 resource를 관리하는 clustering service가 있다. failure가 발생하고 primary가 새 backup VM을 만들려고 할때 primary VM은 clustering service에게 알린다. clustering service는 server resource와 다른 제약조건들을 바탕으로 어떤 서버에서 backup VM을 실행시킬지 결정하고, FT VMotion을 실행해 새 backup VM을 만든다. 따라서 VMware FT는 fault-tolerant VM의 실행을 방해하지 않고도, server failure 상황에서 VM redundancy를 다시 만들 수 있다.
 
-## 3.2 Managing the Logging Channel
+### 3.2 Managing the Logging Channel
 
 ![ft logging buffers and channel](fault-tolerant-vm/Untitled2.png)
 
@@ -98,7 +97,7 @@ primary log buffer가 꽉차는 이유중 하나는 backup VM이 너무 느리�
 
 따라서 backup VM의 state가 너무 멀어지지 않도록 primary VM을 slow down 하기 위한 추가적인 mechanism을 만들었다. log buffer protocol에서 realtime execution lag을 감지하는 추가적인 정보를 보낸다. 일반적으로 execution lag은 100ms 미만이다. backup VM이 큰 execution lag을 가지고 시작하면, VMware FT는 hypervisor scheduler에게 적은 CPU를 할당하도록 해서 primary VM을 느리게 한다. slow feedback loop를 통해 backup VM이 primary execution과 같아지도록 하는 primary VM에 대한 CPU limit을 찾아낸다. backup VM의 lag이 지속되면 primary VM의 CPU limit을 점점 낮춘다, backup VM의 lag이 사라지면 primary VM의 CPU limit을 backup VM이 아주 작은 lag을 가질때까지 limit을 올린다. primary VM의 slowdown mechanism은 system이 큰 부하를 받을때에만 실행된다.
 
-## 3.3 Operation on FT VMs
+### 3.3 Operation on FT VMs
 
 primary VM에 적용할 다양한 control operation에 대해 대처하는것도 중요하다. 예를들어 primary VM이 power off하면 backup VM은 $go\ live$하는게 아니라 멈춰야한다. 다른 예로 primary의 resource change가 일어나면 backup에도 반영되어야 한다. 이런 종류의 operation은 backup에도 반영되도록 하기 위하여 logging channel을 통해 special control entry로 전송된다.
 
@@ -106,7 +105,7 @@ primary VM에 적용할 다양한 control operation에 대해 대처하는것도
 
 primary VM의 FT VMotion은 backup VM이 source primary와 disconnect하고 destination primary VM과 reconnect해야한다. 또한 backup VM의 FT VMotion도 비슷하다. 기존 VMotion에서 VMotion에서 final switchover가 발생하는 즉시 모든 outstanding disk IO는 complete되어야 한다. primary VM에서 이런 quiescing은 physical IO가 complete될때까지 기다리면된다. 하지만 backup VM은 primary VM의 execution을 replay하면서 IO를 complete해야하므로, 모든 IO가 complete될때까지 기다릴 방법이 없다. primary VM은 normal execution이 진행되는동안 언제나 disk IO를 발생 시킬 수 있다. 하지만 VMware FT는 이 문제를 해결할 방법이 있다. backup VM이 VMotion에서 final switchover에 다다르면, logging channel을 통해 primary VM이 잠깐 모든 IO를 멈추도록 한다. 따라서 backup VM의 IO는 자연스레 complete된다.
 
-## 3.4 Implementation Issues for Disk IOs
+### 3.4 Implementation Issues for Disk IOs
 
 disk IO와 관련한 자잘한 implementation issue가 있다. 첫째로 disk operation이 non-blocking이고 parallel로 동작하고, 여러 disk operation이 같은 disk location에 접근하는것은 non-deterministism을 만든다. 또한 disk IO의 구현은 VM의 memory를 DMA로 사용하므로 동시에 발생하는 여러 disk operation이 같은 memory page를 접근하는것또한 non-deterministism을 만든다. 해결책은 이와같이 아주 가끔 발생하는 IO race를 감지하고 racing disk operation을 primary와 backup에 sequential하게 수행시키는것이다.
 
@@ -114,7 +113,7 @@ disk IO와 관련한 자잘한 implementation issue가 있다. 첫째로 disk op
 
 세번째로 failure가 발생하여 backup이 take over할때 새 primary의 outstanding(not completed) disk IO에 대한 이슈가 있다. 새 primary VM이 issue된 disk IO가 complete됐는지 확인할 방법이 없다. 또한 disk IO가 backup VM에서 issue되지 않으므로, 새 primary VM이 실행할때 IO completion을 받을 방법이 없어 VM의 guest OS가 abort가 되거나 procedure를 초기화하게될 수 있다. IO가 완료되면 error event를 리턴하는게 가능하므로 각 IO가 실패했음을 알리는 error completion을 전달할 수 있다. 하지만 guest OS가 local disk로부터 온 error에 대해 잘 응답하지 않을 수 있다. 그래서 backup VM의 $go\ live$동안 pending IO를 재발행한다. 모든 race를 없애고 모든 IO가 접근할 memory, disk block을 직접 지정하므로 disk operation이 idempotent해져 complete IO이더라도 re-issue가 가능하다.
 
-## 3.5 Implementation Issues for Network IO
+### 3.5 Implementation Issues for Network IO
 
 VMware vSphere는 VM networking에 대한 성능 최적화를 제공한다. 이런 최적화는 VM network device의 state를 async로 update하는 hypervisor가 있어서 가능하다. 예를들어 receive buffer는 VM이 실행되는동안 hypervisor가 직접 update가능하다. 하지만 이런 async update는 non-deterministism을 만든다. 따라서 primary와 backup으 instruction stream의 특정 시점에 모든 update 실행이 보장되더라도, backup execution은 primary와 달라질 수 있다.
 
@@ -124,9 +123,9 @@ network device는 async update 제거와 Section 2.2에 나온 sending packet을
 
 두번째 network 성능최적화는 trasmitted packet의 delay를 줄이는것이다. hypervisor는 backup에게서 ack를 받을때까지 transmitted packet을 딜레이시켜야한다. trasmit delay를 줄이는 방법은 log message를 backup VM에게 전달하고 ack를 받는 시간을 줄이는것이다. log entry를 던지고, ack를 받는것은 thread context switch 없이 완료시킬 수 있다. VMware vSphere hypervisor는 TCP data를 받을때마다 deferred-execution context라고 불리는 TCP stack에 등록하는 function을 추가할 수 있다. 이건 backup VM에서 incoming log message, primary가 받는 ack를 context switch 없이 빠르게 핸들링할 수 있게 해준다. 또한 primary VM이 trasmit packet을 enqueue할때 deferred-execution context를 스케줄링하여 output log entry를 즉시 flush시킨다.
 
-# 4. Design Alternatives
+## 4. Design Alternatives
 
-## 4.1 Shared vs Non-shared Disk
+### 4.1 Shared vs Non-shared Disk
 
 primary, backup VM은 virtual disk를 공유한다. 따라서 shared disk의 content는 correct하고 failover에서도 available하다. shared disk는 또한 primary, backup VM 바깥에 있어 shared disk로 write하는것은 external world로 통신하는것으로 볼 수 있따. 따라서 primary VM만 실제 disk로 write를 수행하고, shared disk에 대한 write는 Output Rule에 따라 delay되어야한다.
 
@@ -136,7 +135,7 @@ primary backup VM에 대한 alternative design은 non-shared virtual disk를 가
 
 non-shared disk configuration에서 split-brain 상황을 해결해야한다. system은 두 server와 communicate하는 다른 tiebreaker를 써야할 수 있다. 2개 node보다 많은 cluster에 있다면 system은 cluster membership에 기반한 majority algorithm을 쓸 수 있다.
 
-## 4.2 Executing Disk Reads on the Backup VM
+### 4.2 Executing Disk Reads on the Backup VM
 
 backup VM은 virtual disk를 읽지 않는다. disk read가 input으로 표현되므로, disk read 결과는 logging channel을 통해 backup VM으로 간다.
 

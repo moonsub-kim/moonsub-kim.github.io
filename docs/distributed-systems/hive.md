@@ -3,26 +3,25 @@ title: Hive (ICDE '10)
 parent: Distributed Systems
 last_modified_date: 2022-03-28
 nav_order: 9
+description: "Facebook의 [Hive: A Petabyte Scale Data Warehouse Using Hadoop (ICDE '10)](http://infolab.stanford.edu/~ragho/hive-icde2010.pdf) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Hive (ICDE ‘10)
 
-
-
-[http://infolab.stanford.edu/~ragho/hive-icde2010.pdf](http://infolab.stanford.edu/~ragho/hive-icde2010.pdf)
-
-# 1. Introduction
+## 1. Introduction
 
 map-reduce를 해주는 Hadoop은 생산성이 낮았다. 유저가 코드를 다 작성해야 했다. SQL로 map-reduce를 할수 있게 해주면어떨까?
 
-# 2. Data Model, Type System and Query Language
+## 2. Data Model, Type System and Query Language
 
 하둡 쿼리 소개라서 생략
 
-# 3. Data Storage, SerDe and File Formats
+## 3. Data Storage, SerDe and File Formats
 
 하둡 쿼리 소개라서 생략
 
-# 4. System Architecture and Components
+## 4. System Architecture and Components
 
 ![hive system architecture](hive/Untitled.png)
 
@@ -36,13 +35,13 @@ map-reduce를 해주는 Hadoop은 생산성이 낮았다. 유저가 코드를 �
 
 driver는 CLI, web UI, trhift, JDBC, ODBC 를 통해 HiveQL을 받는다. Metastore에 저장된 metadata로 쿼리 파싱+검사를 한 뒤 compiler에게 전달한다. compiler는 rule base optimizer를 통해 logical plan을 만든다. map/reduce task, hdfs task들의 DAG로 구성된 logical plan이 생성된다. execution engine은 Hadoop에서 task를 수행한다.
 
-## A. Metastore
+### A. Metastore
 
 table, partition, schema, column, type, table location등을 저장한다. 실제로 metadata는 RDBMS에 저장되고 metastore는 application이다. low latency를 위해서 hdfs를 db로 쓰지 않는다.
 
 metastore가 죽으면 안되니까 주기적으로 백업하고, replica server도 띄워둔다. 또한 scalability도 좋아야 한다. user query를 받는게 중요하므로, map/reduce task에서 metastore를 찌르지 않도록 한다. map/reduce task는 plan에서 metadata를 받게 된다.
 
-## B. Query Compiler
+### B. Query Compiler
 
 query compiler는 metadata를 받아서 execution plan을 만든다.
 
@@ -75,6 +74,6 @@ optmization stage에선 아래 transformation을 거친다.
 4. Generation of the Physical Plan
 optimization phase 마지막에 생성된 logical plan은 여러 map/reduce나 hdfs task로 생성된다. 예를들어 skewed data를 group by 하는건 2개의 map/reduce task와 result를 저장하는 final hdfs task를 만든다.
 
-## C. Execution Engine
+### C. Execution Engine
 
 map/reduce 돌림

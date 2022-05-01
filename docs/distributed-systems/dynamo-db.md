@@ -3,16 +3,13 @@ title: DynamoDB
 parent: Distributed Systems
 last_modified_date: 2022-02-22
 nav_order: 6
+description: "Amazon의 [DynamoDB Under the Hood: How We Built a Hyper-Scale Database (re:Invent 2018)](https://www.youtube.com/watch?v=yvBR71D0nAQ) 와 [Transactions and Scalability in Cloud Databases—Can’t We Have Both? (Keynote in FAST '19)](http://www.vldb.org/pvldb/vol13/p3461-melnik.pdf) 을 번역한 글 입니다."
 ---
-# DynamoDB
+{{ page.description }}
 
+# [DynamoDB Under the Hood: How We Built a Hyper-Scale Database](https://www.youtube.com/watch?v=yvBR71D0nAQ)
 
-
-[https://www.youtube.com/watch?v=yvBR71D0nAQ](https://www.youtube.com/watch?v=yvBR71D0nAQ)
-
-[https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/](https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/)
-
-- [https://webcache.googleusercontent.com/search?q=cache:uNPnWDBTf7gJ:https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/+&cd=1&hl=ko&ct=clnk&gl=kr](https://webcache.googleusercontent.com/search?q=cache:uNPnWDBTf7gJ:https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/+&cd=1&hl=ko&ct=clnk&gl=kr)
+[HN comments](https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/)
 
 ![HN comments](dynamo-db/Untitled.png)
 
@@ -75,9 +72,7 @@ provisioning
 - conflict resolution
     - last write wins
 
-# Transaction
-
-[https://www.usenix.org/conference/fast19/presentation/terry](https://www.usenix.org/conference/fast19/presentation/terry)
+# [Transactions and Scalability in Cloud Databases—Can’t We Have Both?](https://www.usenix.org/conference/fast19/presentation/terry)
 
 - predictable performance 중요, rdbms는 predictable하지 않다
 - nosql database에 transaction없음 (complexity, deadlock, starvation, interference, cost)
@@ -272,5 +267,5 @@ latency도 아이템 갯수에 비례 + transaction overhead 정도로만 증가
 - write contention이 많을수록 delay되는 시간이 더 길어지는것은 아닌가? 너무 예외케이스일지도
 
 - transaction안에서 read/write를 같이 할수 있도록 지원해주지 않는 이유는?
-    - 가능하긴한데 복잡해진다, api도 복잡해진다 → 클라가 개복잡해진다구요..
-    - client lib에서 이런 기능을 넣어줄수는 있다 → 아직도 안넣었네요..
+    - 가능하긴한데 복잡해진다, api도 복잡해진다
+    - client lib에서 이런 기능을 넣어줄수는 있다

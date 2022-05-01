@@ -3,16 +3,15 @@ title: Raft (ATC '14)
 parent: Distributed Systems
 last_modified_date: 2022-01-29
 nav_order: 3
+description: "[Raft Consensus Algorithm (ATC '14)](https://raft.github.io/raft.pdf) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Raft (ATC ‘14)
 
+[Paxos](https://martinfowler.com/articles/patterns-of-distributed-systems/paxos.html)
 
-
-[https://raft.github.io/raft.pdf](https://raft.github.io/raft.pdf)
-
-prerequisite: [https://martinfowler.com/articles/patterns-of-distributed-systems/paxos.html](https://martinfowler.com/articles/patterns-of-distributed-systems/paxos.html)
-
-# 1. Introduction
+## 1. Introduction
 
 consensus algorithm은 여러 머신이 failure에서도 한 그룹으로 일하도록 해준다. 이것은 reliable large scale software system의 키이다. paxos가 널리 쓰인 알고리즘이었다. 대부분 구현체는 paxos나 여기에서 영향받은것이고, consensus algorithm을 가르칠때 필수적이다. 하지만 paxos는 더 쉽게 설명하기 위한 많은 시도를 해봐도 이해하기 어렵다. 또한 paxos architecture는 실제 시스템에 복잡한 변경사항을 만든다.
 
@@ -26,7 +25,7 @@ Raft는 [Viewstamped Replication](https://www.google.com/search?q=Viewstamped+re
 - Leader election: Raft는 리더 선출시 randomized timer를 쓴다. 이것은 다른 consensus algorithm이 conflict를 해결하기 위해 필요로하는 heartbeat에 비해 매우 작은 양이다.
 - Membership changed: Raft가 cluster에서 server를 바꾸는 mechanism은 transition중에 두가지 다른 config의 대부분이 overlap되도록 하는  $joint\ consensus$ approach를 쓴다.(??) 이건 cluster가 configuration change가 발생하는 동안에도 정상적으로 일하도록 만든다
 
-# 2. Replicated State Machines
+## 2. Replicated State Machines
 
 consensusm algorithm은 $replicated\ state\ machine$에서 생겨났다. 여러 서버에서 동작하는 state machine은 같은 상태를 복제하고 일부 서버가 다운데어도 잘 동작하도록 한다. Replicated state machine은 distributed system에서 fault-tolerance 문제를 해결한다. 예릴들어 single cluster leader를 가지는 GFS, HDFS, RAMCloud같은 large-scale system은 leader election을 관리하고 leader crash에서도 tolerent하기 위한 정보들을 저장하는 replicated state machine을 쓴다. chubby, zookeeper도 이에 해당한다.
 
@@ -44,7 +43,7 @@ practial system에서 consensus algorithm은 아래와 같은 property를 가진
 - system은 log의 consistency를 보장하기 위해 timing에 의존하지 않는다. faulty clock, extreme message delay도 발생할 수 있고, availability문제도 발생할 수 있는 상황을 생각해야한다.
 - 대부분 케이스에서 command는 cluster에서 다수가 RPC에 대해 응답하면 완료됐다고 간주한다, 나머지 slow server는 전체 시스템 성능에 영향을 미치지 않는다.. — 오 흥미롭다..
 
-# 3. What’s wrong with Paxos?
+## 3. What’s wrong with Paxos?
 
 Lamport의 Paxos protocol은 거의 consensus와 동의어로 사용되었다. 많은 강의에서 가르치고, consensus implementation 의 대부분이 Paxos에서 시작했다. Paxos는 single replicated log entry같이 처음으로 single decision에 합의하는 protocol을 정의했다. 이것을 $single\text{-}decree\ Paxos$라고 부른다. 그리고 $single\text{-}decree\ Paxos$를 가지는 여러 instance를 합쳐서 log 같은걸로 decision들을 내릴 수 있는 protocol을 만들었다 ($multi\text{-}Paxos$). Paxos는 safety, liveness를 보장하고 cluster membership 변경도 허용한다. Paxos는 일반적인 케이스에서 efficient하다.
 
@@ -54,7 +53,7 @@ Lamport의 Paxos protocol은 거의 consensus와 동의어로 사용되었다. �
 
 따라서 practical system은 Paxos와 비슷하지 않게된다. 각 구현체는 Paxos에서부터 시작하지만, 구현하는데 어려운점을 발견하고, 다른 아키텍쳐를 만들게 된다. large-scale system에서 consensus의 중요성때문에 Paxos보다 더 나은 consensusm algorithm을 만들었다.
 
-# 4. Designing for understandability
+## 4. Designing for understandability
 
 Raft를 만들기 위해 몇가지 goal을 정했다. Raft는 system building을 위해 complete, practical하게 설명 되어야지 개발자가 system을 디자인 하는 시간을 줄일 수 있다. Raft는 모든 조건에서 safe하고, 모든 일반적인 operating condition에서 available하고, 일반적인 operation에서 효율적이어야 한다. 가장 중요한 목표는 $understandability$이다. Raft는 많은 사람들이 algorithm을 이해할 수 있도록 해야한다. 또한 algorithm에 대한 직관을 느낄 수 있어야 system builder들이 실제로 구현할때 확장할 수 있다.
 
@@ -66,7 +65,7 @@ Raft를 design하는데 여러가지 대안이 생기는 지점이 많았다. �
 
 ![A condensed summary of the raft consensus algorithm](raft/Untitled1.png)
 
-# 5. The Raft consensus algorithm
+## 5. The Raft consensus algorithm
 
 Raft는 Section 2에서 설명한 형태로 replicated log를 관리하는 algorithm이다. Figure 2는 알고리즘을 간단하게 설명하고, Figure 3은 algorithm의 key property를 설명한다.
 
@@ -80,7 +79,7 @@ Raft는 consensus 문제를 3개의 subproblem으로 쪼갠다
 
 ![raft guarantees that each of these properties is true at all times](raft/Untitled2.png)
 
-## 5.1 Raft Basics
+### 5.1 Raft Basics
 
 각 server는 $leader,\ follower,\ candidate$ state 중 한개를 가진다. 평소에는 하나의 leader, 나머지 모두는 follower가 된다.
 
@@ -98,27 +97,27 @@ server들은 각각 다른시간에 term의 전환을 볼 것이고. 때때로 e
 
 Raft server는 RPC를 통해 통신한다. RequestVote RPC는 election동안 candidate이 호출한다(Section 5.2). AppendEntries RPC는 leader가 log entry를 replicate하고, heartbeat를 쏠때 호출한다(Section 5.3). 다른 RPC는 Section 7에서 나온다. 일정 시간내에 응답을 받지 못하면 재시도를 하며, 성능을 위해 parallell로 동작한다.
 
-## 5.2 Leader Election
+### 5.2 Leader Election
 
 Raft는 leader election을 시작하기 위해 heartbeat를 쓴다. server가 시작할때는 모두 follower로 시작한다. server는 leader/candidate으로부터 RPC를 받는동안 follower state를 유지한다. Leader는 주기적으로 heartbeat를 던지며, replicate시킬 log entry가 없을때에도 던진다. follower는 $election\ timeout$이 지나도 heartbeat를 받지 못하면 leader가 없다고 보고 새 leader를 선출을 시작한다.
 
 election을 시작할때 follower는 $current\ term$을 증가시키고 candidate state로 변경한다. 그리고 자신을 vote하고, 모든 server에게 병렬로 RequestVote RPC를 호출한다. (a) candidate이 election에서 뽑히거나, (b) 다른 server가 leader가 되거나, (c) 일정 시간이 지나도 winner가 없을때까지는 candidate 상태로 유지한다.
 
-### Candidate이 election에서 이길 때
+#### Candidate이 election에서 이길 때
 
 한 term에서 절반이상의 server가 한 candidate을 선택하면 election에서 이긴것이다. 각 server는 FCFS로 최대 한 candidate에게 vote를 한다 (Section 5.4에 vote에 대한 제약조건이 있음). 위 majority rule은 특정 term에서 최대 하나의 candidate만 election에서 이길 수 있도록 한다 (Election Safety Property). candidate이 election에서 이기면 leader가 되고, 이 leader는 heartbeat message를 모든 다른 server에게 보내어 내가 leader라는 것을 알린다.
 
-### 다른 Candidate이 election에서 leader가 됐을 때
+#### 다른 Candidate이 election에서 leader가 됐을 때
 
 vote를 기다리는 동안 candidate은 다른 server로부터 leader가 됐음을 알리는 AppendEntries RPC를 받을 수 있다. RPC에 들어있는 leader의 term number가 자신(candidate)의 current term보다 크면, 새 leader가 뽑혔음을 인지하고 follower state로 변경한다. RPC의 term이 자신의 curretn term보다 작으면 candidate은 RPC를 reject하고 candidate state를 유지한다.
 
-### 일정 시간이 지나도 leader가 선출되지 않을 때
+#### 일정 시간이 지나도 leader가 선출되지 않을 때
 
 동시에 여러 follower들이 candidate이 되어 vote가 50%를 넘기지 못할 수 있다. 이때 candidatre은 timeout을내고 term number를 올려 새 election을 시작하고 RequestVote RPC를 호출해서 새 election round를 시작한다. 하지만 이렇게 재시도하면 split vote가 계속 발생 할 수 있다. (split vote: 서로다른 term에 대해 leader를 선출하는 상황)
 
 Raft는 randomized election timeout을 써서 처음에 split vote가 생겼더라도 곧 해소될 수 있도록 만들어준다. 이렇게 하면 한 server만 timeout을 보게된다. 이 server가 election에서 이기고, 다른 server들은 timeout이 나기 전에 heartbeat를 받는다. 이 방식은 split vote를 핸들링할때도 쓰인다. 각 candidate은 election을 시작할때 randomized election timeout으로 재시작하고 다음 election을 하기 전에 timeout을 기다린다. 이건 다음 election에서 또 다른 split vote가 발생하는 것을 막는다. Section 9.3은 leader를 빠르게 설정하는 방법을 보여줄것이다.
 
-## 5.3 Log Replication
+### 5.3 Log Replication
 
 leader가 선출되면 client request를 받기 시작한다. 각 client request는 replicated state machine에 에도 적용될 command를 포함하고 있다. leader는 command를 log entry로 만들고 AppendEntries RPC를 병렬로 호출해서 각 server에 log entry가 replicate되도록 한다. log entry가 replicate되면leader는 log entry를 state machine에 적용하고 result를 리턴한다. follower가 crash나거나 느리게 동작거나 network가 끊어지면 ledaer는 무한히 AppendEntries RPC를 재시도한다. client에게 응답한이후에도 모든 follower가 log entry를 저장할때까지 계속 재시도한다.
 
@@ -152,13 +151,13 @@ follower log를 leader log와 consistent하게 만드려면 leader는 follower l
 
 이 log replication mechanism은 Raft가 절반 이상의 server가 available하는동안 log entry를 client로 부터 받고, replicate하고, 적용하게 해준다. 평소에 log entry는 한번의 RPC로 replicate되며 소수의 slow single follower는 성능에 영향을 미치지 않는다.
 
-## 5.4 Safety
+### 5.4 Safety
 
 이전 section에서 어떻게 Raft가 leader를 뽑고 log entry를 replicate하는지 보여줬다. 하지만 위 내용만으로는 state machine이 같은 순서로 같은 command를 실행하는것을 보장해주지 못한다. 예를들어 follower는 leader가 log entry를 commit하는동안 unavailable해질 수 있고, 이후에 이 follower가 leader가 되어서 이전 leader가 쓴 log entry를 모두다 overwrite할 수 있다. 이렇게되면 다른 state machine이 다른 command set을 실행하는 상황이 생길 수 있다.
 
 이 section은 leader로 뽑힐 수 있는 server에 대한 restriction을 걸어 위 문제를 해결할 것이다. restriction은 어떤 term에서도 leader가 이전 term에서 commit된 Log entry를 포함하는 것을 보장한다 (Leader Completeness Property).
 
-### 5.4.1 Election Restriction
+#### 5.4.1 Election Restriction
 
 leader-base consensus algorithm에서 leader는 모든 commited log entry를 eventually store 해야 한다. [Viewstamped Replication](http://pmg.csail.mit.edu/papers/vr-revisited.pdf) 같은 consensus algorithm에서는 모든 commited entry를 가지고 있지 않아도 leader가 될 수 있다. 이런 algorithm은 놓친 commited entry를 찾고, 새 leader로 전달하기 위한 추가적인 로직이 필요하므로 복잡도를 증가시킨다. Raft는 새 leader가 뽑힐때 log entry 전송 없이도 이전 term에서 commited entry가 포함되도록 보장하는 좀더 간단한 방법을 사용한다. 즉 log entry는 언제나 leader에서 follower로 흐르고, leader는 절대 leader log를 overwrite하지 않는다.
 
@@ -166,7 +165,7 @@ Raft는 election에서 모든 commited log entry를 가지지 않는 candidate�
 
 Raft는 두 log (candidate, server)가 up-to-date한지 확인하기 위해 last log entry의 index, term을 비교한다. log가 다른 term을 가지면 later term이 up-to-date한거고, 같은 term을 가지면 같은 term에서 더 많은 log를 가진 쪽이 up-to-date 한 것이다.
 
-### 5.4.2 Committing Entries from Previous Terms
+#### 5.4.2 Committing Entries from Previous Terms
 
 ![a time sequence showing why a leader cannot determin commitment using log entries from older temrs](raft/Untitled7.png)
 
@@ -176,7 +175,7 @@ Section 5.3에서 말한것처럼 leader는 현재 term의 entry가 절반 이�
 
 Raft는 log entry가 leader가 이전 term의 log entry를 replicate할때 이전 term number를 유지하기 때문에 commit rule에 추가적인 복잡도를 만들게 되었다. 다른 consensus algorithm에서 새 leader가 이전 term의 log entry를 replicate할때, 새 term number를 쓴다. Raft는 같은 log entry가 모두 같은 term을 가지도록 하기 위해서 기존 term number를 쓴다. 또한 다른 algorithm에 비해 새 leader는 이전 term의 log entry를 훨씬 적게 전송한다. 다른 algorithm은 log entry의 term number를 모두 바꾸기 위해 log entry를 더 많이 보낸다.
 
-### 5.4.3 Safety Argument
+#### 5.4.3 Safety Argument
 
 Leader Completeness Property가 유지되지 않는다고 가정하고 반례를 통해 증명할 것이다. term T의 leader $leader_T$가 T에서 log entry를 commit하지만 이 log entry가 미래의 term에 저장되지 않는 상황을 가정한다 ($U>T$ 인 leader $leader_U$가 log entry를 저장하지 않은 상황).
 
@@ -196,11 +195,11 @@ Leader Completeness Property에서 Sate Machine Safety Property도 증명할 수
 
 마지막으로 Raft는 server가 log entry를 indexed order로 반영하게 한다. State Machine Safety Property를 생각해보면, 모든 server가 같은 log entry를 같은 순서로 반영하는것을 의미하게 된다.
 
-## 5.5 Follower and Candidate Crashes
+### 5.5 Follower and Candidate Crashes
 
 Follower, candidate crash는 leader crash보다 단순하다. 얘네들은 같은 방식으로 처리된다. follower, candidate에 crash가 생기면 미래의 RequestVote, AppendEntries RPC가 실패할것이다. Raft는 이런 실패상황을 무한히 재시도한다. crashed server가 재시작하면 RPC는 성공하게 된다. RPC를 처리했지만 응답을 보내기전에 crash가 생기면, 이 server는 같은 RPC를 한번 더 받게된다. Raft의 RPC는 idempotent하므로 이건 문제가 없다. 예를들어 follower가 이미 반영한 Log entry에대한 AppendEntries request를 또 받으면 그냥 무시한다.
 
-## 5.6 Timing and Availability
+### 5.6 Timing and Availability
 
 Raft의 요구사항중 하나는 타이밍에 의존하지 않는 safety이다. system은 일부 event가 빠르거나 느리게 발생했다고 해서 부정확한 결과를 내서는 안된다. 하지만 availability는 어쩔수없이 timing문제가 생길수밖에없다. 예를들어 server crash가 발생하는동안 message 처리가 좀더 오래걸리게 되면 candidate은 election에서 이길만큼 오래 유지할 수 없다(???). leader가 없으면 raft는 진행할수 없다.
 
@@ -216,7 +215,7 @@ $boradcastTime$은 $electionTimeout$보다 한참 작아야 leader가 다른 Fol
 
 $broadcastTime$과 $MTBF$는 시스템이 가지는 속성이지만 $electionTimeout$은 설정할 수 있는 값이다. Raft의 RPC들은 server가 log를 storage에 저장해야하므로 $broadcastTime$은 storage성능에 따라 0.5ms~20ms정도가 되어야 한다. 따라서 $electionTimeout$은 10ms~500ms정도면 된다. 일반적으로 server의 $MTBF$는 몇개월 이상이므로 충분히 timing requirement를 만족한다.
 
-# 6. Cluster Membership changes
+## 6. Cluster Membership changes
 
 이전까지는 configuration이 고정이었는데, 실제로는 바뀔수 있어야한다. 서버는 failure가 발생하거나 replication degree도 바뀔 수 있다. 전체 cluster를 멈춘다음 configuration을 업데이트하고 재시작 할수있겠지만 당연히 이동안에 서비스가 불가능하다. 또한 manual step이 들어간다면 휴먼에러가 생길수밖에 없다. 따라서 configuration change가 consensus algorithm과 함께 자동화되도록 했다.
 
@@ -248,7 +247,7 @@ cluster config는 replicated log에 special entry로 처리된다. leader가 $C_
 
 이 문제는 server가 현재 leader가 살아있는동안은 RequestVote RPC를 무시하는 것으로 해결가능하다. server가 minimum election timeout 이내에 RequestVote RPC를 받으면 term을 update하거나 vote를 진행하지 않는다. 이건 normal election에도 영향을 주지 않는다. 각 server는 최소 minimum election timeout만 큼 기다리고 election에 들어가기 때문이다.
 
-# 7. Log Compaction
+## 7. Log Compaction
 
 Raft log는 normal operation동안 계속 늘어나지만 실제 시스템에서 무제한으로 증가할 수는 없다. log가 점점 커질수록 더 많은 공간을 먹고 replay하는데 더 많은 시간을 필요로한다. log의 obsolete entry를 버리지 않으면 availability 이슈를 만들게 된다.
 
@@ -270,7 +269,7 @@ leader만이 snapshot을 만드는것도 고민했었는데, 이것은 network b
 
 snapshot이 성능에 영향을 미치는 이슈가 있다. 첫번째로 server가 언제 snapshot을 만들지 결정해야만 한다. server가 snapshot을 자주 만들면 resource를 잡아먹게되고, 가끔만들면 재시작시 follow하는 속도가 느려진다. 간단하게는 log가 어느정도 size를 넘으면 snapshot을 만드는 것이다. 두번째는 snapshot을 만드는동안 noral operation이 delay되지 않도록 하는 것이다. 이건 CoW로 해결했다. state machine 에서CoW를 서포트하는 data structure를 만들면 된다. 아니면 Fork같이 CoW를 지원하는 operation을 이용해서 in-memory snapshot을 만들어도 된다.
 
-# 8. Client Interaction
+## 8. Client Interaction
 
 Client는 모든 요청을 leader에게 보낸다. client가 시작할땐 아무런 server와 연결을 하고, 이 server는 자신이 leader가 아니면 client request를 reject하면서 자신이 가진 last term을 바탕으로 leader 정보를 알려준다. leader failure가 발생하면 client request는 Timeout이 나고 이때는 또 다시 random server에게 재시도한다.
 
