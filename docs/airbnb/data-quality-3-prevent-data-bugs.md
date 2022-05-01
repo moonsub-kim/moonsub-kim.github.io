@@ -5,6 +5,8 @@ last_modified_date: 2021-10-12
 nav_order: 2
 description: "Airbnb의 [Data Quality 3 - Prevent Data Bugs](https://medium.com/airbnb-engineering/how-airbnb-built-wall-to-prevent-data-bugs-ad1b081d6e8f) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Data Quality 3 - Prevent Data Bugs
 
 ## How Airbnb Built “Wall” to prevent data bugs

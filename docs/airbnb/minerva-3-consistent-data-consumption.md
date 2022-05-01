@@ -5,6 +5,8 @@ last_modified_date: 2021-10-23
 nav_order: 5
 description: "Airbnb의 [Minerva 3 - Consistent Data Consumption](https://medium.com/airbnb-engineering/how-airbnb-enables-consistent-data-consumption-at-scale-1c0b6a8b9206) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Minerva 3 - Consistent Data Consumption
 
 ## Introduction
