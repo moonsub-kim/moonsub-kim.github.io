@@ -3,18 +3,15 @@ title: "Minerva 2 - Design Principles for Standardized Metric"
 parent: Airbnb
 last_modified_date: 2021-10-17
 nav_order: 4
+description: "Airbnb의 [Minerva 2 - Design Principles for Standardized Metric](https://medium.com/airbnb-engineering/airbnb-metric-computation-with-minerva-part-2-9afe6695b486) 을 번역한 글 입니다."
 ---
 # Minerva 2 - Design Principles for Standardized Metric
 
-
-
-[https://medium.com/airbnb-engineering/airbnb-metric-computation-with-minerva-part-2-9afe6695b486](https://medium.com/airbnb-engineering/airbnb-metric-computation-with-minerva-part-2-9afe6695b486)
-
-# Introduction
+## Introduction
 
 두번째 포스팅에선 Minerva의 computing infrastructure에 대해 딥다이브 할것이다. 특히 어떻게 declarative configuration을 통해 dataset definition을 표준화했는지, 어떻게 data versioning이 cros-dataset consistency를 보장하는지, 어떻게 zero downtime으로 data backfill을 하는지 보여줄것이다.
 
-# Minerva's Design Priciples
+## Minerva's Design Priciples
 
 - **Standardized**: Data는 single place에 명시적으로, 난해하지 않게 정의되어야 한다. 어느 누구나 definition을 보고 명백하게 이해할수 있어야한다.
 - **Declarative**: 유저는 "어떻게"가 아닌 "무엇"을 정의해야 한다. 어떻게 메트릭을 계산할지, 저장할지, 서빙할지는 end user로부터 숨겨져야 한다.
@@ -25,7 +22,7 @@ nav_order: 4
 
 아래 섹션에선 각각의 design principle에 대해 자세히 설명하고 이런 design principle을 구현해내기위해 infrastructure component를 볼것이다.
 
-# Minerva is Standardized
+## Minerva is Standardized
 
 첫번째 포스팅에서 봤듯 `core_data` 를 많은 곳에서 쓰는것은 양날의 검이었다. 장점은 `core_data`가 table consumption을 표준화했고, 유저들이 만들 테이블을 빠르게 식별할 수 있다. 단점은 `core_data`가 중앙집중식 data engineering은 부담이 됐다. 또한 `core_data`의 downstream으로 만들어진 파이프라인들은 다양하면서 중복된 메트릭을 만들고 있었다 — 즉 너무 많아서 뭐가뭔지 모르는.. — 이런 상황으로인해서 테이블 표준화는 충분하지 않고, metric level의 표준화가 신뢰도높은 data consumption을 만들어 줄것이다라는것을 알게되었다. 현재 유저들은 table을 쓰지않고, metric/dimension/report를 사용한다.
 
@@ -40,7 +37,7 @@ Minerva config system의 핵심은 event source, dimension source인데. 이것�
 
 event source와 dimension source는 metric과 dimension을 정의하고, 트래킹하고, 문서화하는데 쓰인다.
 
-# Minerva is Declarative
+## Minerva is Declarative
 
 Minerva 이전에 insightful한 분석이나 신뢰도가높고 data에 대한 반응성이 높은 대시보드를 만드는건 어려웠다. product이 바뀌고, 쿼리 성능 요구사항을 맞추고, metric divergence를 방지하는것은 각 팀에게 큰 업무 부담이 되었다. Minerva의 key value중 하나는 이와같은 시간이 오래걸리고 지루한 consuming workflow를 단순하게 만들어 유저가 빠르게 데이터를 얻어 액션가능 한 인사이트를 만드는것이었다
 
@@ -57,7 +54,7 @@ Minerva 이전에 insightful한 분석이나 신뢰도가높고 data에 대한 �
 
 "어떻게"가 아닌 "무엇"에 집중하는것으로 Minerva는 유저 생산성을 향상시키고, 유저가 데이터를 통해 수행하려던 원래 목적 (트렌드를 보거나, 인사이트를 만들거나, 실험을 하거나)에 집중 할 수 있게 만들어준다. 이 덕분에 Minerva는 꾸준히 지속적으로 다른 service와 연동될 수 있었다.
 
-# Minerva is Scalable
+## Minerva is Scalable
 
 현재 Minerva는 80개 이상의 팀, 수백명의 유저들이 만든 5천개 이상의 dataset을 서빙하고 있으며, cost와 maintenance overhead 또한 최우선적으로 관리되고 있는 확장성있는 서비스이다.
 
@@ -109,7 +106,7 @@ Batched backfill은 long backfill window를 가진 job을 몇개의 date range�
 
 Self-healing, autmoated batched backfill, intelligent alert은 Minerva가 적은 유지보수, 운영비용 감소, resilient system을 만드는데 기여했다.
 
-# Minerva is Consistent
+## Minerva is Consistent
 
 Minerva의 metric repository는 많은 유저에의해 자주 바뀌고, 매우 빠르게 변화한다. 이런 변경들을 잘 제어하지 않으면 metric과 dimension은 쉽게 여러 버전의 데이터들이 난립할것이다. 어떻게 Minerva에서 생성된 dataset이 언제나 consistent하고 up-to-date할 수 있는지 말할것이다.
 
@@ -124,7 +121,7 @@ Minerva의 metric repository는 많은 유저에의해 자주 바뀌고, 매우 
 
 위와같은 메커니즘은 upstream change가 모든 downstream dataset에 반영되도록 하며, Minerva dataset이 SSOT를 지키게 해준다.
 
-# Minerva is Highly Available
+## Minerva is Highly Available
 
 위 내용에선 backfill rate과 user change 빈도의 딜레마가 있다. 이 섹션에선 어떻게 미네르바가 data versioning을 data consistency를 위해 사용하는지 설명할 것이다. 실제로 backfill은 user change를 따라가지 못할때가 있고, 특히 change가 많은 dataset에 영향을 줄때 자주 일어난다. Minerva가 언제나 data를 일관적이고 up-to-date하게 보여주기 위해선, 빠르게 dataset이 바뀌는건 backfill이 지속적으로, 큰 data downtime을 만들수 있다.
 
@@ -142,7 +139,7 @@ staging의 data flow는 아래와같다
 
 staging environment로 주요 비즈니스 metric에 대해 consistency와 availability을 제공하며, 많은 업데이트가 있을때에도 문제없이 동작한다. 많은 data migration project들을 이 시스템위에서 간편하게 끝낼 수 있었다.
 
-# Minerva is Well Tested
+## Minerva is Well Tested
 
 metric과 dimension을 정의하는 것은 매우 반복적인 작업이다. 유저는 raw data가 이상한것을 찾거나, data source가 어떻게 생성됐는지 더 파봐야 할 때도 있다. 하지만 Minerva는 유저가 data correctness를 확인하거나, data에대한 상황을 확인하거나, iteration cycle을 돌리는데에 있어 유저의 생산성을 높여줘야 한다
 
@@ -154,7 +151,7 @@ prototyping tool은 Minerva pipeline의 단계별 연산과 생성된 아웃풋�
 
 또한 유저가 설정한 date range, sampling을 받아 테스트되는 data size에 대한 제약을 걸어 execution time을 빠르게 하고, dataset을 만드는 시간을 줄이고, dataset이 검증에 필요한 statistical property를 유지할 수 있게 해준다.
 
-# Putting It Together: A COVID-19 Case Study
+## Putting It Together: A COVID-19 Case Study
 
 이 섹션은 Minerva의 시스템이 어떻게 동작하는지 보여주기 위해 case study를 설명한다. 그동안 Airbnb는 도시와 시골에 대한 수요를 거의 균등하게 나누었다. covid가 시작될때, 한 분석가는 여행하는 사람이 다른 사람들과 적게 닿을 수 있는 대도시를 피할 것이라 가설을 세웠다.
 
@@ -190,5 +187,5 @@ data를 검증하고 분석가는 모든 `listing` metadata를 관리하는 팀�
 
 위의 작업을 통해 분석가는 새 dimension을 정의하고, 기존에 존재하는 metric에 추가하고, domain owner로부터 approve를 받고, 며칠내에 많은 주요 dataset에 반영될 수 있었다. 모든 작업은 yaml config에 몇십줄을 추가하는것만으로 끝낼 수 있었다.
 
-# Closing
+## Closing
 

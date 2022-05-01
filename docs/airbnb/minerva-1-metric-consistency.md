@@ -3,14 +3,11 @@ title: "Minerva 1 - Metric Consistency"
 parent: Airbnb
 last_modified_date: 2021-10-16
 nav_order: 3
+description: "Airbnb의 [Minerva 1 - Metric Consistency](https://medium.com/airbnb-engineering/how-airbnb-achieved-metric-consistency-at-scale-f23cc53dea70) 를 번역한 글 입니다."
 ---
 # Minerva 1 - Metric Consistency
 
-
-
-[https://medium.com/airbnb-engineering/how-airbnb-achieved-metric-consistency-at-scale-f23cc53dea70](https://medium.com/airbnb-engineering/how-airbnb-achieved-metric-consistency-at-scale-f23cc53dea70)
-
-# Introduction
+## Introduction
 
 Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 randomized controlled experiment를 통해 검증하고, 비즈니스 성과를 트래킹한다. 이런 것들을 하기 위해서 Airbnb는 유저들의 end-to-end를 충족시키는 **robust data platform**을 만들어야 했다.
 
@@ -18,7 +15,7 @@ Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 
 
 이 포스팅에서는 airbnb에서 전사적으로 분석, 리포팅, 실험등을 위한 SSOT로 사용되는 metric platform minerva를 만든 경험에 대해서 자랑할거다. 특히 이게 왜 필요했는지, minerva ecosystem의 core feature, minerva가 생긴 이후의 임팩트에 대해 자랑할거다. 다음 포스팅에서는 minerva 구현에 대해([How Airbnb Standardize Metric Computation at Scale](https://medium.com/airbnb-engineering/airbnb-metric-computation-with-minerva-part-2-9afe6695b486)) 딥다이브할거다. 니들도 할수있으면 해봐라 ㅋㅋㅋㅜㅜㅜㅜㅜ(By publishing this series, we hope our readers will appreciate the power of a system like Minerva and be inspired to create something similar for their organizations!)
 
-# A Brief History of Analytics at Airbnb
+## A Brief History of Analytics at Airbnb
 
 2010년의 airbnb는, 한명의 data analyst가 있었고 이 사람의 노트북이 data warehouse로 쓰였다.. 쿼리들은 직접 prod db에서 돌아갈때도 있어서 무거운 쿼리하나로 인해 서버에 장애가 생길때도 있었다. 이런 문제점들이 있었지만 data warehouse를 구축하지 않아서 그 시간동안 비즈니스가 성장 하는데 시간을 썼다.
 
@@ -33,7 +30,7 @@ Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 
 3. 사용자들이 데이터를 독립적으로 분석할수있는 오픈소스 프로젝트인 Superset([Superset: Airbnb's data exploration platform](https://medium.com/airbnb-engineering/democratizing-data-at-airbnb-852d76c51770))을 만들었다.
 4. Data scientist들이 아닌 사람들에게도 데이터를 분석할 수 있도록 Data University([How Airbnb Democratizes Data Science With Data University](https://medium.com/airbnb-engineering/how-airbnb-democratizes-data-science-with-data-university-3eccc71e073a))를 런칭하여 교육시켰다.
 
-# Growing Pains
+## Growing Pains
 
 `core_data`를 점진적으로 발전시킨것은 많은 노력없이는 불가능했다. 데이터를 사용하는 사람들과 유즈케이스가 많아질수록 data producer와 consumer 모두가 큰 문제를 느끼고 있었다.
 
@@ -45,7 +42,7 @@ Airbnb는 중요한 의사결정을 할때 데이터를 본다. product idea를 
 
 data consumer들로부터, 간단한 비즈니스 퀘스천에 대한 서로 다른 숫자가 나오지만 어떤 숫자가 맞는지 알 방법이 없었다는 불만을 들었다. 예를들면, 어떤 도시가 전주에 비해서 부킹이 많은지 묻게 된다면, data scientist와 finance팀은 약간 다른 테이블/메트릭/비즈니스로직을 사용해서 서로 다른 답을 내놓는 상황이었다. 시간이 지나면서 data scientist조차 자신의 데이터를 추측하게되면서 data quality는 떨어지고 의사결정권자에게 데이터의 신뢰를 떨어트리게 됐다.
 
-# Overcoming Our Growing Pains with Minerva
+## Overcoming Our Growing Pains with Minerva
 
 위와같은 문제들로인해 airbnb는 data quality를 높은 수준으로 향상시키기 위해 data warehouse를 완전히 바꾸기를 시작했다. data engineering 팀은 몇개의 중요 비즈니스 데이터 모델에 대해 불필요한 조인을 하지 않는 certified, lean, normalized table을 맨바닥부터 다시 만들었다.
 
@@ -63,7 +60,7 @@ data consumer들로부터, 간단한 비즈니스 퀘스천에 대한 서로 다
 
 ![Adoption of Minerva at Airbnb has grown tremendously in the past two years.](minerva-1-metric-consistency/Untitled3.png)
 
-# Data Production in Minerva
+## Data Production in Minerva
 
 Minerva는 오픈소스로 만들어져있다. Minerva에서 workflow orchestration은 airflow, compute engine은 hive와 spark, consumption은 presto와 druid를 쓰고있다. 메트릭을 생성하는 것에서 computation, serving, consumption, deprectaion까지 Minerva는 메트릭의 전체 lifecycle을 커버한다.
 
@@ -82,29 +79,29 @@ Minerva는 오픈소스로 만들어져있다. Minerva에서 workflow orchestrat
 
 위와같은 기능들은 metric creation, data computation, data delivering을 표준화 할수 있게 해줬다.
 
-# Data Consumption in Minerva
+## Data Consumption in Minerva
 
 Minerva의 비전은 유저들이 "metric을 한번 정의하면 어디서든 쓸 수 있도록" 만들자이다. 즉 Minerva에서 생성된 metric은 다양한 툴에서 쉽게 접근가능해야한다. 데이터 팀은 다른 팀과 협업해서 Minerva위에 이와 같은 니즈를 충족하는 생태계를 만들었다.
 
 ![Minerva’s vision is “define once, use everywhere”.](minerva-1-metric-consistency/Untitled5.png)
 
-## Data Cataloging
+### Data Cataloging
 
 Analytics product team과 협업해서 모든 Minerva metric, dimension을 인덱싱하는 airbnb의 data cataloging service인 Dataportal을 만들었다. 유저가 metric을 검색하면 Minerva metric이 검색결과에서 가장 높게 나온다. Dataportral은 certification status, ownership등의 contextual info를 제공하여 유저가 metric의 중요도를 인지할 수 있다. 대부분 비개발 직군에게 Dataportal은 Minerva metric을 접근하는데 큰 도움을 주고 있다.
 
 ![Minerva metrics are indexed and catalogued in the Dataportal UI.](minerva-1-metric-consistency/Untitled6.png)
 
-## Data Exploration
+### Data Exploration
 
 Dataportal의 검색결과에서 metric을 누르면, 바로 쓸 수있는 Metric Explorer를 보여준다. 이 페이지에선 유저는 group by나 filter등으로 데이터를 쪼개보거나 드릴다운 할 수 있다. 데이터를 더 깊게 들여다보고싶으면 superset 버튼을 클릭하면 된다. 또한 Metric Explorer는 metric owner, historical landing time, metric description을 제공해준다. 이런 이점은 개발직군, 비개발직군 모두 데이터를 쉽게 까볼 수 있는 이점을 제공한다.
 
 ![Users can investigate trends and anomalies in Metric Explorer and Superset seamlessly.](minerva-1-metric-consistency/Untitled7.png)
 
-## A/B Testing
+### A/B Testing
 
 그동안 Airbnb의 Experimentation Reporting Framework(ERF)는 `metric repo` 라고 불리는 자신만의 expreiment metrics repository를 가지고 있었다. `metric repo`로 실험과 결과 비교를 위해 비즈니스 metric을 추가할 수 있었다. 하지만 이 metric repo는 실험이 아닌 usecase에는 쓸 수 없어서, ERF를 Minerva와 통합하여 모든 ab test를 위한 이벤트들을 Minerva에서 정의하고 서빙하도록 했다. 실험과 분석 데이터가 같은 소스에 있어서 data scientist들이 어떻게 실험이 주요 비즈니스 metric에 영향을 미치는지 이해하기 쉽게 만들었다.
 
-## Executive Reporting
+### Executive Reporting
 
 airbnb는 비즈니스 성과를 매주, 매월, 매분기 리뷰하며 리더들은 비즈니스의 상황에대해 토론한다. 이런 미팅들은 high-level이며 간결한 executive report를 필요로 한다. 데이터는 aggregated되고, 트렌드는 그래프로 그려지고, metric은 월단위 집계나, YoY같은 식으로 보여진다.
 
@@ -112,13 +109,13 @@ airbnb는 비즈니스 성과를 매주, 매월, 매분기 리뷰하며 리더�
 
 이런 리포팅을 위해 eXecutive Reporting Framework(XRF)를 만들었다. XRF는 Minerva metric과 dimension을 선택하면, 이 데이터들을 타임시리즈로 aggregation하여 리포트형태의 결과물을 준다. XRF는 많은양의 수작업들을 자동화했고, 분석과 실험에 쓰이던 Minerva metric을 그대로 사용하므로 높은 신뢰도의 리포트를 만들어 준다.
 
-## Data Analysis
+### Data Analysis
 
 Minerva API를통해 R, Python client로 Minerva data를 쉽게 조회할 수 있고 노트북 환경에서 쉽게 사용할 수 있도록 만들어 준다. 여기서 중요한것은, 노트북 환경의 데이터는 다른 data tool과 똑같은 일관성을 주어 data scientist가 분석의 난이도에 따라 적절한 툴을 선택할 수 있는 것이다.
 
 ![A data scientist can use our Python client to retrieve aggregated data in Minerva and conduct analyses.](minerva-1-metric-consistency/Untitled9.png)
 
-# How We Responded To the COVID-19 Crisis with Minerva Data
+## How We Responded To the COVID-19 Crisis with Minerva Data
 
 마지막 섹션에서는 covid-19 crisis에서 Minerva가 어떤 역할을 했는지 예시를 보여줄것이다.
 
@@ -130,4 +127,4 @@ Minerva API를통해 R, Python client로 Minerva data를 쉽게 조회할 수 �
 
 또한 Minerva에서 만들어진 인사이트는 빠르게 바뀌는 상황을 정확하게 파악할 수 있게 해주었다. 예를 들면 local travel이나 long-term stay같은 수요 이동을 빠르게 포착하였다. 위기의 순간에서 인사이트를 발견하고 많은 비즈니스 질문에 대해 결과를 보일수 있는것은 어떤것보다 중요했다.
 
-# Closing
+## Closing
