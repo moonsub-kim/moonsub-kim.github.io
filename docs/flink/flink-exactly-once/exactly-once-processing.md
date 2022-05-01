@@ -4,15 +4,13 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-13
 nav_order: 0
+description: "[An Overview of End-to-End Exactly-Once Processing in Apache Flink](https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html) 를 번역한 글 입니다."
 ---
+{{ page.description }}
 
 # Exactly-Once Processing
 
-
-
-[https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html](https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html)
-
-# Exactly-once semantics in Flink
+## Exactly-once semantics in Flink
 
 exactly-once semantic을 말할때 의미하는것은 각각의 incoming event가 최종 결과에 정확히 한번만 영향을 미치는것을 말한다. machine, software failure에서도 "중복된 결과 반영", "결과가 반영되지 않음"이 일어나서는 안된다.
 
@@ -24,7 +22,7 @@ Flink 1.4.0이전에서 exactly-once semantic은 Flink application의 scope에�
 
 distributed system에서 commit, rollback을 coordinate하는 일반적인 방식은 two-pahse commit protocol이다.
 
-# End-to-end Exactly Once Applications with Apache Flink
+## End-to-end Exactly Once Applications with Apache Flink
 
 two-phase commit protocol에 대해서 이해하고, 어떻게 two-phase commit protocol이 kafka로 read, write하는 샘플 flink app이 end-to-end exactly-once semantic을 만들어주는지 볼것이다. Flink 의 end-to-end exactly-once semantic은 Kafka에만 한정되지 않고, 다른 coordimation mechanism을 구현한 source/sink connector도 가능하다. streaming opensource storage system인 [Pravega](http://pravega.io/) 또한 `TwoPhaseCommitSinkFunction`을 통해 end-to-end semantic을 지원한다.
 
@@ -32,9 +30,9 @@ two-phase commit protocol에 대해서 이해하고, 어떻게 two-phase commit 
 
 샘플 Flink app은
 
-- Kafka에서 데이터를 읽는다 ([KafkaConsumer](https://nightlies.apache.org/flink/flink-docs-release-1.4/dev/connectors/kafka.html#kafka-consumer))
+- Kafka에서 데이터를 읽는다 ([KafkaConsumer](https://nightlies.apache.org/flink/flink-docs-release-1.4/dev/connectors/kafka.html##kafka-consumer))
 - windowed aggragation을 한다
-- Kafka로 write하는 data sink가 있다 ([KafkaConsumer](https://nightlies.apache.org/flink/flink-docs-release-1.4/dev/connectors/kafka.html#kafka-producer))
+- Kafka로 write하는 data sink가 있다 ([KafkaConsumer](https://nightlies.apache.org/flink/flink-docs-release-1.4/dev/connectors/kafka.html##kafka-producer))
 
 data sink가 exactly-once를 보장하므로 Kafka에서는 transaction scope 안에서 모든 data를 write 해야 한다. commit은 두개의 check point 사이의 모든 write를 묶게 된다. 따라서 이 방식은 failure 상횡에서 write를 rollback할 수 있게 한다.
 
@@ -64,7 +62,7 @@ pre-commit phase는 모든 checkpoint barrier가 모든 operator를 통과하고
 - 만약 최소 한개의 pre-commit이 실패하면 다른 모든 operator들이 abort되고, 이전에 완료된 checkpoint로 rollback한다.
 - pre-commit을 성공한 뒤 commit은 eventual success가 보장되어야만 한다. 모든 Operator와 모든 external system이 보장해줘야 한다. 만약 commit이 실패한다면 (network issue등) 전체 Flink application이 실패하게되고, 유저의 restart strategy에 따라 재시작 하게된다. 이 process는 만약 commit이 eventual success를 하지 못하면 data loss가 생기기 때문에 중요하다.
 
-# Implementing the Two-Phase Commit Operator in Flink
+## Implementing the Two-Phase Commit Operator in Flink
 
 two-phase commit protocol을 구현하는 모든 로직은 쬠 복잡하고 왜 Flink가 two-phase commit protocol을 `TwoPhaseCommitSinkFunction` class로 추상화 했는지 알것이다
 

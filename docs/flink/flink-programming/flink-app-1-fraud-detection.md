@@ -4,17 +4,17 @@ parent: Flink Programming
 grand_parent: Flink
 last_modified_date: 2021-12-15
 nav_order: 1
-# summary: hello
+description: "[Advanced Flink Application Patterns Vol.1: Case Study of a Fraud Detection System](https://flink.apache.org/news/2020/01/15/demo-fraud-detection.html) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Flink App 1: Fraud Detection
 
-[https://flink.apache.org/news/2020/01/15/demo-fraud-detection.html](https://flink.apache.org/news/2020/01/15/demo-fraud-detection.html)
-
-DEMO: https://github.com/afedulov/fraud-detection-demo
+[DEMO](https://github.com/afedulov/fraud-detection-demo)
 
 이 아티클에서는 데모 application의 high-level architecture를 보고, dynamic data partitioning의 구현 디테일을 딥다이브 할것이다. **Dynamic data partitioning**은 runtime에서 event들이 distribute, group되도록 해준다. 이 functionality는 동적으로 recofigure할때 필요하다.
 
-# Bird’s Eye view
+## Bird’s Eye view
 
 demo app은 Kafka with Zookeeper, Flink, Fraud detection webapp으로 구성된다. Fraud detection engine의 goal은 finantial transaction stream을 consume하고 정의된 rule에 반하는지 Evaluate하는 것이다. rule은 자주 변경될 수 있다. production system에서 runtime에 job을 redeploy할 필요 없이 Rule을 더하거나 지우는것은 매우 중요하다.
 
@@ -28,7 +28,7 @@ demo에는 미리 정의된 sample rule이 있다. start button을 누르고 시
 
 Backend는 REST API로 rule을 생성, 삭제 할수 있도록 해주고, 이 이벤트들을 `Control` topic으로 보내준다. 또한 에뮬레이션을 위해 Backend에 Transaction Generator를 넣어 Transaction이 `Transaction` topic으로 흐르게 해놨다. Flink에서 생성되는 alert은 `Alerts`  Topic을 통해 backend로 들어가고 websocket을 통해 UI에 보여진다.
 
-# Dynamic Data Partitioning
+## Dynamic Data Partitioning
 
 `keyBy` method를 통해 stream에 key를 지정하면, 같은 key를 가진 event가 같은 partition으로 할당되도록 shuffle이 발생한다. 즉 같은 key를 가지는 모든 event가 다음 operator의 같은 task에서 처리되도록 한다. 일반적인 streaming application에서 key는 static field로 고정되어있다. 예를들어 transaction stream에 window-based aggregation을 할때 언제나 account id로 grouping 하게된다.
 

@@ -4,14 +4,15 @@ parent: Flink Overview
 grand_parent: Flink
 last_modified_date: 2021-11-10
 nav_order: 2
+description: "[Streaming Analytics](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/streaming_analytics/) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Streaming Analytics
 
-[https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/streaming_analytics/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/streaming_analytics/)
+## Event Time and Watermarks
 
-# Event Time and Watermarks
-
-## Introduction
+### Introduction
 
 Flink는 3가지 시간 개념을 지원한다
 
@@ -21,11 +22,11 @@ Flink는 3가지 시간 개념을 지원한다
 
 특정 날짜에 가장 높은 주가를 계산하는것같이 reproducable event에 대해서는 `event time`을 써야한다. event time은 computing이 진행되는 시각에 의존성이 없기 때문이다. 이런 종류의 realtime application은 processing time을 활용하기도 하지만, 이때는 event 시각이 아닌, event가 process되는 시각에의해 result가 결정된다. processing time을 활용하여 analytics를 연산하면 incosistency가 발생하고 historical data나 새 구현 테스트가 reanalyze하기 어렵게 만든다.
 
-## Working with Event Time
+### Working with Event Time
 
 event time을 쓰게되면 Flink가 event의 진행 상황을 파악할수 있도록 하기 위해 Timestamp Extractor와 Watermark Generator를 제공해줘야한다.
 
-## Watermarks
+### Watermarks
 
 왜 watermark가 필요한지 간단한 예시를 보여줄것이다.
 
@@ -47,7 +48,7 @@ Flink에서 event time processing은 `watermark`라고 불리는 special element
 4. 서로 다른 정책들이 어떻게 watermark를 만들어내는지 생각해보자
 각 event는 조금의 delay후에 도착하고, delay의 스펙트럼은 다양하다. 따라서 일부 event는 다른 애들보다 더 늦게 도착할 수 있다. 가장 단순한 방법은 delay를 maximum delay로 bound시키는 것이다. Flink는 이 방식을 `bounded-out-of-orderness` watermarking이라 부른다. 더 복잡한 방식도 있지만 대부분 application에서 이정도면 충분하다.
 
-## Latency vs. Completeness
+### Latency vs. Completeness
 
 watermark를 결정하는 다른 방식은, latency와 completeness사이의 tradeoff를 결정하는 streaming application에 달려있다. batch processing과 다르게 streaming은 기다리는것을 eventually stop하고 결과를 내뱉어줘야한다.
 
@@ -55,11 +56,11 @@ wattermarking을 아주 짧은 시간으로 설정하면 result가 정확하지 
 
 또한 처음 결과는 빠르게, 그리고 late data까지 받고나서 한번 update치는 hybrid도 가능하다.
 
-## Lateness
+### Lateness
 
 `Watermark(t)` 는 stream이 `t` 까지 완료되었음을 의미하는데, late는 `t` 보다 이전 시각의 event가 왔음을 의미한다.
 
-## Working with Watermarks
+### Working with Watermarks
 
 event-time 기반의 event processing을 위해 Flink는 각 event와 연관된 시간을 알아야하고, watermark 정보가 들어간 stream이어야 한다.
 
@@ -76,13 +77,13 @@ DataStream<Event> withTimestampsAndWatermarks =
     stream.assignTimestampsAndWatermarks(strategy);
 ```
 
-# Windows
+## Windows
 
 - unbounded stream에서 aggregation을 할떄 window가 어떻게 쓰이는가
 - 어떤 종류의 window를 지원하는가
 - DataStream program에서 windowed aggregation을 어떻게 구현하는가
 
-## Introduction
+### Introduction
 
 stream processing에서 stream의 bounded subset에 대해 아래와 같은 aggreagated analytics를 해야할 때가 있다
 
@@ -114,7 +115,7 @@ stream.
 		.reduce|aggregate|process(<window function);
 ```
 
-## Window Assginers
+### Window Assginers
 
 Flink는 아래와같은 built-in window assigner가 있다
 
@@ -142,7 +143,7 @@ session window를 포함한 time-base window assigners는 선호에 따라 event
 
 global window assginer는 같은 key를 가지는 모든 window를 한개의 global window로 할당한다. 이건 custom trigger, custom windowing을 할때만 유용하다. 대부분은 [ProcessFunction](https://ci.apache.org/projects/flink/flink-docs-release-1.13/docs/learn-flink/event_driven/#process-functions)을 쓰는것이 더 나을것이다.
 
-## Window Functions
+### Window Functions
 
 window를 processing할 3가지 방식이있다
 
@@ -152,7 +153,7 @@ window를 processing할 3가지 방식이있다
 
 아래 예시는 각 sensor에서  1분 window마다 max value를 뽑고, `(key, end-of-window-timestamp, max_value)` 를 가지는 tuple을 다음 stream에 던진다.
 
-### ProcessWindowFunction Example
+#### ProcessWindowFunction Example
 
 ```java
 DataStream<SensorReading> input = ...
@@ -201,7 +202,7 @@ public abstract class Context implements java.io.Serializable {
 
 `windowState`와 `globalState` 는 key, window단위 또는 global key단위로 data를 저장할 수 있다. 현재 window에 대한 정보를 저장하고 다음 window에서 쓰는경우에 유용하다
 
-### Incremnatal Aggregation Example
+#### Incremnatal Aggregation Example
 
 ```java
 DataStream<SensorReading> input = ...
@@ -235,7 +236,7 @@ private static class MyWindowFunction extends ProcessWindowFunction<
 
 `Iterable<SensorReading>` 은 1개의 pre-aggregated maximum value를 포함한다
 
-## Late Events
+### Late Events
 
 event time window를 쓸때 late event는 drop되는게 default인데, window API에서는 drop되는것을 피하기 위한 방식을 제공한다.
 
@@ -267,19 +268,19 @@ stream.
 
 allowed lateness가 0보다 크면 이 시간을 넘어간 event들은 side output으로 가게된다.
 
-## Surprises
+### Surprises
 
-### Sliding Windows Make Copies
+#### Sliding Windows Make Copies
 
 Slidint window assginer는 많은 window object를 만들 수 있고, 각 event를 모든 연관된 window로 카피한다. sliding window가 15분마다 실행되고 24시간 길이를 가지면, 각 event는 4*24 = 96 개의 window에 카피된다
 
-### Time Windows are Aligned to the Epoch
+#### Time Windows are Aligned to the Epoch
 
 1시간단위의 processing time window를 쓰고 application을 12:05에 시작했다고 해도 window의 close가 1:05가 아닌 1:00이다 → 정각 단위
 
 그러나 tumbling, sliding window assginer는 window alignment를 바꿀 수 있는 offset parameter를 받는다.
 
-### Windows Can Follow Windows
+#### Windows Can Follow Windows
 
 ```java
 stream
@@ -294,10 +295,10 @@ stream
 
 왜냐면 한 time window에 생성된 event들은 window의 종료시점에 기반하여 timestamp가 할당된다. 예를들면 1시간 단위 window에 의해 생성된 모든 event가 시각이 끝나는 시점의 timestamp를 가진다. 이 event를 consume하는 window는 같은 duration이나 그 배수를 가져야 한다.
 
-### No Results for Empty TimeWindows
+#### No Results for Empty TimeWindows
 
 window는 event가 있을때만 생성되므로, Event가 없을땐 result도 없다
 
-### Late Events Can Cause Late Merges
+#### Late Events Can Cause Late Merges
 
 Session window는 mergable window abstraction에 기반을 두는데, 각 element는 처음에 새 window로 할당되고, gap이 충분히 작으면 window가 merge된다. 이말인 즉 late event는 2개의 분리된 session을 하나로 merge하게되어 late merge를 발생시킨다.

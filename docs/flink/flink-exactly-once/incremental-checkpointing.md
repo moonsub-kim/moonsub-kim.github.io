@@ -4,12 +4,11 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-26
 nav_order: 2
+description: "[Managing Large State in Apache Flink: An Intro to Incremental Checkpointing](https://flink.apache.org/features/2018/01/30/incremental-checkpointing.html) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Incremental Checkpointing
-
-
-
-[https://flink.apache.org/features/2018/01/30/incremental-checkpointing.html](https://flink.apache.org/features/2018/01/30/incremental-checkpointing.html)
 
 state는 복잡한 usecase에서 필요하다. 하지만 stateful stream processing은 state가 faul-tolerant할때만 production에서 쓸 수 있다. Fault tolerance는 software,machine failure에서도 end result는 정확히 나오고, data loss와 duplicate이 없음을 의미한다.
 
@@ -19,11 +18,11 @@ incremental checkpointing 이전에 모든 single Flink checkpoint는 applicatio
 
 incremental checkpoint는 large state를 가지는 job에서 큰 퍼포먼스 향상을 보였다. TB 크기의 state를 테스트한 결과 3분이 걸리는 checkpointing 시간이 incremental checkpoint에서는 30초로 줄어들었다.
 
-# How to Start
+## How to Start
 
 Flink는 RocksDB의 internal bakcup mechanism을 활용하므로 RockDB state backend에서만 incremenal checkpointing을 지원한다. 따라서 Flink의 incremetnal checkpoint history는 무한정 커지진 않고 eventual하게 checkpoint들을 consume/prune한다.
 
-# How it Works
+## How it Works
 
 RocksDB는 모든 변경사항을 memtable이라 불리는 mutable(changeable) in-memory buffer에 수집하는 LSM tree를 기반으로하는 KV store이다. memtable에서 같은 key에 대한 update는 이전값을 replace하고, memtable이 꽉차면 RocksDB는 key로 정렬, compression 이후 disk로 모든 entry를 write한다. RocksDB가 memtable에서 disk로 write하면 immutable(unchangeable) 해지고, sorted-string-table(sstable) 이라고 부른다.
 
@@ -35,7 +34,7 @@ Flink는 이전 checkpoint 이후로 어떤 sstable file이 생성/삭제 됐는
 
 checkpoint간 변경사항을 tracking하기 위해, consolidated table을 upload하는건 redundant하다(new sstable이 이미 올라가있으므로?). Flink는 이 process를 incremental하게 수행하고, 작은 오버헤드가 생긴다.
 
-# An Example
+## An Example
 
 ![incremental checkpointing](https://flink.apache.org/img/blog/incremental_cp_impl_example.svg)
 
@@ -49,11 +48,11 @@ checkpoint `CP 3` 에서 RocksDB compaction은 `sstable-(1), sstable-(2), sstabl
 
 `CP 4`에서 RocksDB는 `sstable-(4), sstable-(5), sstable-(6)` 을 `sstable-(4,5,6)` 으로 합친다. `sstable-(6)` 은 `CP 4` 에서 새로 생긴 sstable이다. Flink는 이 새 table을 DFS에 올리고, `sstable-(1,2,3)`과 함께 reference한다 (DFS에 한다는건가..?). 또한 reference count를 올리고, \# of retained checkpoint에 따라 `CP 2` 를 제거한다. `sstable-(1), sstable-(2), sstable-(3)` 의 count는 0이 되었으므로 DFS에서 제거한다.
 
-# Race Conditions and Concurrent Checkpoints
+## Race Conditions and Concurrent Checkpoints
 
 Flink는 여러 checkpoint를 parallel하게 실행할 수 있으므로, 이전 checkpoint가 완료되기 전에 새 checkpoint가 시작 될 수 있다. 이것때문에 새 incremental checkpoint의 basis로 사용할 previous checkpoint를 고려해야 한다 (즉 CP4를하려는데 CP3은 없을 수 있음). Flink는 실수로 삭제된 shared file을 참조하지 않도록 checkpoint coordinator가 confirm한 checkpoint가 가진 state만 참조한다.
 
-# Restoring Checkpoints and Performance Considerations
+## Restoring Checkpoints and Performance Considerations
 
 incremental checkpoint를 키면 failure시에 state recovery에 대해 추가적인 configuration이 필요없다. failure가 발생하면 Flink의 JobManager는 마지막으로 완료된 checkpoint에서 restore하도록 모든 task에 요청을 보낸다. 각 TaskManager는 DFS의 checkpoint에서 state를 받아오게 된다.
 
@@ -61,6 +60,6 @@ incremental checkpoint를 키면 failure시에 state recovery에 대해 추가�
 
 이와같은 tradeoff를 맞추는 전략은 flink doc에 디테일하게 써져있다
 
-[https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/checkpoints/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/checkpoints/)
+[Checkpoints](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/checkpoints/)
 
-[https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/)
+[Tuning Checkpoints and Large State](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/)

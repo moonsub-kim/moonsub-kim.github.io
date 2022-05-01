@@ -4,14 +4,13 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-14
 nav_order: 4
+description: "[High-throughput, low-latency, and exactly-once stream processing with Apache Flink](https://www.ververica.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Flink's checkpointing mechanism
 
-
-
-[https://www.ververica.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink](https://www.ververica.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink)
-
-# An Evolution of Streaming Architectures
+## An Evolution of Streaming Architectures
 
 fault-tolerant, performant한 stream processing을 만드는것은 어렵다. batch processing에서 job이 실패하면 job이 실패한 부분을 재실행하면 된다. read하려는 파일의 시작부터 끝까지 replay가 가능하다. 하지만 stream processing에선 아니다. data stream은 애초부터 beginning과 end가 없다. buffered stream은 replay할 수 있지만. 시작시간(몇개월.. 어쩌면 수년 전) 부터 replay하는것은 불가능하다. 또한 streaming computation은 batch와 다르게 stateful하다. 즉 system이 output말고도 operator state를 backup, recover 할 수 있어야 한다. 이런 문제들을 해결하기 위해 많은 approach들이 나와있다.
 
@@ -30,23 +29,23 @@ faul tolerance를 위한 메커니즘은 전체 framework의 아키텍처에 깊
 (1) 대부분의 시스템이 full parallel infrastructure로 복구할 수 있고,
 (2) stateful application에서 framework가 아닌 reliabele storage로부터 state를 복구하는것이 주요 병목이기 때문이다. → 즉 framwork에서 아무리 튜닝해봤자다..
 
-# Record acknowledgement (Apache Storm)
+## Record acknowledgement (Apache Storm)
 
 strema processing은 업계에서 널리 사용되고 있고, 더 많은 usecase에 적용되고 있다. 처음으로 널리 쓰인 large-scale stream processing framework는 Apache Storm이다. Storm은 failure 직후에 message를 replay하기 위해 [**Upstream Backup and Record Acknowledgements**](https://storm.apache.org/documentation/Guaranteeing-message-processing.html) mechanism을 사용한다. 다만 Storm은 state consistency를 보장하지 않으므로, mutable state를 관리하는것은 사용자가 하게된다 (다음 섹션에 나오는 Storm의 Trident API는 state consistency를 보장하긴 함)
 
 opreator에서 처리된 record는 upstream operator에게 process가 끝났음을 알리는 ack를 보낸다. upstream operator는 record를 계속 저장하고 있고, 모든 record에서 ack를 받으면 upstream backup에서 record가 지워지게 된다. failure가 발생할땐 모든 ack를 받지 못하므로, source record는 replay된다. 이 방식은 **data loss가 없지만, duplicate record는 발생한다** (at least once). 성능과는 별개로, record acknowledgement architecture는 exactly once를 보장하지 않으므로 개발자가 deduplication을 해야하는 부담을 안겨준다. 또 다른 문제점은 ack mechanism이 backpressure에서는 때때로 falsely classify를 발생시켜 low throughput과 flow control 문제가 생긴다.
 
-# Micro batches (Apache Storm Trident, Apache Spark Streaming)
+## Micro batches (Apache Storm Trident, Apache Spark Streaming)
 
-# Transactional updates (Google Cloud Dataflow)
+## Transactional updates (Google Cloud Dataflow)
 
-# Distributed Snapshots(Apache Flink)
+## Distributed Snapshots(Apache Flink)
 
 exactly once 를 제공하는 문제는, streaming computation이 들어가는 state(in-flight record와 operator state 둘다)를 결정하고, 이 state에 대한 consistent snapshot 생성, snapshot을 durable storage까지로 저장하는 문제로 귀결된다. 또한 failure로부터 복구하는것은, durable storage에서 snapshot을 읽고, stream source를 snapshot이 생성된 시점으로 rewind하고, play (stream이 흐르도록) 다시 실행하는 것이다. Flink의 알고리즘은 아래 paper에 자세히 설명되어있다.
 
-[http://arxiv.org/abs/1506.08603](http://arxiv.org/abs/1506.08603)
+[Lightweight Asynchronous Snapshots for Distributed Dataflows](/docs/flink/flink-exactly-once/lightweight-asynchronous-snapshots-for-distributed-systems.md)
 
-Chandy-Lamport의 snapshot algorithm은 missing information, recording duplicates 없이 분산 시스템의 current state의 snapshot을 만드는데(참조 :[https://blog.acolyer.org/2015/04/22/distributed-snapshots-determining-global-states-of-distributed-systems](https://blog.acolyer.org/2015/04/22/distributed-snapshots-determining-global-states-of-distributed-systems/)), Flink algorithm은 위의 algorithm을 바탕으로, 주기적으로 stream topology에 대한 snapshot을 만들고 durable storage에 저장한다.
+Chandy-Lamport의 snapshot algorithm은 missing information, recording duplicates 없이 분산 시스템의 current state의 snapshot을 만드는데(참조 :[Distributed Snapshots: Determining Global States of Distributed Systems](https://blog.acolyer.org/2015/04/22/distributed-snapshots-determining-global-states-of-distributed-systems/)), Flink algorithm은 위의 algorithm을 바탕으로, 주기적으로 stream topology에 대한 snapshot을 만들고 durable storage에 저장한다.
 
 Flink의 snapshot algorithm은 micro-batch가 checkpoint간 computation은 전부다 성공하거나 전부다 실패하는것과 비슷하다. 하지만 Chandy Lamport algorithm은 다음 micro batch를 스케줄링 하기 위해 stream processing에서 pause를 시킬 필요 없이, stream data processing은 event가 오는대로 처리되고, checkpoint는 background로 진행된다.
 
@@ -66,7 +65,7 @@ Barrier는 operator를 통과할때 downstream에 전달되고, state snapshot�
 
 모든 data sink가 barrier를 받으면 현재 checkpoint는 끝난것이다. failure로부터 복구하는것은 latest checkpoint state를 복구하고 last recorded barrier로부터 source를 재시작하는것이다. distributed snapshot은 문서 초반에 나온 요구사항들 (exactly-once, low latency, high throughput, powerful computation model, flow control, low overhead)을 만족한다.
 
-# Summary
+## Summary
 
 ![summary](flink-checkpointing-mechanism/Untitled2.png)
 

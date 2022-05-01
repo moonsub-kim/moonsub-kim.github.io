@@ -29,7 +29,7 @@ row key는 최대 64kb, 일반적으로 10~100b 정도로 쓴다. single row key
 
 ### Column Families
 
-column key는 $column\ family$로 grouping되고, column family는 access control에 쓰인다. 한 column family에 속한 모든 data는 같이 압축된다. column family는 column key에 해당하는 data를 쓰기 전에 먼저 생성해야 한다. \## of distinct column family는 적은 수 (최대 100개정도), family는 거의 변하지 않는 usecase에서 쓰는것을 의도했다. 하지만 table의 column 갯수 제한은 없다.
+column key는 $column\ family$로 grouping되고, column family는 access control에 쓰인다. 한 column family에 속한 모든 data는 같이 압축된다. column family는 column key에 해당하는 data를 쓰기 전에 먼저 생성해야 한다. \# of distinct column family는 적은 수 (최대 100개정도), family는 거의 변하지 않는 usecase에서 쓰는것을 의도했다. 하지만 table의 column 갯수 제한은 없다.
 
 column key는 $family:qualifier$ 의 syntax를 가진다. webtable의 column familiy 예시는 anchor가 있다. anchor family의 각 column key는 single anchor를 표현한다. qualifier는 refer site로 쓰고있다, value는 link text이다.
 

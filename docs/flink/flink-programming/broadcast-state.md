@@ -4,16 +4,17 @@ parent: Flink Programming
 grand_parent: Flink
 last_modified_date: 2021-12-27
 nav_order: 0
+description: "[A Practical Guide to Broadcast State in Apache Flink](https://flink.apache.org/2019/06/26/broadcast-state.html) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Broadcast State
 
-[https://flink.apache.org/2019/06/26/broadcast-state.html](https://flink.apache.org/2019/06/26/broadcast-state.html)
-
-# What is Broadcast State?
+## What is Broadcast State?
 
 Broadcast State는 특정한 방식으로 2개의 event stream을 합쳐서 process 할 수 있다. 한 stream의 event는, event들을 state로 유지하는 operator의 모든 parallel instance로 broadcast된다. 다른 event stream은 broadcast되지 않지만, 같은 operator의 각각 instance로 전달되고, broadcasted stream의 event와 함께 process된다. 새 broadcast state는 low throughput과 high throughput을 가지는 각각의 stream을 합치거나, processing logic이 다이나믹하게 업데이트 되는 application에 적합하다.
 
-# Dynamic Pattern Evaluation with Broadcast State
+## Dynamic Pattern Evaluation with Broadcast State
 
 E commerce에서 user action event를 받아오는 stream을 생각해보자. 웹사이트를 운영하는 회사는 revenue를 올리고, UX를 향상시키고, 이상행동을 감지하고 막고싶어한다. 웹사이트는 user event stream을 detect하는 streaming application을 구현하려 현다. 그러나 pattern이 변경될때마다 코드를 수정하거나 redploy하는것을 피하고 싶어한다. application은 두번째 stream으로 pattern을 받고, pattern stream에서 새 pattern을 받으면 active pattern을 업데이트 할 것이다.
 
@@ -37,7 +38,7 @@ pattern이 operator에 전달되면, pattern은 3개의 parallel task로 broadca
 
 그 다음 event인 1001이 logout한 action이 task에 들어간다. task가 action을 받으면 broadcast state의 pattenr과 1001의 이전 액션과 함께 evaluate한다. pattern이 action들과 매치되므로 task는 pattern match event를 emit한다, 마지막으로 task는 keyed state를 방금 받은 action으로 업데이트 한다.
 
-## How to Implement with Broadcast State?
+### How to Implement with Broadcast State?
 
 ```java
 // 2개의 stream (action, pattern)이 있고, stream은 Kafka나 다른 system에서

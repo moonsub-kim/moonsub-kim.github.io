@@ -4,21 +4,19 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-26
 nav_order: 1
+description: "[A Deep Dive into Rescalable State](https://flink.apache.org/features/2017/07/04/flink-rescalable-state.html) 를 번역한 글 입니다."
 ---
+{{ page.description }}
 
 # A Deep Dive into Rescalable State
 
-
-
-[https://flink.apache.org/features/2017/07/04/flink-rescalable-state.html](https://flink.apache.org/features/2017/07/04/flink-rescalable-state.html)
-
-# Stateful Stream Processing
+## Stateful Stream Processing
 
 operator의 메모리로서, stream processing에서 과거 정보를 기억하고 미래의 input에 사용 할 수 있는  state를 고려해보자. stateless stream processing의 operator는 과거의 context는 필요없이 현재 input만 고려하면 된다. 예를들어 `e = {event_id:int, event_value:int}` 스키마인 이벤트를 emit하는 source stream을 생각해보자. 목표는 각 이벤트를 `event_value`를 extract하여 output으로 쏘는 것이다. 이것은 쉽게 `source-map-sink` pipeline으로 만들 수 있다. 이런것은 stateless stream processing이다.
 
 하지만 이전의 event에서 생긴 `event_value` 보다 큰 값만 output으로 내뱉는다면 어떻게 해야할까? map function은 과거 event에 대한 `event_value` 를  기억하고 있어야한다. 이것이 stateful stream processing 이다.
 
-# State in Apache Flink
+## State in Apache Flink
 
 Apache Flink는 large scale로 stateful stream processing을 할 수 있는 massively parallel distributec system이다. Flink job은 logical하게 operator들의 graph로 decompose되고, operator execution은 physical하게 여러 parallel operator instance로 decompose된다. Flink의 각 parallel operator instance는 **shared-noting machine** 으로 구성되는 cluster의 머신에 스케줄링 되는 독립적인 task이다.
 
@@ -32,7 +30,7 @@ data locality를 위해 Flink의 모든 state data는 parallel operator instance
 
 Flink는 state를 operator state와 keyed state라는 두 타입으로 구분한다. operator state는 operator의 parallel instance (sub-task)의 scope를 가지며, keyed state는 key단위로 정확히 하나의 state partition을 가지는 operator state라고 말할 수 있다.
 
-# Rescaling Stateful Stream Processing Jobs
+## Rescaling Stateful Stream Processing Jobs
 
 ![Rescaling Stateful Stream Processing Jobs](https://flink.apache.org/img/blog/stateless-stateful-streaming.svg)
 
@@ -49,7 +47,7 @@ stateless streaming에서 parallelism을 바꾸는 것은 쉽다. 하지만 stat
 
 `map_1`, `map_2` 를 새로운 `map_1`, `map_2` 로 할당 할수는 있지만, `map_3` 은 empty state를 가진다.
 
-# Reassigning Operator State When Rescaling
+## Reassigning Operator State When Rescaling
 
 첫번째로, 어떻게 operator state를 reassign할것인지 볼것이다. Flink에서 operator state에 대한 일반적인 usecase는 kafka source에서 kafka partition에 대한 현재 offset을 유지하는 것이다. 각 Kafka source instance는 `<PartitionID, Offset>` pair인 operator state를 가지고 있는다. 어떻게 rescaling때 operator state를 reditribute할것인가? 단순하게는 모든 `<PartitionID, Offset>` pair를 round-robin으로 reassign할 수 있다.
 
@@ -65,7 +63,7 @@ black box problem을 풀기위한 좀더 일반화된 방식은 checkpointing in
 
 이 방식은 operator를 구현할때 state unit에 대한 partition/merge를 위한 domain-specific knowledge를 encoding할수 있는 API를 제공한다. 이를 통해 Kafka source는 각 partition offset을 explicit하게 만들고, state reassignment는 list를 split/merge 하는것처럼 쉽게 수행할 수 있다.
 
-# Reassigning Keyed State When Rescaling
+## Reassigning Keyed State When Rescaling
 
 operator state와 다르게 keyed state는 각 event에서 추출된 특정 key 단위 scope를 가진다.
 

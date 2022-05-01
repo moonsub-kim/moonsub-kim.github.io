@@ -4,14 +4,13 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-28
 nav_order: 3
+description: "[Tuning Checkpoints and Large State](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Tuning Checkpoints and Large State
 
-
-
-[https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/)
-
-# Overview
+## Overview
 
 Flink는 large scale에서 안정적으로 동작하기 위해 2개의 조건을 만족해야한다.
 
@@ -20,7 +19,7 @@ Flink는 large scale에서 안정적으로 동작하기 위해 2개의 조건을
 
 첫번째 섹션은 어떻게 checkpointing을 scalable하게 수행하는지 설명하고, 마지막 세션은 얼마만큼의 resource를 할당해야 하는지 best practice를 제시할것이다
 
-# Monitoring State and Checkpoints
+## Monitoring State and Checkpoints
 
 checkpoint를 모니터하기 쉬운 방법은 UI의 checkpoint section을 보는것이다. [**checkpoint monitoring**](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/monitoring/checkpoint_monitoring/) 문서에 checkpoint metric이 있다.
 

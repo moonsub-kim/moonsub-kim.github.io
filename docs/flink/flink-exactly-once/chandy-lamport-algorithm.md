@@ -4,12 +4,11 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2021-12-29
 nav_order: 5
+description: "[An example run of the Chandy-Lamport snapshot algorithm](http://composition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Chandy-Lamport Algorithm
-
-
-
-[http://composition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/](http://composition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/)
 
 메시지를 send/receive 하는 process 들의 snapshot을 만들고싶다. process는 internal message와 FIFO로 동작하는 receiving channel을 가진다. $P_i$가 $P_j$에게 메시지를 보내는 채널은 $C_{ij}$이다. snapshot은 각 process의 state와 channel을 캡쳐한다. Chandy-Lamport algorithm은 “distributed execution 위에서 레코딩된 이벤트의 **happend before** 이벤트 또한 스냅샷에 레코딩”된다.
 

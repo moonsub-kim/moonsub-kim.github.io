@@ -110,7 +110,7 @@ map의 output과 reduce의 input은 같은 type이고, reduce의 output type은 
 
 ### 3.1 Execution Overview
 
-$Map$ 호출은 input data를 자동적으로 partitioning해서 $M$개의 split으로 만들어 여러 머신에 분산된다. input split은 서로 다른 머신에서 병렬적으로 처리된다. $Reduce$ 호출은 intermediate key space를 $R$ 개로 partitioning 한다(e.g., `hash(key) % R`). \## of partitions $R$과 partitioning function은 user가 결정한다.
+$Map$ 호출은 input data를 자동적으로 partitioning해서 $M$개의 split으로 만들어 여러 머신에 분산된다. input split은 서로 다른 머신에서 병렬적으로 처리된다. $Reduce$ 호출은 intermediate key space를 $R$ 개로 partitioning 한다(e.g., `hash(key) % R`). \# of partitions $R$과 partitioning function은 user가 결정한다.
 
 ![execution overview](mapreduce/Untitled.png)
 

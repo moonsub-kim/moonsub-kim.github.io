@@ -4,12 +4,13 @@ parent: Flink Programming
 grand_parent: Flink
 last_modified_date: 2021-12-18
 nav_order: 2
+description: "[Advanced Flink Application Patterns Vol.2: Dynamic Updates of Application Logic](https://flink.apache.org/news/2020/03/24/demo-fraud-detection-2.html) 을 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Flink App 2: Dynamic Update of Application Logic
 
-[https://flink.apache.org/news/2020/03/24/demo-fraud-detection-2.html](https://flink.apache.org/news/2020/03/24/demo-fraud-detection-2.html)
-
-# Rules Boradcasting
+## Rules Boradcasting
 
 이전의 data processing pipeline을 보자
 
@@ -34,7 +35,7 @@ DataStream<Alert> alerts = transactions
 - **Dynamic Key Function**: dynamic key로 data enrich를 한다. `keyBy`는 dynamic key를 hash로 만들고, event를 다음 operator의 모든 parallel task로 파티셔닝한다.
 - **Dynamic Alert Function**: data window를 쌓고, 이를 바탕으로 alert을 생성한다.
 
-# Data Exchange inside Apache Flink
+## Data Exchange inside Apache Flink
 
 위의 job graph는 operator간 다양한 data exchange pattern을 보여준다. broadcast pattern이 어떻게 동작하는지 이해하기 위해 Flink의 distributed runtime에 어떤 messagse propagation method가 있는지 잠깐 봐보자
 
@@ -54,7 +55,7 @@ transaction source 다음에 **FORWARD** connection은 transaction source operat
 
 위에서 Fraud Detection jobgraph는 `Rules` source라는 추가적인 data source를 가진다. `Rules`는 **BROADCAST** channel을 통해 main processing data flow에 섞이게 된다. **FORWARD, HASH, REBALANCE** 같이 operator간에 각 message를 receiving operator의 parallel instance중 한 곳에서만 처리하는것과 다르게, **BROADCAST**는 각 message를 모든 parallel instance로 뿌리게 된다. **BROADCAST**는 key나 source partition에 관계없이 모든 message가 다음 모든 operator로 전달되게 한다.
 
-# Broadcast State Pattern
+## Broadcast State Pattern
 
 `Rules` source를 사용하도록 만들기 위해 `Rules` source를 main data stream에 연결해야 한다.
 

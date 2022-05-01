@@ -4,16 +4,17 @@ parent: Flink Programming
 grand_parent: Flink
 last_modified_date: 2021-12-19
 nav_order: 3
+description: "[Advanced Flink Application Patterns Vol.3: Custom Window Processing](https://flink.apache.org/news/2020/07/30/demo-fraud-detection-3.html) 을 번역한 글 입니다."
 ---
-# Flink App 3: Custom Window Processing
+{{ page.description }}
 
-[https://flink.apache.org/news/2020/07/30/demo-fraud-detection-3.html](https://flink.apache.org/news/2020/07/30/demo-fraud-detection-3.html)
+# Flink App 3: Custom Window Processing
 
 이 포스팅에서 Flink의 streaming business logic requirements를 만족시키도록 구현할 수 있는 Process Function을 활용할 것이다. Fraud Detection에서 DataStream API가 requirements 를 만족시키지 못할때 custom time window를 구현 하는 방법을 보여줄 것이다. 특히 각 event에 대해 짧은 latency를 요구할때의 trade off를 보여줄 것이다.
 
-# ProcessFunction as a “Window”
+## ProcessFunction as a “Window”
 
-## Low Latency
+### Low Latency
 
 fraud detection rule을 다시 봐보자
 
@@ -49,9 +50,9 @@ public class SomeProcessFunction
 
 가장 중요한견 `ProcessFunction`은 Flink에서 관리하는 fault-tolerant state를 접근할 수 있다. Flink의 message processing과 delivery guarantee와 함께 고려했을때, 다양하고 복잡한 비즈니스 로직을 resilient event-driven application을 만들 수 있게 된다. state를 가진 custom window processing도 가능한것이다.
 
-## Implementation
+### Implementation
 
-### State and Clean-up
+#### State and Clean-up
 
 time window로 process하기 위해 data가 속한 window를 계속 잡고 있어야 한다. fault-tolerant한 data를 보장하고, 장애상황에서도 복구하기 위해서는 data window를 Flink-managed state에 저장해야 한다. 시간이 지날수록 모든 이전 transaction을 keep할 필요는 없어진다. 위에서 언급한 sample rule에서 24시간이 지난 모든 event는 버려도 된다. 즉 data window는 지속적으로 움직이고 stale transaction은 계속해서 out-of-scope로 가게 된다(즉 버려진다).
 
@@ -250,7 +251,7 @@ private void evicOutOfScopeElementsFromWindow(Long threshold) {
 > `ListState` 는 모든 transaction object가 deserialized되기때문에 성능에 악영향을준다. `MapState` 의 key iterator는 key에대한 deserialization만 하므로 overhead를 감소시킨다. 특이 이 optimization은 `RocksDBStateBackend` 를 쓸때 유용하다.
 >
 
-# Improvements and Optimizations
+## Improvements and Optimizations
 
 장점
 
@@ -264,7 +265,7 @@ private void evicOutOfScopeElementsFromWindow(Long threshold) {
 - Window API 밖에서 구현했으므로 late event handing 없음.
 - quadratic computation complexity와 large state가 만들어 질 수 있음
 
-## Late Events
+### Late Events
 
 late event arrival 케이스에서 window를 다시 evaluate 하는것이 의미가 있는가?? 만약 의미가 있다면 예상되는 out-of-order event (late event)만큼 cleanup을 위해 widest window를 더 길게 잡아야 한다. 이렇게 하면 late firing에 대해 잠재적으로 incomplete한 time window를 가지는 상황을 없앨 수 있다. 즉 밑 그림에서 lateset event 가 온 뒤로, late event가 들어오게되는 경우 이미 potentially already deleted event도 킵해놨으므로 late event에 대해서도 제대로 프로세싱이 가능하다.
 
@@ -272,7 +273,7 @@ late event arrival 케이스에서 window를 다시 evaluate 하는것이 의미
 
 하지만 low latency processing을 강조한다면 late event arrival이 의미가 없을 수 있다. 이 케이스에선 가장 최근의 timestamp만 보고, monotonic increase 하지않는 event (late event)에 대해 alerting logic을 돌리지 않고 state에 저장만 하는것으로 끝내면 된다.
 
-## Redundant Re-computations and State Size
+### Redundant Re-computations and State Size
 
 state에 각 transaction을 저장하고 새 event가 올때마다 aggregate을 다시 해야된다. 반복되는 연산은 computing resource 측면에서 효율적이지 못하다.
 
@@ -284,7 +285,7 @@ state에 각 transaction을 저장하는 이유는 뭔가? 저장된 event의 gr
 
 ![Redundant Re-computations and State Size](flink-app-3-custom-window-processing/Untitled7.png)
 
-## State Data and Serializers
+### State Data and Serializers
 
 같은 timestamp를 가지지만 서로 다른 Event를 가져오는것이 가능한가? 이전 예제에서는 `MapState<Long, Set<Transaction>>` 으로 해결했다. 그러나 이 방식은 성능에 악영향을 미친다. Flink는 native `Set` serializer를 지원하지 않으므로 비효율적인 [Kryo serializer](https://nightlies.apache.org/flink/flink-docs-release-1.11/dev/types_serialization.html#general-class-types)를 쓴다. 정확히 같은 timestamp를 가지는 서로다른 이벤트가 없다고 가정한다면 `MapState<Long, Transaction>` 으로 쓸 수 있다. 이 가정과 다른경우가 발생하는것을 모니터링하기위해 [side-outputs](https://nightlies.apache.org/flink/flink-docs-release-1.11/dev/stream/side_output.html) 을 이용할 수 있다. 일반적으로 [Kryo fallback을 제거](https://flink.apache.org/news/2020/04/15/flink-serialization-tuning-vol-1.html#disabling-kryo)하고, application이 [더 효율적인 seriazlier](https://flink.apache.org/news/2020/04/15/flink-serialization-tuning-vol-1.html#performance-comparison)를 쓰는지 확인할것을 권장한다.
 

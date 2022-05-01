@@ -4,14 +4,13 @@ parent: Flink Exactly-Once
 grand_parent: Flink
 last_modified_date: 2022-01-01
 nav_order: 7
+description: "[How Apache Flink handles backpressure](https://www.ververica.com/blog/how-flink-handles-backpressure) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Backpressure
 
-
-
-[https://www.ververica.com/blog/how-flink-handles-backpressure](https://www.ververica.com/blog/how-flink-handles-backpressure)
-
-# What is backpressure
+## What is backpressure
 
 Flink같은 “streaming system” 은  backpressure에 graceful하게 대응할 수 있다. backpressure는 일시적인 load동안 system이 process하는것보다 더 높은 rate으로 data를 받는것을 말한다. 일상적인 상황에서도 backpressure가 일어날 수 잇다. 예를들어 GC stall로 인해 incoming data가 쌓이거나, data source에서 data를 보내는 속도에 스파이크가 발생할 수 있다. backpressure를 잘 처리하지 않으면 resource낭비가 생기고 심한경우 data loss가 생긴다.
 
@@ -27,7 +26,7 @@ Flink같은 “streaming system” 은  backpressure에 graceful하게 대응할
 
 ![source store](backpressure/Untitled2.png)
 
-# Backpressure in Flink
+## Backpressure in Flink
 
 Flink runtime의 building block은 operator, stream이다. 각 operator는 intermediate stream을 consume하고, event에 대해 transformation을 실행하고, 새 stream에 output을 produce한다. Flink는 제한된 용량을 가진 distributed blocking queue를 효율적으로 사용한다. 느린 downstream task는 queue의 buffering이 사라지면 upstream task의 속도를 느리게 만든다.
 

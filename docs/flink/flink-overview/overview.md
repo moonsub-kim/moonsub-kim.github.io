@@ -4,12 +4,13 @@ parent: Flink Overview
 grand_parent: Flink
 last_modified_date: 2021-11-09
 nav_order: 0
+description: "[Learn Flink: Hands-On Training](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/) 를 번역한 글 입니다."
 ---
+{{ page.description }}
+
 # Flink Overview
 
-[https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/)
-
-# Stream Processing
+## Stream Processing
 
 ![stream processing](overview/Untitled.png)
 
@@ -29,7 +30,7 @@ Flink application은 message queue(Kafka)나 distributed logs(Kinesis)같은 rea
 
 ![overview](overview/Untitled2.png)
 
-# Parallel Dataflows
+## Parallel Dataflows
 
 Flink pragram은 parallel, distributed이다. 실행되는동안 stream은 1개 이상의 **`stream partition`**을 가지며, 각 operator는 1개 이상의 **`operator subtask`**를 가진다. operator subtask는 서로에게 독립적이며, 다른 trehad에서 동작하고, 다른 머신/컨테이너에서도 동작 할 수 있다.
 
@@ -42,7 +43,7 @@ stream은 아래와 같은 패턴들로 2개 operator사이의 데이터를 전�
 - **One-to-one** stream은 partitioning과 ordering을 보장한다. 위의 예시에서 map operator의 subtask는 source operator의가 생성한 같은 순서를 똑같이 보게 된다.
 - **Redistributing** stream은 stream partitioning을 바꾼다. 각 operator subtask는 data를 transformation에 따라 다른 subtask로 전달한다. keyBy(hash key기반으로 repartitioning), broadcast, rebalance가 대표적이다. redistributing exchange에서 element간 ordering은 sender-receiver간에서만 보장된다. 예를들어 keyBy/window와 sink operator간의 redistribution은 순서를 보장하지 않는다
 
-# Timely Stream Processing
+## Timely Stream Processing
 
 많은 streaming application에게 historical data를 deterministic, consistent하게 live data를 process했던 코드를 재활용해서 reprocess하는것은 중요하다.
 
@@ -50,7 +51,7 @@ stream은 아래와 같은 패턴들로 2개 operator사이의 데이터를 전�
 
 timely stream processing에 대한 요구사항은 data를 process하는 machine의 시각대신 data stream에 쓰여지는 event time timestamp로 맞출 수있다.
 
-# Stateful Stream Processing
+## Stateful Stream Processing
 
 Flink operation은 stateful하다. 즉 이전에 들어왔던 event들에 의해 쌓인 effect에 따라 현재 event가 처리되는것이 달라질 수 있다. state는 분당 event갯수를 세는것처럼 간단한것도 있지만, fraud detection같은 복잡한것에도 쓰인다.
 
@@ -64,7 +65,7 @@ stateful operator의 parallel instance set은 shareded key-value store와 비슷
 
 state는 언제나 local에서만 access되므로 Flink application이 high throughput, low latency를 가질수 있게 해준다. state는 JVM heap에 저장할수도있고, 사이즈가 크다면 disk에 저장하도록 선택할 수도 있다.
 
-# Fault Tolerance via State Snapshots
+## Fault Tolerance via State Snapshots
 
 ![fault tolerance](overview/Untitled5.png)
 
