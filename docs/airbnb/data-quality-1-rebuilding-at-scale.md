@@ -3,6 +3,7 @@ title: "Data Quality 1 - Rebuilding at Scale"
 parent: Airbnb
 last_modified_date: 2021-10-10
 nav_order: 0
+description: Airbnb의 Data Quality 1 - Rebuilding at Scale을 번역한 글 입니다.
 ---
 # Data Quality 1 - Rebuilding at Scale
 
