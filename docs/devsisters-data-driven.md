@@ -1,24 +1,22 @@
 ---
-title: "[devsisters] data driven으로 서비스운영 자동화 (spark)"
+title: "[devsisters] data driven으로 서비스 운영 자동화 (spark)"
 last_modified_date: 2021-12-04
+description: "데브시스터즈의 [data driven으로 서비스 운영 자동화](https://tv.naver.com/v/23650703) 를 정리한 글 입니다."
 ---
+{{ page.description }}
 
 # [devsisters] data driven으로 서비스운영 자동화 (spark)
 
+## Log
 
-
-[https://tv.naver.com/v/23650703](https://tv.naver.com/v/23650703)
-
-# Log
-
-## high quality log의 조건
+### high quality log의 조건
 
 1. schema를 정의하고 지킬것
 2. QA시 log 검수단계를 포함
 3. 개발 할때 logging을 고려한 설계
 4. log 수집할때 자동화된 schema check + transformation
 
-## Log 활용
+### Log 활용
 
 보상 - 미션 topology는 일반화 가능
 
@@ -37,7 +35,7 @@ game_id == "kingdom" && event == "level_up" && level == 3
 
 **Schema가 있는 Log dataset은 조건처리연산에 쓸 수 있다**
 
-## Automation 조건
+### Automation 조건
 
 1. log기반으로 동작
 2. near-realtime event processing
@@ -45,11 +43,11 @@ game_id == "kingdom" && event == "level_up" && level == 3
 4. 동적 이벤트 태스킹
 5. event task scheduling 자동화
 
-# Dynamic CEP(Complexed Event Processing)
+## Dynamic CEP(Complexed Event Processing)
 
 == event driven architecture + stream processing
 
-## Event Driven Architecture
+### Event Driven Architecture
 
 특정 이벤트의 반응으로 동작
 
@@ -57,14 +55,14 @@ game_id == "kingdom" && event == "level_up" && level == 3
 - Event Channel: 가공 후 consumer에게 전달
 - Event Consumer: 필요한 연산을 하고 output을 만듦
 
-### 이벤트 처리 방식
+#### 이벤트 처리 방식
 
 - SEP(Simple Event Processing): 단일 이벤트 단위로 처리, 추출
 - ESP(Event Streaming Processing): SEP + continuous query, 이벤트의 연속적인 흐름을 추적하는 경우
 - CEP(Complexed Event Processing): 여러 이벤트를 프로세싱, 각 이벤트간의 관계등을 고려함, SEP에 패턴추론이나 다른 event를 엮는경우 CEP
 - OLEP(OnLine Event Processing)
 
-## Stream Processing
+### Stream Processing
 
 입력이 무한함, 전체 실행시간은 중요하지 않음, 빠른속도로 이벤트처리 및 결과제공, Latency와 Throughput이 중요함
 
@@ -74,9 +72,9 @@ game_id == "kingdom" && event == "level_up" && level == 3
 + Kafka Streams
 = Dynamic CEP Application
 
-# DCEP App in K8s
+## DCEP App in K8s
 
-## DCEP
+### DCEP
 
 - Dispatche API
     - admin console의 입력을 받는 API server
@@ -125,9 +123,9 @@ game_id == "kingdom" && event == "level_up" && level == 3
 
 ![architecture](devsisters-data-driven/Untitled1.png)
 
-## DCEP 핵심 기능
+### DCEP 핵심 기능
 
-### KeyedStream 변환연산
+#### KeyedStream 변환연산
 
 ![keyedstream](devsisters-data-driven/Untitled2.png)
 
@@ -135,7 +133,7 @@ game_id == "kingdom" && event == "level_up" && level == 3
 
 효율적으로 동작해야지 성능에 악영향을 미치지 않음
 
-### Flexible Topology
+#### Flexible Topology
 
 토폴로지 모델링: 모든 조건을 if ~ then 으로 변환
 
@@ -146,21 +144,21 @@ A로그 N번 && B로그 M번 && C로그 K번 → 프로시저 호출
 
 **조건을 일반화 해야만 함**
 
-### Window (Time Window, Count Window)
+#### Window (Time Window, Count Window)
 
 ![window](devsisters-data-driven/Untitled3.png)
 
 native하게 window를 지원해줘야만 함
 
-### Stream Replaying
+#### Stream Replaying
 
 과거의 스트림 시점부터 replay
 
 processing이 빠를경우 현재 레코드 속도를 따라잡아서 reatime processing에 붙을 수 있어야 함
 
-### Aggregation & Output
+#### Aggregation & Output
 
-## Dynamic Event
+### Dynamic Event
 
 정적이벤트: 코드정의
 
@@ -168,7 +166,7 @@ processing이 빠를경우 현재 레코드 속도를 따라잡아서 reatime pr
 
 미션: 순차적 미션 달성 판단 (transaction처럼?), window연산
 
-## 순서가 보장되지 않는 분산큐에서 어떻게 메시지 순서를 보장할것인가
+### 순서가 보장되지 않는 분산큐에서 어떻게 메시지 순서를 보장할것인가
 
 - 로그 데이터에 실제 이벤트시간을 무조건 포함 (근데 초단위 쓰네?)
     - 모든 스테이지마다 timestamp를 기록함.
@@ -188,11 +186,11 @@ processing이 빠를경우 현재 레코드 속도를 따라잡아서 reatime pr
     - event bucket안에서 순서대로 재정렬됨
     - watermark: max(lag) / (throughput/s)
 
-### Window 연산을 어떻게 구현해야 하는가
+#### Window 연산을 어떻게 구현해야 하는가
 
 - event buffering과 유사하므로 event processing bucket으로 처리가능
 
-### 대량의 로그를 near-realtime으로 처리
+#### 대량의 로그를 near-realtime으로 처리
 
 - 이벤트 프로세싱 매니저를 k8s node에 분산
 - stream batch unit 을 늘려서 throughput상승, 병렬 연산처리하여 Latency 감소
