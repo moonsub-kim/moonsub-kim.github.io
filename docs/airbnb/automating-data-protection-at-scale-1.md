@@ -43,7 +43,7 @@ attacker가 침입 한 후에도 sensitve data를 얻지 못하게 하기 위해
 
 ## Platform Architecture
 
-![Data Protection Platform Overview](Data%20Protection%20Platform%201%2064d8d40c3eb64b66868c6119b3b089c2/Untitled.png)
+![Data Protection Platform Overview](automating-data-protection-at-scale-1/Untitled.png)
 
 Data Protection Platform Overview
 
@@ -61,7 +61,7 @@ DDP는 data를 discover, understand, protect하는데 초점을 맞춘다. data 
 
 Madoka는 airbnb paltform 위의 모든 data asset의 metadata에 대해 security, privacy를 책임지는 data prtection metadata system이다. madoka는 centralized repository로 airbnb engineer와 다른 stakeholder들이 data asset metadata에대해 쉽게 추적, 관리할 수 있게 해준다. 따라서 전사적인 data security, privacy posture에 대한 이해와 이를 자동화하는 역할을 한다.
 
-![Madoka Architecture](Data%20Protection%20Platform%201%2064d8d40c3eb64b66868c6119b3b089c2/Untitled%201.png)
+![Madoka Architecture](automating-data-protection-at-scale-1/Untitled1.png)
 
 Madoka Architecture
 
@@ -114,7 +114,7 @@ crawler는 두개의 source에서 data classification을 가져온다. 첫번째
 
 따라서 crawler는 inspekt라고 하는 automated data classification tool에서 data classification을 가져온다 (얘는 다음 포스팅에서 소개). Inspekt는 Mysql, S3등 주요 data store를 스캔하고 classify한다. Inspekt는 data asset에 어떤 data element가 들어있는지에 대한 정보를 뱉는다. Inspekt로 airbnb의 data가 지속적으로 모니터링되고 data가 바뀜에 따라 classification도 바뀌게 된다. 다만 precision recall이 언제나 100%은 아니기때문에 false positive/negative가 발생 할 수 있다.
 
-![Classification Reconcilation](Data%20Protection%20Platform%201%2064d8d40c3eb64b66868c6119b3b089c2/Untitled%202.png)
+![Classification Reconcilation](automating-data-protection-at-scale-1/Untitled2.png)
 
 Classification Reconcilation
 
