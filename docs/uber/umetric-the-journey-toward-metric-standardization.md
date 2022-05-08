@@ -11,10 +11,6 @@ description: "Uber의 [uMetric: The Journey Towards Metric Standardization](http
 
 ![uMetric](umetric-the-journey-toward-metric-standardization/Untitled.png)
 
-uMetric
-
-# uMetric: The Journey Towards Metric Standardization
-
 ## Introduction
 
 business metric은 우버가 새 프로덕트에대한 성과를 측정하고 decision making process를 최적화하는데 필수적이다. metric에 대한 usecase는 운임 단가에 대한 문제를 확인하는 operation 직원부터 dynamic pricing을 위한 ML model까지 다양하다.
