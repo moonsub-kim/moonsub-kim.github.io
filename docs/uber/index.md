@@ -9,4 +9,6 @@ nav_order: 3
 
 - TODO
 
-  [[TBD] uMetric](https://eng.uber.com/umetric/)
+  [How Uber Achieves Operational Excellence in the Data Quality Experience](https://eng.uber.com/operational-excellence-data-quality/)
+
+  [Uber’s Journey Toward Better Data Culture From First Principles](https://eng.uber.com/ubers-journey-toward-better-data-culture-from-first-principles/)
