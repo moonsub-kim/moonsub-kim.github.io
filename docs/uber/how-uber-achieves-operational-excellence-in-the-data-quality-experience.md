@@ -118,9 +118,7 @@ Uber의 DQ baseline을 정하기 위해 data producer, consumer에게 피드백�
 
 DQ architecture는 Test Execution Engine, Test Generator, Alert Generator, Incidient Manager, Metric Reporter, Consumption Tool로 구성된다. Test Execution Engine은 다른 query engine을 통해 요청을 실행하고, assertion evaluation을하고, 결과를 DB에 저장한다. 다른 component는 Test Execution Engine을 기반으로 onboarding, alerting, triaging, adoption을 포함한 DQ의 전체 lifecycle을 커버한다.
 
-![*Data Quality Platform architecture*****](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled1.png)
-
-*Data Quality Platform architecture*****
+![Data Quality Platform architecture](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled1.png)
 
 ## Test Generator
 
@@ -135,9 +133,7 @@ single table에 대한 DQ monitoring 말고도 user는 upstream, downstream tabl
 
 하지만 ETL logic이 바뀔 수 있으므로 lienage data는 변할 수 있고, 시간이지나면서 table은 생성되거나 지워진다. DQ result를 더 정확하게 만들기 위해 daily spark job을 통해 모든 table의 latest lineage를 가져오고, lineage에서 없어진 obsolete table을 test target에서 없앤다. 또한 metadata change를 반영하기 위해 auto-generated test definition을 refresh하고, test generation process에 따라 test logic을 업데이트한다.
 
-![*Pruning obsolete tables based on lineage*](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled2.png)
-
-*Pruning obsolete tables based on lineage*
+![Pruning obsolete tables based on lineage](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled2.png)
 
 DQ standardization을 위해 top-tiered dataset은 100%의 test coverage를 가지고 있다.
 
@@ -152,9 +148,7 @@ test의 assertion type은 1) computed value를 threshold와 비교 (duplicate_pe
 
 assertion pattern은 instruction을 표현하는 symbol string인 test expression을 만드는데 쓰인다. symbol string은 sub-expression과 configure parameter와 executino control로 구성되는 AST로 flatten된다. execution time에 expresion은 tree로 파싱되고 post order traversal로 evaluate된다. platform의 모든 test는 AST로 표현될 수 있고, execution engine이 처리한다.
 
-![*Example AST structure for a test that compares the difference between two queries*](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled3.png)
-
-*Example AST structure for a test that compares the difference between two queries*
+![Example AST structure for a test that compares the difference between two queries](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled3.png)
 
 test-expression model은 execution engine이 무한하게 assertion을 처리할 수 있게 만드는 이점이 있어 새 종류의 test를 추가할때 flexiblity를 제공한다.
 
@@ -182,9 +176,7 @@ alert도 template, business rule에 따라 자동생성된다. table owner, aler
 
 failed test execution result가 진짜로 DQ incident일까? realtime으로 생성되는 dataset에대한 test monitoring을 생각해보면 1시간 단위로 검증하게된다. 아래 그림처럼 새벽1시에 한번만 잠깐 실패 할수도 있다. 이런 transient alert를 보내지 않도록 만들기 위해 test failure를 허용할 수 있는 SLA인 sustain period를 도입했다. sustain period가 4H로 설정되면 platform은 sustain period 전까지의 test failure는 WARN으로 저장한다. sustain period를 넘으면 FAIL이 되고 DQ incident가 트리거된다.
 
-![*Example Data Quality Incident based on sustain period*](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled4.png)
-
-*Example Data Quality Incident based on sustain period*
+![Example Data Quality Incident based on sustain period](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled4.png)
 
 real alert이더라도 불필요한 alert에 제한을 걸어야한다. duplicate alert은 data가 fresh하지 않을때 freshness alert과 latest partition completeness alert이 동시에 발생한다. latency issue로 인한 completeness와 cross-datacenter consistency alert도 동시에 발생하는 경향이 있다. 이런 상황에선 freshness alert을 다른 alert의 upstream dependency로 만들고 같은 roote cause일때 duplicate notification을 하지 않도록 만들었다. 또한 real alert을 보내기 전에 적절한 grace period를 설정해서 유저가 dataset에서 DQ issue를 조사하고 고칠 수 있는 시간을 제공한다(이때 user가 어떻게 인지하지?!).
 
@@ -200,9 +192,7 @@ internal scheduler말고도 유저가 직접 incident에 annotation을 달고 re
 
 test가 잘 만들어졌다 하더라도 모든 incident를 감지할 수는 없으므로, user는 data를 이용하다가 발견한 문제에 대해 report를 넣을 수 있도록 해놨다. DQ platform은 report를 detected incident와 중복되는지 확인하고 data producer에게 reported incident를 전달한다. 
 
-![*Incident Manager workflow*](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled5.png)
-
-*Incident Manager workflow*
+![Incident Manager workflow](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled5.png)
 
 ## Metric Reporter
 
@@ -230,9 +220,7 @@ DQ platform은 user가 dataset의 quality를 이해하고 bad data를 사용하�
 
 Databook은 uber의 모든 dataset에 대한 metadata를 관리하는 centralized dashboard이다. data producer, consumer가 table definition, owner, metadata, statistics를 보는데에 자주 쓰이고 있다. 따라서 databook에 DQ result를 보여주고 있다. DQ는 category - table 레벨로 집계되므로 failed test는 해당하는 category와 overall status에서 실패로 보여진다.
 
-![*Sample Data Quality dashboard in Databook*](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled6.png)
-
-*Sample Data Quality dashboard in Databook*
+![Sample Data Quality dashboard in Databook](how-uber-achieves-operational-excellence-in-the-data-quality-experience/Untitled6.png)
 
 ### Query Runner
 
