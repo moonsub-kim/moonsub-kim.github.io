@@ -9,6 +9,13 @@ description: "Google의 [The Google File System (SOSP '03)](https://static.googl
 
 # GFS (SOSP ‘03)
 
+[GFS: Evolution on Fast-forward](https://queue.acm.org/detail.cfm?id=1594206)
+
+[From GFS To Colossus: Cluster-Level Storage](http://www.pdsw.org/pdsw-discs17/keynote.shtml)
+
+[Colossus - The Greatest Secret in the History of Computing](https://www.youtube.com/watch?v=g2tMcMQqSbA)
+
+
 ## 요약
 
 1. assumptions, GFS의 design principle
