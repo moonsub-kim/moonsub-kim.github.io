@@ -30,6 +30,8 @@ description: "Google의 [Spanner: Google’s Globally-Distributed Database (OSDI
 
 [CAP Twelve Years Later: How the "Rules" Have Changed](https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/)
 
+[Living Without Atomic Clocks | Where CockroachDB & Spanner Diverge](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/#how-does-cockroachdb-choose-transaction-timestamps)
+
 - challenges
     - read without any communicaiton (local replica)
     - transactions accross shards
