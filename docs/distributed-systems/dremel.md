@@ -9,8 +9,6 @@ description: "Google의 [Dremel: Interactive Analysis of Web-Scale Datasets (VLD
 
 # Dremel (VLDB ‘10)
 
-[https://notion-ga.ohwhos.vercel.app/collect?tid=UA-221453622-2&host=notion.so&page=/blog/distributed-systems/dremel](https://notion-ga.ohwhos.vercel.app/collect?tid=UA-221453622-2&host=notion.so&page=/blog/distributed-systems/dremel)
-
 [conference](https://static.googleusercontent.com/media/research.google.com/ko//pubs/archive/36632.pdf)
 
 [journal](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37217.pdf)
