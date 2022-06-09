@@ -1,5 +1,5 @@
 ---
-title: Redshift (SIGMOD 22)
+title: Redshift (SIGMOD '22)
 parent: Distributed Systems
 last_modified_date: 2022-06-04
 nav_order: 12
