@@ -1,6 +1,7 @@
 ---
 title: "[devsisters] data driven으로 서비스 운영 자동화 (spark)"
 last_modified_date: 2021-12-04
+nav_order: 9
 description: "데브시스터즈의 [data driven으로 서비스 운영 자동화](https://tv.naver.com/v/23650703) 를 정리한 글 입니다."
 ---
 {{ page.description }}

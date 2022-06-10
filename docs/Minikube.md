@@ -1,3 +1,8 @@
+---
+title: Minikube
+has_children: false
+nav_order: 10
+---
 # Minikube
 
 

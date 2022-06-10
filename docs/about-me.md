@@ -1,3 +1,9 @@
+---
+title: About me
+has_children: false
+nav_order: 11
+---
+
 # About Me
 
 분산시스템, 데이터 인프라에 관심이 많은 데이터 엔지니어입니다.
