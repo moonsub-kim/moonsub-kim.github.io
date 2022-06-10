@@ -63,7 +63,7 @@ TAO와 Memcache같은 dynamic cache에서 data는 read(cache fill)와 write(cach
 
 그리고 모든 cache state change를 로깅하는건 비현실적이다. cache는 주로 read-heavy workload에서 scalability를 위해 도입되는데, 이는 대부분의 cache state change가 cache fill path에서 발생하는것을 의미한다. TAO에선, 하루에 1천조개의 쿼리를 서빙한다. cache hit rate이 99%라 하더라도 10조개의 cache fill이 발생할 것이다. 모든 cache state change를 로깅하면 read-heavy cache workload가 logging system때문에 write-heavy workload로 바뀌게 된다. 분산시스템(여기선 distributed cache)를 로그없이 디버깅하는건 불가능하다.
 
-이런 챌린지에서도 Meta는 몇년간 TAO의 cache consistency를 6 nines에서 10 nines로 향상시켰다.
+이런 챌린지에서도 Meta는 몇년간 TAO의 cache consistency를 6 nines에서 10 nines로 향상시켰다 (6 nines: 99.9999%, 10 nines: 99.99999999%).
 
 ## Reliable consistency observability
 
