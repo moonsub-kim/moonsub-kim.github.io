@@ -13,7 +13,7 @@ description: "Meta의 [Cache made consistent: Meta’s cache invalidation soluti
 
 ![cover](cache-made-consistent-metas-cache-invalidation-solution/Untitled.png)
 
-cache는 latency를 줄이고 read-heavy workload를 scale하고, 비요을 줄인다. 말그대로 어디에서나 쓰인다. cache는 핸드폰이나 브러우저에서도 쓰인다. CDN과 DNS는 필수적인 geo-replicated cache이다
+cache는 latency를 줄이고 read-heavy workload를 scale하고, 비용을 줄인다. cache는 어디에서나 쓰인다. cache는 핸드폰이나 브러우저에서도 쓰인다. CDN과 DNS는 필수적인 geo-replicated cache이다
 
 Phil Karlton은 “There are only two hard things in computer science: cache invalidation and naming things.” 라고 말했었다. 당신이 만약 cache를 invalidation하면서 쓰고있다면 cache inconsistency가 발생했을 가능성이 높다.
 
