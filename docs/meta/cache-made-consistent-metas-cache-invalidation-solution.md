@@ -5,14 +5,13 @@ last_modified_date: 2022-06-10
 nav_order: 0
 description: "Meta의 [Cache made consistent: Meta’s cache invalidation solution](https://engineering.fb.com/2022/06/08/core-data/cache-invalidation/) 을 번역한 글 입니다."
 ---
+{{ page.description }}
 
 # Cache made consistent: Meta’s cache invalidation solution
 
 [HN comments](https://news.ycombinator.com/item?id=31671252)
 
 ![cover](cache-made-consistent-metas-cache-invalidation-solution/Untitled.png)
-
-# Cache made consistent: Meta’s cache invalidation solution
 
 cache는 latency를 줄이고 read-heavy workload를 scale하고, 비요을 줄인다. 말그대로 어디에서나 쓰인다. cache는 핸드폰이나 브러우저에서도 쓰인다. CDN과 DNS는 필수적인 geo-replicated cache이다
 
