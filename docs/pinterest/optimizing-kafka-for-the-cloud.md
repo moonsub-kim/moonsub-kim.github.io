@@ -1,7 +1,7 @@
 ---
 title: Optimizing Kafka for the cloud
 parent: Pinterest
-last_modified_date: 2022-10-31
+last_modified_date: 2021-10-31
 nav_order: 0
 description: "Pinterest의 [Optimizing Kafka for the cloud](https://medium.com/pinterest-engineering/optimizing-kafka-for-the-cloud-4e936643fde0) 를 번역한 글 입니다."
 ---
