@@ -17,7 +17,7 @@ cache는 latency를 줄이고 read-heavy workload를 scale하고, 비용을 줄�
 
 Phil Karlton은 “There are only two hard things in computer science: cache invalidation and naming things.” 라고 말했었다. 당신이 만약 cache를 invalidation하면서 쓰고있다면 cache inconsistency가 발생했을 가능성이 높다.
 
-Meta에서는 [TAO](https://engineering.fb.com/2013/06/25/core-data/tao-the-power-of-the-graph/), [Memcache](https://research.facebook.com/publications/scaling-memcache-at-facebook/)를 포함한 매우 큰 cache deployment를 운영하고있다. 몇년동안 TAO의 cache consistency를 6 nines에서 10 nines까지 높였다.
+Meta에서는 [TAO](https://engineering.fb.com/2013/06/25/core-data/tao-the-power-of-the-graph/), [Memcache](https://research.facebook.com/publications/scaling-memcache-at-facebook/)를 포함한 매우 큰 cache deployment를 운영하고있다. 몇년동안 TAO의 cache consistency를 6 nines에서 10 nines까지 높였다  (6 nines: 99.9999%, 10 nines: 99.99999999%).
 
 우리는 cache invalidation에 대해 이론과 실제의 갭을 줄일수있는 효율적인 솔루션이 있다고 믿는다. 이 포스트의 principle, methodology 다양한 scale의 cache service에 적용될 수 있다. Postgres의 data를 Redis에서 캐싱하거나, disaggregated materialization을 유지하는 경우에도 동작할것이다.
 
@@ -63,7 +63,7 @@ TAO와 Memcache같은 dynamic cache에서 data는 read(cache fill)와 write(cach
 
 그리고 모든 cache state change를 로깅하는건 비현실적이다. cache는 주로 read-heavy workload에서 scalability를 위해 도입되는데, 이는 대부분의 cache state change가 cache fill path에서 발생하는것을 의미한다. TAO에선, 하루에 1천조개의 쿼리를 서빙한다. cache hit rate이 99%라 하더라도 10조개의 cache fill이 발생할 것이다. 모든 cache state change를 로깅하면 read-heavy cache workload가 logging system때문에 write-heavy workload로 바뀌게 된다. 분산시스템(여기선 distributed cache)를 로그없이 디버깅하는건 불가능하다.
 
-이런 챌린지에서도 Meta는 몇년간 TAO의 cache consistency를 6 nines에서 10 nines로 향상시켰다 (6 nines: 99.9999%, 10 nines: 99.99999999%).
+이런 챌린지에서도 Meta는 몇년간 TAO의 cache consistency를 6 nines에서 10 nines로 향상시켰다.
 
 ## Reliable consistency observability
 
