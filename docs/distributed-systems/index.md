@@ -1,7 +1,6 @@
 ---
 title: Distributed Systems
 has_children: true
-last_modified_date: 2022-03-28
 nav_order: 1
 has_toc: false
 ---
