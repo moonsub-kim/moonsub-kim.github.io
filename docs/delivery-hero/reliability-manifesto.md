@@ -112,7 +112,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **R-3 *Our services degrade gracefully***: Tier 1, 2의 서비스는 dependency fail에서도 중단되면 안되고, 이런 degraded mode일땐 fallback(default behavior)이 동작해야한다.
 
-**R-4 *We design for faiure***: 아래 방어 로직을 구현한다.
+**R-4 *We design for failure***: 아래 방어 로직을 구현한다.
 
 1. **Timeout**: 특정한 wait interval이 지나면 결과가 너무 늦게나오거나 sucess return이 올 가능성이 낮다.
 2. **Retry**: 많은 fault는 일시적이고 잠시 뒤에 알아서 고쳐질 것이므로 cascading failure를 피하기 위해 exponential backoff와 jitter를 쓴다.
