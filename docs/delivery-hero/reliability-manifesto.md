@@ -3,7 +3,7 @@ title: "The Delivery Hero Reliability Manifesto"
 parent: Delivery Hero
 last_modified_date: 2022-07-03
 nav_order: 0
-description: "Delivery Hero의 [The Delivery Hero Reliability Manifesto](https://tech.deliveryhero.com/our-reliability-manifesto/) 를 번역한 글 입니다."
+description: "Delivery Hero CTO가 작성한 [The Delivery Hero Reliability Manifesto](https://tech.deliveryhero.com/our-reliability-manifesto/) 를 번역한 글 입니다."
 ---
 {{ page.description }}
 
@@ -15,7 +15,7 @@ Delivery Hero는 초당 1000건의 transaction을 처리하는 payment system을
 
 Delivery Hero는 아래 세가지가  매일 천만개에 가까운 주문을 처리하는데 어려움을 만든다.
 
-1. Delivery Hero의 피크 타임은 일요일 저녁인데, 당연히 tech team도 노트북을 만지지 않고 저녁을 먹기를 좋아한다. (그러니까 문제생기면 어쩔수없이 하는데 기본적으로는 밥을먹으니깐~ 이라는 의미같음)
+1. Delivery Hero의 피크 타임은 일요일 저녁인데, 당연히 tech team도 노트북을 만지지 않고 저녁을 먹기를 좋아한다. (문제생기면 어쩔수없이 일하겠지만 기본적으로는 밥먹는 시간임)
 2. 음식이 빨리 식기때문에 문제를 해결하기 위해 주어지는 시간은 몇분정도 밖에 되지 않는다.
 3. 만약 예측한대로 동작하지 않는다면, Delivery Hero는 수백만개의 가게가 손실을 얻고, 수많은 소비자가 배고프게 된다.
 
@@ -48,7 +48,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **A-2 *We care about naming***: 모든 서비스는 모호하지 않고 이해하기 쉬운 이름을 써야 한다.
 
-**A-3 *We start with a monolith***: 빠르게 움직이기 위해 [Monolith first pattern](https://martinfowler.com/bliki/MonolithFirst.html) 을 따르고, 요구사항애 대헤 더 이해하게 된 후에 sub-service로 쪼갠다.
+**A-3 *We start with a monolith***: 빠르게 움직이기 위해 [Monolith first pattern](https://martinfowler.com/bliki/MonolithFirst.html) 을 따르고, 요구사항에 대해 더 이해하게 되면 sub-service로 쪼갠다.
 
 **A-4 *We embrace microservice principles***: 새 서비스는 아래 내용을 따라야 한다.
 
@@ -58,7 +58,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 - Single Responsiblity Principle을 따라야 한다.
 - 한 squad에서만 소유해야 한다.
 - 2개 서비스보다 더 긴 synchronous call-chain을 피해야 한다.
-- incident로부터 복구하는 시간을 줄이기 위해 서비스의 상태와 행동을 관찰하기 위한 데이터와 툴을 이용해야 한다.
+- Incident로부터 복구하는 시간을 줄이기 위해 서비스의 상태, 행동을 관찰할 수 있는 데이터와 툴을 이용해야 한다.
 - 서비스의 overhead를 정당화 할 수 있도록 (network latency를 가지는데도 불구하고 서비스로 분리되어야 할 이유), 서비스가 충분한 크기를 가져야 한다.
 - data consistency guarantee(at-least-once 같은)를 전달한다. (exactly-once서비스와 엮이면 exactly-once를 보장해야 한다는건가..?)
 
@@ -77,9 +77,9 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **A-8 *We are cloud native***: 가능하다면 self-hosting보다 managed service를 선택한다.
 
-**A-9 *We minimize critical things***: 서비스가 배달 주문을 처리하기위한 critical path에 포함되는것을 최대한 피한다. critical service는 non-critical scope인것을 다른곳으로 옮겨 lean하게 유지한다.
+**A-9 *We minimize critical things***: 서비스가 배달 주문을 처리하기위한 critical path에 포함되는것을 최대한 피한다. critical service에 있는 non-critical component를 다른곳으로 옮겨 lean하게 유지한다.
 
-**A-10 *We document decisions***: [RFC](https://en.wikipedia.org/wiki/Request_for_Comments)와 [Architecture decision record](https://github.com/joelparkerhenderson/architecture_decision_record)를 써서 중요한 architectural decision을 컨텍스트와 결과를 포함하여 문서화한다.
+**A-10 *We document decisions***: [RFC](https://en.wikipedia.org/wiki/Request_for_Comments)와 [Architecture Decision Record](https://github.com/joelparkerhenderson/architecture_decision_record)를 써서 중요한 architectural decision에 컨텍스트와 결과를 같이 문서화한다.
 
 **A-11 *We love well defined APIs***: 다른 팀을 위해 모든 API를 문서화하고 API library에 문서를 퍼블리쉬한다.
 
@@ -110,39 +110,39 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 3. Tier 3: 유저 경험에 영향을 미치는 서비스
 4. Tier 4: 나머지 내부 서비스
 
-**R-3 *Our services degrade gracefully***: Tier 1, 2의 서비스는 dependency fail에서도 중단되면 안되고, 이런 degraded mode일땐 fallback(default behavior)이 동작해야한다.
+**R-3 *Our services degrade gracefully***: Tier 1, 2의 서비스는 dependency failure에서도 문제가 생기면 안되고, 이런 degraded mode일땐 fallback(default behavior)이 동작해야한다.
 
 **R-4 *We design for failure***: 아래 방어 로직을 구현한다.
 
-1. **Timeout**: 특정한 wait interval이 지나면 결과가 너무 늦게나오거나 sucess return이 올 가능성이 낮다.
+1. **Timeout**: 충분한 wait interval이 지나면 결과가 너무 늦게나오거나 sucess return이 올 가능성이 낮다.
 2. **Retry**: 많은 fault는 일시적이고 잠시 뒤에 알아서 고쳐질 것이므로 cascading failure를 피하기 위해 exponential backoff와 jitter를 쓴다.
-3. **Circuit Breaker**: 시스템이 심각한 상태면 client가 기다리지 않고 빠르개 실패시켜 critical resource가 장애가 나지 않도록 하는 것이 낫다.
-4. **Fallback**: 계속 실패가 발생할때 처리 로직을 만들어야 한다.
-5. **Throttling**: 잘못 동작하는 client가 서비스를 중단시키는것을 막아야한다.
+3. **Circuit Breaker**: 시스템이 심각한 상태면 client가 기다리지 않고 빠르개 실패시켜 critical resource에 장애가 나지 않도록 하는 것이 낫다.
+4. **Fallback**: 계속 실패가 발생할때를 대비한 처리 로직을 만들어야 한다.
+5. **Throttling**: 이상하게 동작하는 client가 서비스를 중단시키는것을 막아야한다.
 6. **We prepare for rapid growth with ongoing load-tests**: 급격한 비즈니스 성장에도 서비스는 버틸 수 있어야 한다.
 7. **Idempotence**: 여러번의 identical request는 서비스에 한번만 반영되어야 한다.
-8. **Recoverable**: downstream service가 멈출때에도 복구하기 위해 message replay를 하는 process가 있어야 한다.
-9. **Dead-letter queues**: erroneous message는 valid message의 처리를 막아선 안되고, 추후 분석을 위해 DLQ로 들어가야 한다.
+8. **Recoverable**: downstream service failure에도 복구를 위해 message replay를 할 수 있어야 한다.
+9. **Dead-letter queues**: Erroneous message는 valid message의 처리를 막아선 안되고, 추후 분석을 위해 DLQ로 들어가야 한다.
 
-**R-5 *We test for failure***: Tier 1, 2서비스는 dependency failure상황도 테스트 해야한다. Synchronous failure는 no response, slow response, error response, unexpected response(bad JSON등등)를 테스트하고, Asynchronous는 중복이나 out of order같은 케이스도 같이 테스트 해야한다.
+**R-5 *We test for failure***: Tier 1, 2서비스는 dependency failure 상황도 테스트 해야한다. Synchronous failure는 no response, slow response, error response, unexpected response(bad JSON등등)를 테스트하고, Asynchronous는 중복이나 out of order같은 케이스도 같이 테스트 해야한다.
 
 **R-6 *We track the [golden signals](https://sre.google/sre-book/monitoring-distributed-systems/#xref_monitoring_golden-signals)***: 모든 팀은 최소한 system health와 연관된 requests per minute, error rate, server response time, business metric을 보여주는 real time dashboard를 만들어야 한다.
 
-**R-7 *We are the first to know about problems***: critical threhold를 넘으면 모든 관련되 metric은 alert을 발생시켜야하며, alert과 metric design은 architecture review에 포함되어야 한다.
+**R-7 *We are the first to know about problems***: critical threhold를 넘으면 모든 관련된 metric은 alert을 발생시켜야하며, alert과 metric design은 architecture review에 포함되어야 한다.
 
 **R-8 *We log in a central location***: 모든 로깅은 공통된 컨벤션으로 한곳에 쌓여야 한다. 로깅 비용을 인지하고 어떤 것이 로그로 남아야하는지에 대한 의미있는(conscious) 결정을 내려야 한다.
 
 **R-9 *We prepare for rapid growth with ongoing load-tests***
 
-1. Scale: 저번 주 peak requests per minutes을 기준으로, 평균 부하애서 1분이내에 peak request의 3배, 30분이내에 4배에도 버틸 수 있는지 확인한다.
+1. Scale: 저번 주 peak requests per minutes을 기준으로, 평균 부하로 시작해서 1분이내에 peak request의 3배, 30분이내에 4배까지도 버틸 수 있는지 확인한다.
 2. Frequency: 격주에 한번은 수행한다.
 3. Quality: write operation을 포함한 실제 요청 패턴을 사용한다.
 4. Envrionments: 가능하다면 Production에서 load test를 수행한다.
 5. Expectation: server response time, error rate이 accetable level 이내로 유지되면 load test는 성공한 것이다.
 
-**R-10 *We agree on error budgets***: incident로 인한 주문 손실에 대해 0.1%까지의 error budget을 준다. 이 중, platform애 0.05%, global service에 0.05%를 할당한다. 매월 실제 수치와 budget을 확인한다.
+**R-10 *We agree on error budgets***: incident로 인한 주문 손실에 대해 0.1%까지의 error budget을 준다. 이 중, platform에 0.05%, global service에 0.05%를 할당한다. 매월 실제 수치와 budget을 확인한다.
 
-**R-11 *We cancel noise***: public API의 최대 error rate은 매일 평균으로 0.01%이다.
+**R-11 *We cancel noise***: public API의 최대 error rate은 매일 평균 0.01%까지 허용한다.
 
 **R-12 *We speed things up with runbooks***: 이슈를 분석하고 재현하는 방법을 런북으로 만들고 alert과 연결해서 복구시간을 최소화한다.
 
@@ -177,7 +177,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **C-7 *We like diversity of people and ideas***: 모든 발언은 중요하다.
 
-**C-8 *We assume good intentions***: 모든 텍스트 커뮤니케이션을 언제나 선의를 주려는 의도가 있음(charitable)을 생각하며 이해해라.
+**C-8 *We assume good intentions***: 모든 텍스트 커뮤니케이션에는 언제나 선의를 주려는 의도가 있음(charitable)을 생각하며 이해하라.
 
 ## Security
 
@@ -199,7 +199,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 2. 처음부터 필요한 정보만 한정하여 개인정보 수집을 최소화 한다.
 3. 개인정보를 특정한 목적으로 사용하는것을 제한한다.
 4. pseudonimyzation, anonymization을 통해 개인 식별을 하지 못하게 한다.
-5. 최신의 기술을 사용해 개인정보의 confidentiality, integrity, availability를 보장한ㄷ.
+5. 최신의 기술을 사용해 개인정보의 confidentiality, integrity, availability를 보장한다.
 
 **S-8 *We gamify security***: 옳은 행동을 각 팀의 성과로 반영하기 위해 security score table을 만들고 공개한다.
 
