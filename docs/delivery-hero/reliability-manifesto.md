@@ -160,7 +160,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **C-2 *We learn from our mistakes***: Critical incident는 template에 맞춰 post-mortem으로 작성되어야 하고 statuspage에 게시되어야 한다. 또한 Incident는 weekly stablity review meeting에서 리뷰해야 한다.
 
-**C-3 *We go to WOR(Weekly Operational Review)***: Weekly Operational Review동안 시스템의 안정성과 보안을 향상시켜야 한다. Incident로부터 배운 것, 잘 한것, 비즈니스/기술적인 업데이트를 공유하고, 한 squad(랜덤픽)를 골라 아래 내용을 물어본다.
+**C-3 *We go to WOR(Weekly Operational Review)***: Weekly Operational Review동안 시스템의 안정성과 보안을 향상시켜야 한다. Incident로부터 배운 것, 잘 한것, 비즈니스/기술적인 업데이트를 공유하고, 한 squad(랜덤픽)를 골라 아래 내용을 공유한다.
 
 1. 자신과 팀이 하는일에 대한 소개
 2. 서비스의 Architecture chart를 보여주고 critical한 서비스 소개
