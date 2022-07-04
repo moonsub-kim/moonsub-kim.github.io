@@ -207,7 +207,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **P-1 *We don’t waste time***: 모든 서비스는 95%의 요청을 150ms이내에 처리해야 한다.
 
-**P-2 *We make cost visible on squad level***: Cloud resoure, observability tool, data processing에 대해 squad/service level로 resource tagging을 한다. 모든 squad는 weekly cost를 관리해야 한다.
+**P-2 *We make cost visible on squad level***: Cloud resoure, observability tool, data processing에 대해 squad/service level로 resource tagging을 한다. 모든 squad는 weekly cost를 모니터링해야 한다.
 
 **P-3 *We leverage economies of scale***: 우리 시스템이 주문 수가 늘어날 수록 cost per order는 감소하도록 만들어야 한다. 분기단위로 cost per order가 10%씩 내려가는 트렌드가 보이면 좋다.
 
@@ -227,4 +227,4 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **E-6 *We trust each other***: Trunk based development를 이용해 pair programming, collective code ownership을 가지도록 하고 팀 내의 code visibility를 높인다.
 
-**E-7 *We know our metrics***: lead time(개발시작부터 production 배포까지 소요되는 시간), 배포 빈도, 복구 시간과 복구시간동안 실패비율을 관리한다.
+**E-7 *We know our metrics***: lead time(개발시작부터 production 배포까지 소요되는 시간), 배포 빈도, 복구 시간과 복구시간동안 실패비율을 모니터링한다.
