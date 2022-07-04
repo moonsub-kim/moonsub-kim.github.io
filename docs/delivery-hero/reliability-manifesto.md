@@ -183,7 +183,7 @@ Manifesto는 reliable system을 만들기 위해 필요한 것에 대한 현재 
 
 **S-1 *Security is not optional***: 최선을 다해 시스템과 데이터를 보호하고 security dashboard rating 꾸준히 개선한다.
 
-**S-2 *We block attackers at the edge***: 모든 customer-facing DNS entry는 Cloudflare로 보호되어야 한다. Inter-service communication must be pro (pro가 숨은 뜻이 있는지 몰라서 원문그대로..).
+**S-2 *We block attackers at the edge***: 모든 customer-facing DNS entry는 Cloudflare로 보호되어야 한다. (Inter-service communication도 보호되어야하는데.. 내용이 잘려있음).
 
 **S-3 *We limit our attack surface***: Internal tool, back-office, infrastructure는 public internet으로 direct access 할 수 없도록 해야 한다.
 
