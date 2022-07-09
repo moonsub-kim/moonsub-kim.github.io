@@ -26,6 +26,13 @@ jtd.onReady = function(ready) {
 function initNav() {
   jtd.addEvent(document, 'click', function(e){
     var target = e.target;
+
+    console.log('raf', e, e.target)
+    if (target && target.querySelector('a.nav-list-expander')) {
+      target.classList.toggle('active')
+      return;
+    }
+
     while (target && !(target.classList && target.classList.contains('nav-list-expander'))) {
       target = target.parentNode;
     }
