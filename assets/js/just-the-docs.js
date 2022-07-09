@@ -27,9 +27,10 @@ function initNav() {
   jtd.addEvent(document, 'click', function(e){
     var target = e.target;
 
-    console.log('raf', e, e.target)
     if (target && target.parentNode && target.parentNode.querySelector('a.nav-list-expander')) {
-      target = target.parentNode;
+      e.preventDefault();
+      target.parentNode.classList.toggle('active');
+      return;
     }
 
     while (target && !(target.classList && target.classList.contains('nav-list-expander'))) {
