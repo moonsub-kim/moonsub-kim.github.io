@@ -28,9 +28,8 @@ function initNav() {
     var target = e.target;
 
     console.log('raf', e, e.target)
-    if (target && target.querySelector('a.nav-list-expander')) {
-      target.classList.toggle('active')
-      return;
+    if (target && target.parentNode && target.parentNode.querySelector('a.nav-list-expander')) {
+      target = target.parentNode;
     }
 
     while (target && !(target.classList && target.classList.contains('nav-list-expander'))) {
