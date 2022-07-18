@@ -1,6 +1,7 @@
 ---
 title: "How DynamoDB provides transactions with scalability"
 parent: DynamoDB
+grand_parent: Distributed Systems
 last_modified_date: 2022-02-22
 nav_order: 3
 description: "Amazon의 [Transactions and Scalability in Cloud Databases—Can’t We Have Both? (Keynote in FAST '19)](https://www.youtube.com/watch?v=CK6h48zOY9k) 을 정리한 글 입니다."
