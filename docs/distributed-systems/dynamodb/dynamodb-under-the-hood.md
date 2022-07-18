@@ -2,7 +2,7 @@
 title: "DynamoDB Under the Hood: How We Built a Hyper-Scale Database"
 parent: DynamoDB
 grand_parent: Distributed Systems
-last_modified_date: 2022-02-22
+last_modified_date: 2022-02-20
 nav_order: 2
 description: "Amazon의 [DynamoDB Under the Hood: How We Built a Hyper-Scale Database (re:Invent 2018)](https://www.youtube.com/watch?v=yvBR71D0nAQ) 와 [Transactions and Scalability in Cloud Databases—Can’t We Have Both? (Keynote in FAST '19)](http://www.vldb.org/pvldb/vol13/p3461-melnik.pdf) 을 번역한 글 입니다."
 ---

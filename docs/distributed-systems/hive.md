@@ -2,7 +2,7 @@
 title: Hive (ICDE '10)
 parent: Distributed Systems
 last_modified_date: 2022-03-28
-nav_order: 9
+nav_order: 8
 description: "Facebook의 [Hive: A Petabyte Scale Data Warehouse Using Hadoop (ICDE '10)](http://infolab.stanford.edu/~ragho/hive-icde2010.pdf) 을 번역한 글 입니다."
 ---
 {{ page.description }}

@@ -2,7 +2,7 @@
 title: Spanner (OSDI '12)
 parent: Distributed Systems
 last_modified_date: 2022-03-09
-nav_order: 8
+nav_order: 7
 description: "Google의 [Spanner: Google’s Globally-Distributed Database (OSDI '12)](https://static.googleusercontent.com/media/research.google.com/ko//archive/spanner-osdi2012.pdf) 를 번역한 글 입니다."
 ---
 {{ page.description }}
