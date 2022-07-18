@@ -1,6 +1,6 @@
 ---
 title: DynamoDB (ATC '22)
-parent: Distributed Systems
+parent: DynamoDB
 last_modified_date: 2022-07-18
 nav_order: 4
 description: "[Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Managed NoSQL Database Service (ATC '22)](https://www.usenix.org/system/files/atc22-vig.pdf) 을 번역한 글 입니다."
