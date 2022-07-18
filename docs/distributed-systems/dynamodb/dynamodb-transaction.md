@@ -8,7 +8,7 @@ description: "Amazon의 [Transactions and Scalability in Cloud Databases—Can�
 ---
 {{ page.description }}
 
-# [Transactions and Scalability in Cloud Databases—Can’t We Have Both?](https://www.usenix.org/conference/fast19/presentation/terry)
+# Transactions and Scalability in Cloud Databases—Can’t We Have Both?
 
 - predictable performance 중요, rdbms는 predictable하지 않다
 - nosql database에 transaction없음 (complexity, deadlock, starvation, interference, cost)
