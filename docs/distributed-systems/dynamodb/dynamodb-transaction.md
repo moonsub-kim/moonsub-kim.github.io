@@ -1,76 +1,11 @@
 ---
-title: DynamoDB
+title: "How DynamoDB provides transactions with scalability"
 parent: Distributed Systems
 last_modified_date: 2022-02-22
-nav_order: 6
-description: "Amazon의 [DynamoDB Under the Hood: How We Built a Hyper-Scale Database (re:Invent 2018)](https://www.youtube.com/watch?v=yvBR71D0nAQ) 와 [Transactions and Scalability in Cloud Databases—Can’t We Have Both? (Keynote in FAST '19)](http://www.vldb.org/pvldb/vol13/p3461-melnik.pdf) 을 번역한 글 입니다."
+nav_order: 3
+description: "Amazon의 [Transactions and Scalability in Cloud Databases—Can’t We Have Both? (Keynote in FAST '19)](https://www.youtube.com/watch?v=CK6h48zOY9k) 을 정리한 글 입니다."
 ---
 {{ page.description }}
-
-# [DynamoDB Under the Hood: How We Built a Hyper-Scale Database](https://www.youtube.com/watch?v=yvBR71D0nAQ)
-
-[HN comments](https://yahnd.com/theater/r/youtube/yvBR71D0nAQ/)
-
-![HN comments](dynamo-db/Untitled.png)
-
-write
-
-- 나자신한테 쓰고 한개 replica가 ack 받으면 유저에게 sucess전달 (low latency를 위해서)
-strong consistency라면 replica 모두에게 write할때까지 기다리면 될듯 하다
-
-![put item](dynamo-db/Untitled1.png)
-
-- dynamo paper 에있던 quorum안씀
-- paxos사용 아마도 partition 단위로 paxos group이 있는 spanner와 비슷한 방식?
-- request router: metadata에서 table, key 보고 storage node(3개)중 master node에게 operation 전달
-
-storage node는 btree(아마도 range ke 기준일듯?), replication log 저장
-btree라고 말하는 것을 보니 아직 innodb이지 않을까
-
-![storage nodes](dynamo-db/Untitled2.png)
-
-secondary index (아마도 GSI)
-
-- replication log를 읽어서 replay시켜줌 → eventual consistency만 가능한 이유
-
-![secondary index](dynamo-db/Untitled3.png)
-
-- 근데 GSI는 hash key가 다른놈이므로, 만약 그 hash key에 대해 put을하면 partition두개를 바꿔야함
-- 대충 {”primary_key”:1, “value”:2, “gsi_key”:3} 레코드를 가질때
-    - gsi_key를 2로 업데이트 해버리면..
-    - gsi_key 3인걸 제거하고, gsi_key2를 put하게됨
-    - gsi를 최대 5개까지만들수있으니 최악의경우 11개의 partition을 건드림
-
-![secondary indices](dynamo-db/Untitled4.png)
-
-LSI (추정)
-
-- 그냥 partition 더 추가하면됨, b tree로 되어있으므로 range key만 다른 애들로 사용 하면 문제 없을듯함근데 이 방식은 strong consistency를 지키기 어려워진다
-- 같은 Partition key에 대해 replica들이 별도의 btree를 소유하고 있는 방식일 수도 있음
-
-provisioning
-
-- partition이 RCU를 엔빵해서 가짐
-- 사실상 그냥 수익모델 아닌가..? 왜필요한지는 잘 몰겠음 →
-→ 전체적인 시스템의 availabiility를 위해서? table을 만든다고 해서 전용 인스턴스를 할당해서 쓰는 구조가 아니므로 이게 맞을듯 함, region 전체에서 관리되는 한개나 엔지니어들이 매뉴얼로 만드는 dynamodb cluster일것같음
-
-![token bucket algorithm](dynamo-db/Untitled5.png)
-
-- daptive capacity로 hot parittion problem을 좀 완화해주긴함
-    - PID controller 이용
-
-![adpative capacity](dynamo-db/Untitled6.png)
-
-![adaptive capacity active](dynamo-db/Untitled7.png)
-
-- 오토스케일링
-    - 내부프로덕에서도 cloudwatch sns를 꾸역꾸역 쓰네..
-    지들이 이러니 뭐만하면 람다에 뭐에 붙이라 하는거였군
-
-![auto scaling](dynamo-db/Untitled8.png)
-
-- conflict resolution
-    - last write wins
 
 # [Transactions and Scalability in Cloud Databases—Can’t We Have Both?](https://www.usenix.org/conference/fast19/presentation/terry)
 
@@ -88,7 +23,7 @@ provisioning
 
 ## Standard Approach
 
-![standard approach](dynamo-db/Untitled9.png)
+![standard approach](dynamodb-transaction/Untitled9.png)
 
 다안씀
 
@@ -105,7 +40,7 @@ transaction을 통해 모든 operation을 쓰는게 표준이 되면 성능저�
 
 ## One shot transaction
 
-![dynamodb transactions](dynamo-db/Untitled10.png)
+![dynamodb transactions](dynamodb-transaction/Untitled10.png)
 
 여러 테이블에 걸쳐서 가능.
 
@@ -113,13 +48,13 @@ transaction을 통해 모든 operation을 쓰는게 표준이 되면 성능저�
 
 ### Limitation
 
-![limitations of single-shot transactions](dynamo-db/Untitled11.png)
+![limitations of single-shot transactions](dynamodb-transaction/Untitled11.png)
 
 transaction중간에 값을 가져와서 저장하려면 오른쪽처럼 바꿔야함
 
 ## Transactions Architecture
 
-![Dynamodb transactions architecture](dynamo-db/Untitled12.png)
+![Dynamodb transactions architecture](dynamodb-transaction/Untitled12.png)
 
 transaction coordinator
 
@@ -134,7 +69,7 @@ transaction coordinator
 - storage node failure는 이미 잘 되어있음, Request router - storage node간 상황이랑 똑같으니
 - coordinator가 죽는다면
 
-![Dynamodb transactions architecture with fault tolerance](dynamo-db/Untitled13.png)
+![Dynamodb transactions architecture with fault tolerance](dynamodb-transaction/Untitled13.png)
 
 - recovery manager: ledger를 스캔해서 일정시간내에 complete 되어야 하는데 되지 않은 transaction을 찾아서 새 transaction coordinator에 할당
     - 이 상황에서는 무조건 commit step만 다시하면된다
@@ -144,7 +79,7 @@ transaction coordinator
 
 위까지 보면 isolation을 제공하지 않아서 write시점에 여러 transaction이 일어날 수 있음
 
-![DynamoDB Transactions Architecture with timestamp ordering](dynamo-db/Untitled14.png)
+![DynamoDB Transactions Architecture with timestamp ordering](dynamodb-transaction/Untitled14.png)
 
 timestamp ordering
 
@@ -156,7 +91,7 @@ timestamp ordering
 
 두 coordinator의 clock이 조금씩 다를텐데 같은 data에 대해 write을 하는경우
 
-![Dynamodb Transactions Architecture with timestamp ordering with two transaction coordinators](dynamo-db/Untitled15.png)
+![Dynamodb Transactions Architecture with timestamp ordering with two transaction coordinators](dynamodb-transaction/Untitled15.png)
 
 clock synchronization이 timestamp ordering에 영향을 미치지 않는다 (아마 lamport clock같은걸 이야기하나본데 정확히 명시하진않음)
 
@@ -168,12 +103,12 @@ TxC2까지 완료됐는데 TxNew가 들어오는 경우
 
 - timestamp가 realtime이 아니고, coordinator가 할당한 시간이므로 늦게들어오는애가 생김
 
-![rules for accepting transactions](dynamo-db/Untitled16.png)
+![rules for accepting transactions](dynamodb-transaction/Untitled16.png)
 
 - indenpendent serializability
 각 node는 독립적으로 accept/reject 여부를 결정함 (coordinator가 하지 않는다)
 
-![accepting new write transactions](dynamo-db/Untitled17.png)
+![accepting new write transactions](dynamodb-transaction/Untitled17.png)
 
 1. tx1 complete을 했는데 txnew가 이전 timestamp로 들어온경우, 이 그림은 realtime이 아니고 coordinator time임!!
     1. 기본적으로는 Reject될것임
@@ -186,7 +121,7 @@ TxC2까지 완료됐는데 TxNew가 들어오는 경우
 
 lock이 없으므로 concurrency, performance 영향을 주지않음
 
-![accdepting concurrent write transactions](dynamo-db/Untitled18.png)
+![accdepting concurrent write transactions](dynamodb-transaction/Untitled18.png)
 
 1. txnew가 tx1 complete, tx2 accept사이에 오는경우 (txnew가 tx2보다 늦게들어옴)
     1. tx1가 저장한 값에 txnew 조건이 부합하지 않으면 reject
@@ -196,17 +131,17 @@ lock이 없으므로 concurrency, performance 영향을 주지않음
 2. txnew가 tx2 accept 이후에 들어온다면
     1. tx2 조건에 따라 accept/reject 결정, 즉 accept되면 commit step에서 값을 저장할거기때문에 선반영?, commit은 어찌됐건 보장이 됨 (recovery manager)
 
-![ordering transaction execution - late arrival](dynamo-db/Untitled19.png)
+![ordering transaction execution - late arrival](dynamodb-transaction/Untitled19.png)
 
 tx1의 put b=1이 늦게들어오면 그냥 무시하게됨
 
-![ordering transaction execution - add](dynamo-db/Untitled20.png)
+![ordering transaction execution - add](dynamodb-transaction/Untitled20.png)
 
 +1같은 operation이면 idempotent하지 않으므로 일정시간 기다린다고함
 
 ### Read Transaction
 
-![accepting new read transactions](dynamo-db/Untitled21.png)
+![accepting new read transactions](dynamodb-transaction/Untitled21.png)
 
 tx1 complete, tx2 accept가 이미 진행됐는데 txnew가 늦게들어온경우
 
@@ -219,19 +154,19 @@ wiredtiger가 mvcc를 지원하는데 wiredtiger를 쓰진않음
 
 ### Non-transactional Operations
 
-![non-transactional operations](dynamo-db/Untitled22.png)
+![non-transactional operations](dynamodb-transaction/Untitled22.png)
 
 tx와 non-tx request는 서로 독립적으로, 영향을 주지않으면서 실행해야된다
 
 non-tx request는 일단 timestamp가 없이 들어옴, 요청을 storage node가 current clock을 사용함
 
-![non-transactional writes](dynamo-db/Untitled23.png)
+![non-transactional writes](dynamodb-transaction/Untitled23.png)
 
 tx1 complete 시점 이후에 put timestamp가 찍혔다면
 
 - 조건 없이 accept가능
 
-![non-transactional writes - order](dynamo-db/Untitled24.png)
+![non-transactional writes - order](dynamodb-transaction/Untitled24.png)
 
 tx1 complete, tx2 accept 사이에 put timestamp가 찍혔다면 (tx2 accept은 이미 accept 된 상태)
 
@@ -262,7 +197,7 @@ transaction동안 storage node는 다른 애들과 통신하지 않음
 
 latency도 아이템 갯수에 비례 + transaction overhead 정도로만 증가함
 
-![scalability concerns revisited](dynamo-db/Untitled25.png)
+![scalability concerns revisited](dynamodb-transaction/Untitled25.png)
 
 - write contention이 많을수록 delay되는 시간이 더 길어지는것은 아닌가? 너무 예외케이스일지도
 
