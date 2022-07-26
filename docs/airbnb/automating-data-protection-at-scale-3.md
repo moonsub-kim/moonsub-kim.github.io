@@ -5,7 +5,7 @@ last_modified_date: 2022-05-05
 nav_order: 9
 description: "Airbnb의 [Automating Data Proteciton at Scale 3](https://medium.com/airbnb-engineering/automating-data-protection-at-scale-part-3-34e592c45d46) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Automating Data Protection at Scale 3
 

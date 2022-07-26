@@ -5,7 +5,7 @@ last_modified_date: 2022-01-03
 nav_order: 0
 description: "Google의 [MapReduce: Simplified Data Processing on Large Clusters (OSDI '04)](https://static.googleusercontent.com/media/research.google.com/ko//archive/mapreduce-osdi04.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # MapReduce (OSDI ‘04)
 

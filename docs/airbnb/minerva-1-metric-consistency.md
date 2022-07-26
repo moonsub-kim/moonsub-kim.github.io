@@ -5,7 +5,7 @@ last_modified_date: 2021-10-16
 nav_order: 3
 description: "Airbnb의 [Minerva 1 - Metric Consistency](https://medium.com/airbnb-engineering/how-airbnb-achieved-metric-consistency-at-scale-f23cc53dea70) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Minerva 1 - Metric Consistency
 

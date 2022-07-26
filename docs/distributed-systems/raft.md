@@ -5,7 +5,7 @@ last_modified_date: 2022-01-29
 nav_order: 3
 description: "[Raft Consensus Algorithm (ATC '14)](https://raft.github.io/raft.pdf) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Raft (ATC ‘14)
 

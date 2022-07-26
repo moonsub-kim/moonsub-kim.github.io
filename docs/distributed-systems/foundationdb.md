@@ -5,7 +5,7 @@ last_modified_date: 2022-06-09
 nav_order: 12
 description: "Apple의 [FoundationDB: A Distributed Unbundled Transactional Key Value Store (SIGMOD ‘21)](https://www.foundationdb.org/files/fdb-paper.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 [https://www.foundationdb.org/blog/fdb-paper/](https://www.foundationdb.org/blog/fdb-paper/)
 

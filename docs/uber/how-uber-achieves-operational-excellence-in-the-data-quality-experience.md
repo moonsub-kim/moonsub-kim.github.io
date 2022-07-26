@@ -5,7 +5,7 @@ last_modified_date: 2022-05-13
 nav_order: 4
 description: "Uber의 [How Uber Achieves Operational Excellence in the Data Quality Experience](https://eng.uber.com/operational-excellence-data-quality/) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # How Uber Achieves Operational Excellence in the Data Quality Experience
 

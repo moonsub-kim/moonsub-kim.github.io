@@ -6,7 +6,7 @@ last_modified_date: 2021-12-13
 nav_order: 0
 description: "[An Overview of End-to-End Exactly-Once Processing in Apache Flink](https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Exactly-Once Processing
 

@@ -6,7 +6,7 @@ last_modified_date: 2021-11-29
 nav_order: 3
 description: "[Flink Architecture](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/concepts/flink-architecture/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Architecture & Clusters
 

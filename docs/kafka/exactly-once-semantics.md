@@ -5,7 +5,7 @@ last_modified_date: 2021-11-12
 nav_order: 0
 description: "Confluent의 [Exactly-Once Semantics Are Possible: Here’s How Kafka Does It](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Exactly-Once Semantics
 

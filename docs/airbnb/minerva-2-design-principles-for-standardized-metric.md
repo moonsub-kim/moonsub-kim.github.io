@@ -5,7 +5,7 @@ last_modified_date: 2021-10-17
 nav_order: 4
 description: "Airbnb의 [Minerva 2 - Design Principles for Standardized Metric](https://medium.com/airbnb-engineering/airbnb-metric-computation-with-minerva-part-2-9afe6695b486) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Minerva 2 - Design Principles for Standardized Metric
 

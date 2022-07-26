@@ -6,7 +6,7 @@ last_modified_date: 2021-12-28
 nav_order: 3
 description: "[Tuning Checkpoints and Large State](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/ops/state/large_state_tuning/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Tuning Checkpoints and Large State
 

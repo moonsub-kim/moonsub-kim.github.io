@@ -6,7 +6,7 @@ last_modified_date: 2021-12-17
 nav_order: 1
 description: "[Monitoring Apache Flink Applications 101](https://flink.apache.org/news/2019/02/25/monitoring-best-practices.html) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Monitoring 101
 

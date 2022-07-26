@@ -5,7 +5,7 @@ last_modified_date: 2021-10-28
 nav_order: 1
 description: "Uber의 [Kappa+ Architecture](https://eng.uber.com/kappa-architecture-data-stream-processing/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Kappa+ Architecture
 

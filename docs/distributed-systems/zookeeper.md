@@ -5,7 +5,7 @@ last_modified_date: 2022-02-03
 nav_order: 4
 description: "Yahoo의 [ZooKeeper: Wait-free coordination for Internet-scale systems (ATC '10)](https://www.usenix.org/legacy/event/atc10/tech/full_papers/Hunt.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Zookeeper (ATC ‘10)
 

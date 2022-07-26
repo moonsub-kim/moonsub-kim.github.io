@@ -6,7 +6,7 @@ last_modified_date: 2022-01-01
 nav_order: 7
 description: "[How Apache Flink handles backpressure](https://www.ververica.com/blog/how-flink-handles-backpressure) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Backpressure
 

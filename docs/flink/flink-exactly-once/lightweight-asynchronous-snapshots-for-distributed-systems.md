@@ -6,7 +6,7 @@ last_modified_date: 2021-12-31
 nav_order: 6
 description: "[Lightweight Asynchronous snapshots for Distributed Systems](https://arxiv.org/abs/1506.08603) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Lightweight Asynchronous snapshots for Distributed Systems
 

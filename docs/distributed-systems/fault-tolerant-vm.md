@@ -5,7 +5,7 @@ last_modified_date: 2022-01-16
 nav_order: 2
 description: "VMWare의 [The Design of a Practical System for Fault-Tolerant Virtual Machines (SIGOPS '10)](https://www.youtube.com/watch?v=yvBR71D0nAQ) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Fault-Tolerant VM (SIGOPS ‘10)
 

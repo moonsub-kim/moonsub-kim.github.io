@@ -5,7 +5,7 @@ last_modified_date: 2022-07-25
 nav_order: 10
 description: "Airbnb의 [Democratizing Metrics at Airbnb: Minerva 2.0 and Beyond](https://www.youtube.com/watch?v=_MKR8vIbOAE) 을 정리한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Democratizing Metrics at Airbnb: Minerva 2.0 and Beyond
 

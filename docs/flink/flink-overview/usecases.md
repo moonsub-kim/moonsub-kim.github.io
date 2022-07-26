@@ -6,7 +6,7 @@ last_modified_date: 2021-11-28
 nav_order: 3
 description: "[UseCases](https://flink.apache.org/usecases.html) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # UseCases
 

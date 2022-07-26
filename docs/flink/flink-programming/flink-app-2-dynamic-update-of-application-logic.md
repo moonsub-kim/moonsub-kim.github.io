@@ -6,7 +6,7 @@ last_modified_date: 2021-12-18
 nav_order: 2
 description: "[Advanced Flink Application Patterns Vol.2: Dynamic Updates of Application Logic](https://flink.apache.org/news/2020/03/24/demo-fraud-detection-2.html) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Flink App 2: Dynamic Update of Application Logic
 

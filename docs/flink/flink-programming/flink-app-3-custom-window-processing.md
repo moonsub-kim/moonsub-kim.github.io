@@ -6,7 +6,7 @@ last_modified_date: 2021-12-19
 nav_order: 3
 description: "[Advanced Flink Application Patterns Vol.3: Custom Window Processing](https://flink.apache.org/news/2020/07/30/demo-fraud-detection-3.html) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Flink App 3: Custom Window Processing
 

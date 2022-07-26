@@ -5,7 +5,7 @@ last_modified_date: 2022-07-03
 nav_order: 13
 description: "Google의 [Monarch: Google’s Planet-Scale In-Memory Time Series Database (VLDB ‘20)](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/d84ab6c93881af998de877d0070a706de7bec6d8.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Monarch: Google’s Planet-Scale In-Memory Time Series Database
 

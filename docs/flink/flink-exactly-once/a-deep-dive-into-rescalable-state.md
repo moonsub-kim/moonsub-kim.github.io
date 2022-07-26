@@ -6,7 +6,7 @@ last_modified_date: 2021-12-26
 nav_order: 1
 description: "[A Deep Dive into Rescalable State](https://flink.apache.org/features/2017/07/04/flink-rescalable-state.html) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # A Deep Dive into Rescalable State
 

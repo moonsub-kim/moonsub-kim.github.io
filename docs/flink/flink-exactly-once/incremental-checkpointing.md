@@ -6,7 +6,7 @@ last_modified_date: 2021-12-26
 nav_order: 2
 description: "[Managing Large State in Apache Flink: An Intro to Incremental Checkpointing](https://flink.apache.org/features/2018/01/30/incremental-checkpointing.html) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Incremental Checkpointing
 

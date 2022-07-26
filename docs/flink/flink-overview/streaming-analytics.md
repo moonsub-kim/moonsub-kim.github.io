@@ -6,7 +6,7 @@ last_modified_date: 2021-11-10
 nav_order: 2
 description: "[Streaming Analytics](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/streaming_analytics/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Streaming Analytics
 

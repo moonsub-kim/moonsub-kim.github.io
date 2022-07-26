@@ -5,7 +5,7 @@ last_modified_date: 2022-01-09
 nav_order: 1
 description: "Google의 [The Google File System (SOSP '03)](https://static.googleusercontent.com/media/research.google.com/ko//archive/gfs-sosp2003.pdf) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # GFS (SOSP ‘03)
 

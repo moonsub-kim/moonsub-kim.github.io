@@ -5,7 +5,7 @@ last_modified_date: 2021-11-07
 nav_order: 0
 description: "Uber의 [Real-time Data Infrastructure at Uber (SIGMOD '21)](https://arxiv.org/pdf/2104.00087.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Real-time Data Infrastructure at Uber
 

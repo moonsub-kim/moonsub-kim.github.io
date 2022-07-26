@@ -5,7 +5,7 @@ last_modified_date: 2022-05-23
 nav_order: 10
 description: "Google의 [Dremel: Interactive Analysis of Web-Scale Datasets (VLDB '10)](https://static.googleusercontent.com/media/research.google.com/ko//pubs/archive/36632.pdf) 와 [Dremel: A Decade of Interactive SQL Analysis at Web Scale (PVLDB '20)](http://www.vldb.org/pvldb/vol13/p3461-melnik.pdf) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Dremel (VLDB ‘10)
 

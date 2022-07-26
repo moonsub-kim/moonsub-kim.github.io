@@ -5,7 +5,7 @@ last_modified_date: 2021-10-11
 nav_order: 1
 description: "Airbnb의 [Data Quality 2 - A New Gold Standard](https://medium.com/airbnb-engineering/data-quality-at-airbnb-870d03080469) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Data Quality 2 - A New Gold Standard
 

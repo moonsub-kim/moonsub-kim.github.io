@@ -5,7 +5,7 @@ last_modified_date: 2022-06-10
 nav_order: 0
 description: "Meta의 [Cache made consistent: Meta’s cache invalidation solution](https://engineering.fb.com/2022/06/08/core-data/cache-invalidation/) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Cache made consistent: Meta’s cache invalidation solution
 

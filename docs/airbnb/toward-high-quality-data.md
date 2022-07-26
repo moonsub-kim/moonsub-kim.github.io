@@ -5,7 +5,7 @@ last_modified_date: 2021-10-24
 nav_order: 6
 description: "Airbnb의 Techtalk [Toward High Quality Data](https://fb.watch/8BTQ2zVGvv/) 영상을 정리한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Toward High Quality Data
 

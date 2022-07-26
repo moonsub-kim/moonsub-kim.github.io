@@ -5,7 +5,7 @@ last_modified_date: 2022-02-12
 nav_order: 6
 description: "Google의 [Bigtable: A Distributed Storage System for Structured Data (OSDI '06)](https://static.googleusercontent.com/media/research.google.com/ko//archive/bigtable-osdi06.pdf) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Bigtable (OSDI ‘06)
 

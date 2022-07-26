@@ -6,7 +6,7 @@ last_modified_date: 2022-02-11
 nav_order: 1
 description: "Amazon의 [Dynamo: Amazon’s Highly Available Key-value Store (SOSP '07)](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Dynamo (OSDI ‘07)
 

@@ -5,7 +5,7 @@ last_modified_date: 2022-04-02
 nav_order: 9
 description: "Facebook의 [Presto: SQL on Everything (ICDE '19)](https://trino.io/Presto_SQL_on_Everything.pdf) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Presto (ICDE ‘19)
 

@@ -6,7 +6,7 @@ last_modified_date: 2021-12-14
 nav_order: 4
 description: "[High-throughput, low-latency, and exactly-once stream processing with Apache Flink](https://www.ververica.com/blog/high-throughput-low-latency-and-exactly-once-stream-processing-with-apache-flink) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Flink's checkpointing mechanism
 

@@ -6,7 +6,7 @@ last_modified_date: 2021-12-27
 nav_order: 0
 description: "[A Practical Guide to Broadcast State in Apache Flink](https://flink.apache.org/2019/06/26/broadcast-state.html) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Broadcast State
 

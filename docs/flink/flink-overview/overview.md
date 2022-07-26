@@ -6,7 +6,7 @@ last_modified_date: 2021-11-09
 nav_order: 0
 description: "[Learn Flink: Hands-On Training](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/learn-flink/overview/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Flink Overview
 

@@ -6,7 +6,7 @@ last_modified_date: 2021-12-29
 nav_order: 5
 description: "[An example run of the Chandy-Lamport snapshot algorithm](http://composition.al/blog/2019/04/26/an-example-run-of-the-chandy-lamport-snapshot-algorithm/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Chandy-Lamport Algorithm
 

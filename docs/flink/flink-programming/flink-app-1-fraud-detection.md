@@ -6,7 +6,7 @@ last_modified_date: 2021-12-15
 nav_order: 1
 description: "[Advanced Flink Application Patterns Vol.1: Case Study of a Fraud Detection System](https://flink.apache.org/news/2020/01/15/demo-fraud-detection.html) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Flink App 1: Fraud Detection
 

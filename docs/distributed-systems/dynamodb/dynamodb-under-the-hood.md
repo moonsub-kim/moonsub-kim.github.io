@@ -6,7 +6,7 @@ last_modified_date: 2022-02-20
 nav_order: 2
 description: "Amazon의 [DynamoDB Under the Hood: How We Built a Hyper-Scale Database (re:Invent 2018)](https://www.youtube.com/watch?v=yvBR71D0nAQ)를 정리한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # [DynamoDB Under the Hood: How We Built a Hyper-Scale Database](https://www.youtube.com/watch?v=yvBR71D0nAQ)
 

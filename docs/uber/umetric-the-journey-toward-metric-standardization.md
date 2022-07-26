@@ -5,7 +5,7 @@ last_modified_date: 2022-05-08
 nav_order: 3
 description: "Uber의 [uMetric: The Journey Towards Metric Standardization](https://eng.uber.com/umetric/) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # uMetric: The Journey Towards Metric Standardization
 

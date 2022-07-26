@@ -5,7 +5,7 @@ last_modified_date: 2022-07-03
 nav_order: 0
 description: "Delivery Hero CTO가 작성한 [The Delivery Hero Reliability Manifesto](https://tech.deliveryhero.com/our-reliability-manifesto/) 를 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # The Delivery Hero Reliability Manifesto
 

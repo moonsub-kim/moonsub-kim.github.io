@@ -5,7 +5,7 @@ last_modified_date: 2021-11-21
 nav_order: 2
 description: "Uber의 [Real-Time Exactly-Once Ad Event Processing](https://eng.uber.com/real-time-exactly-once-ad-event-processing/) 을 번역한 글 입니다."
 ---
-{{ page.description }}
+**{{ page.description }}**
 
 # Real-Time Exactly-Once Ad Event Processing
 
