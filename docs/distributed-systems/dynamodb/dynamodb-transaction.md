@@ -61,7 +61,7 @@ transaction coordinator
 
 - transaction을 받고, transaction을 wip상태로 ledger에 저장,
     - ledger: persistent하며 dynamodb table로 사용중
-- thw phase protocol로 수행
+- two phase protocol로 수행
     - prepare step: coordinator가 check condition을 물어봄
     - commit step: write수행
 
@@ -94,7 +94,7 @@ timestamp ordering
 
 ![Dynamodb Transactions Architecture with timestamp ordering with two transaction coordinators](dynamodb-transaction/Untitled15.png)
 
-clock synchronization이 timestamp ordering에 영향을 미치지 않는다 (아마 lamport clock같은걸 이야기하나본데 정확히 명시하진않음)
+clock synchronization이 timestamp ordering에 영향을 미치지 않는다 (밑에 내용 나옴)
 
 그래도 시간차이가 커지면 문제가 될수있으니(?) time sync를 사용, 몇ms이내로 오차를 보정
 
@@ -107,15 +107,15 @@ TxC2까지 완료됐는데 TxNew가 들어오는 경우
 ![rules for accepting transactions](dynamodb-transaction/Untitled16.png)
 
 - indenpendent serializability
-각 node는 독립적으로 accept/reject 여부를 결정함 (coordinator가 하지 않는다)
+각 storage node는 독립적으로 accept/reject 여부를 결정함 (coordinator가 하지 않는다)
 
 ![accepting new write transactions](dynamodb-transaction/Untitled17.png)
 
-1. tx1 complete을 했는데 txnew가 이전 timestamp로 들어온경우, 이 그림은 realtime이 아니고 coordinator time임!!
+1. tx1 complete을 했는데 txnew가 이전 timestamp를 들고 들어온경우 (coordinator time임)
     1. 기본적으로는 Reject될것임
     2. 하지만 tx1이 unconditional하다면 txnew는 no-op로 accept가능
     tx1이 unconditional operation이므로 txnew를 무시할 수 있음
-2. tx1 complete 이후 시점에 들어오면
+2. tx1 complete 이후 timestamp를 들고 들어오면
     1. txnew의 condition에 따라 accept/reject결정
 
 (몇ms정도의 오차 내에서 먼저들어온넘이 늦게인식된다면 걔는 그냥 버리는듯?)
@@ -124,17 +124,17 @@ lock이 없으므로 concurrency, performance 영향을 주지않음
 
 ![accdepting concurrent write transactions](dynamodb-transaction/Untitled18.png)
 
-1. txnew가 tx1 complete, tx2 accept사이에 오는경우 (txnew가 tx2보다 늦게들어옴)
+1. txnew가 tx1 complete, tx2 accept사이의 timestamp를 들고 오는경우
     1. tx1가 저장한 값에 txnew 조건이 부합하지 않으면 reject
     2. 조건이 부합한데
         1. tx2가 unconditional하다면 no-op으로 accept
-        2. tx2가 conditional하다면 reject
-2. txnew가 tx2 accept 이후에 들어온다면
+        2. tx2가 conditional하다면 reject (tx2는 이미 accept됨)
+2. txnew가 tx2 accept 이후 timestamp로 들어온다면
     1. tx2 조건에 따라 accept/reject 결정, 즉 accept되면 commit step에서 값을 저장할거기때문에 선반영?, commit은 어찌됐건 보장이 됨 (recovery manager)
 
 ![ordering transaction execution - late arrival](dynamodb-transaction/Untitled19.png)
 
-tx1의 put b=1이 늦게들어오면 그냥 무시하게됨
+tx1의 put b=1이 늦게들어오면 그냥 무시하게됨. tx2가 timestamp상으로 더 뒤이고, last write win이므로.
 
 ![ordering transaction execution - add](dynamodb-transaction/Untitled20.png)
 

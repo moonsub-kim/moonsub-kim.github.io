@@ -28,7 +28,7 @@ blogs
 
 ## Abstract
 
-metastable failure는 분산시스템의 failure pattern이다. metastable failure는 balck swan event이다. 과거에 이런 failure가 발생할 가능성이 아에 없는 outlier라서 아주 큰 장애를 일으키고, 예측하는것보다 장애가 난뒤 설명하는것이 훨씬 쉽다 (예측이 너무 어렵다?). metastable failure들은 서로 다르게 보이지만 이 paper에서 같은 framework에서 동작하는것을 보여줄것이다. 또한 framework을 몇년동안 distributed system에서 본 사건들로 적용해보고, known metastable failure에 대해 resilent한 시스템을 만들기 위한 adhoc technique을 만들었다. 여전히 unknown metastable failure는 문제이긴하다.
+metastable failure는 분산시스템의 failure pattern이다. metastable failure는 black swan event이다. 과거에 이런 failure가 발생할 가능성이 아에 없는 outlier라서 아주 큰 장애를 일으키고, 예측하는것보다 장애가 난뒤 설명하는것이 훨씬 쉽다 (예측이 너무 어렵다?). metastable failure들은 서로 다르게 보이지만 이 paper에서 같은 framework에서 동작하는것을 보여줄것이다. 또한 framework을 몇년동안 distributed system에서 본 사건들로 적용해보고, known metastable failure에 대해 resilent한 시스템을 만들기 위한 adhoc technique을 만들었다. 여전히 unknown metastable failure는 문제이긴하다.
 
 ## 1. Introduction
 
@@ -36,7 +36,7 @@ robustness는 distributed systems에서 중요한 목표이지만 여전히 많�
 
 이 paper에서는 metastable failure pattern을 정의하고, 현실의 예시와 일반적인 metastable fiailure의 특징을 보고, metastability를 대처하기 위한 업계의 practice를 조사하고, systematic하게 metastable failure를 대응하기 위한 방향을 제시한다.
 
-Metastable failure는 특정한 Load롤 system이 bad state에 빠지고 load를 발생시킨 trigger가 사라지더라도 bad state에 계속 남아있는다. 이 때 goodput (유의미한 throughput?)은 아주 낮고, work amplification이나 efficiency가 낮아지는 $sustaining\ effect$로 인해 system이 bad state에서 빠져나오지 못한다. 물리학의 metastability의 정의를 착안하여 이런 bad state를 metastable failure state라고 부르기로 했다. denial-of-service attack, limplock, livelock같이, trigger가 사라지면 바로 해결되는 failure는 metastable인건 아니다. metastable failure에서 벗어나려면 재부팅하거나 load를 엄청나게 줄이는 행동을 해야한다.
+Metastable failure는 trigger로 인해 bad state에 빠지고 load를 발생시킨 trigger가 사라지더라도 bad state에 계속 남아있는다. 이 때 goodput (유의미한 throughput?)은 아주 낮고, work amplification이나 efficiency가 낮아지는 $sustaining\ effect$로 인해 system이 bad state에서 빠져나오지 못한다. 물리학의 metastability의 정의를 착안하여 이런 bad state를 metastable failure state라고 부르기로 했다. denial-of-service attack, limplock, livelock같이, trigger가 사라지면 바로 해결되는 failure는 metastable인건 아니다. metastable failure에서 벗어나려면 재부팅하거나 load를 엄청나게 줄이는 행동을 해야한다.
 
 ![States and transitions of a system experiencing a metastable failure.](metastable-failure-in-distributed-systems/Untitled.png)
 
@@ -126,7 +126,7 @@ software가 implicit priority를 가진다는 문제도 있다. 예를들어 pro
 
 ### Stress Tests
 
-replica에 stress test를 하는건 작은 scale에서 metastable failure를 찾아내는데 유용하다. 하지만 feedback loop의 강도는 scale에따라 달라질 수 있다. small scale test는 large scale에서도 잘 동작할것이라는 confidence를 주지는 못한다. 대체재로 infra에 stress testfmf dnlgo production traffic을 적절히 Rebalancing하고 문제가 생기면 엔지니어가 개입하는 방식을 쓸 수 있다([Kraken OSDI ‘16](https://www.usenix.org/system/files/conference/osdi16/osdi16-veeraraghavan.pdf)). 이런 production stress testing을 지원하기 위한 툴을 만드는건 어려운 작업이지만 한번 적용하게되면 metastable failure가 일어날경우 해당 cluster를 안정적으로 drain할 수 있다.
+replica에 stress test를 하는건 작은 scale에서 metastable failure를 찾아내는데 유용하다. 하지만 feedback loop의 강도는 scale에따라 달라질 수 있다. small scale test는 large scale에서도 잘 동작할것이라는 confidence를 주지는 못한다. 대체재로 infra에 stress test를 위해 production traffic을 적절히 Rebalancing하고 문제가 생기면 엔지니어가 개입하는 방식을 쓸 수 있다([Kraken OSDI ‘16](https://www.usenix.org/system/files/conference/osdi16/osdi16-veeraraghavan.pdf)). 이런 production stress testing을 지원하기 위한 툴을 만드는건 어려운 작업이지만 한번 적용하게되면 metastable failure가 일어날경우 해당 cluster를 안정적으로 drain할 수 있다.
 
 ### Organization Incentives
 
