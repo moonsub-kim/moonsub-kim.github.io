@@ -12,6 +12,8 @@ description: "[Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Ma
 
 [HN Comments](https://news.ycombinator.com/item?id=32094046)
 
+[TiDB CTO Comments](https://news.ycombinator.com/item?id=32361558)
+
 ## 1. Introduction
 
 DynamoDB의 design goal은 “모든" request를 10ms 이내로 완료하는 것이다. 10년동안 operational requirements에 영향을 주지 않으면서 기능을 추가하는것은 key challenge였다. DynamoDB는 아래 fundamental system propertey를 따른다.
