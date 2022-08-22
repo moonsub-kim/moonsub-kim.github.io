@@ -7,7 +7,7 @@ nav_order: 11
 
 - [Airbnb](https://medium.com/airbnb-engineering)
 - [Appsflyer](https://medium.com/appsflyer)
-- [Bbc](https://medium.com/bbc-design-engineering)
+- [BBC](https://medium.com/bbc-design-engineering)
 - [Blackrock](https://medium.com/blackrock-engineering)
 - [Cloudflare](https://blog.cloudflare.com/)
 - [Coupang](https://medium.com/coupang-engineering)
@@ -22,7 +22,7 @@ nav_order: 11
 - [Linkedin](https://engineering.linkedin.com/)
 - [Lyft](https://eng.lyft.com/)
 - [Netflix](https://netflixtechblog.com/)
-- [Ny times](https://medium.com/timesopen)
+- [NY times](https://medium.com/timesopen)
 - [Paypal](https://medium.com/paypal-tech)
 - [Pinterest](https://medium.com/@Pinterest_Engineering)
 - [Soundcloud](https://developers.soundcloud.com/blog/)
