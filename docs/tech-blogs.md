@@ -50,3 +50,6 @@ slack 안붙였음
 - [Quastar](https://blog.quastor.org/): 여러회사들 포스팅 정리, weekly
 - [Bytebytego](https://blog.bytebytego.com/): [RSS](https://blog.bytebytego.com/feed) system design interview 책 만든분이 운영하는곳
 - [Data Engineering Weekly](https://www.dataengineeringweekly.com/): [RSS](https://www.dataengineeringweekly.com/feed)
+
+- [Tech Crunch](https://techcrunch.com/): [RSS](https://techcrunch.com/feed/)
+- [Emerging Tech Brew](https://www.emergingtechbrew.com/)
