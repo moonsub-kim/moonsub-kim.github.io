@@ -5,72 +5,38 @@ nav_order: 11
 ---
 # 메모용입니다..
 
-[airbnb](https://medium.com/airbnb-engineering)
-
-[appsflyer](https://medium.com/appsflyer)
-
-[bbc](https://medium.com/bbc-design-engineering)
-
-[blackrock](https://medium.com/blackrock-engineering)
-
-[cloudflare](https://blog.cloudflare.com/)
-
-[coupang](https://medium.com/coupang-engineering)
-
-[doordash](https://doordash.engineering/)
-
-[meta](https://engineering.fb.com/)
-
-[meta research](https://research.facebook.com/)
-
-[ebay](https://tech.ebayinc.com/)
-
-[grab](https://engineering.grab.com/)
-
-[heroku](https://blog.heroku.com/engineering)
-
-[instagram](https://instagram-engineering.com/)
-
-[just eat take away](https://medium.com/justeattakeaway-tech)
-
-[linkedin](https://engineering.linkedin.com/)
-
-[lyft](https://eng.lyft.com/)
-
-[netflix](https://netflixtechblog.com/)
-
-[ny times](https://medium.com/timesopen)
-
-[paypal](https://medium.com/paypal-tech)
-
-[pinterest](https://medium.com/@Pinterest_Engineering)
-
-[soundcloud](https://developers.soundcloud.com/blog/)
-
-[stripe](https://stripe.com/blog/)
-
-[twitter](https://blog.twitter.com/engineering/en_us/)
-
-[uber](https://eng.uber.com/)
-
-[udemy](https://medium.com/udemy-engineering)
-
-[vimeo](https://medium.com/vimeo-engineering-blog)
-
-[walmart](https://medium.com/walmartglobaltech)
-
-[yelp](https://engineeringblog.yelp.com/)
-
-[zillow](https://www.zillow.com/tech/)
-
-[shopify](https://shopify.engineering)
-
-[slack](https://slack.engineering)
-
-[goldman sachs](https://developer.gs.com/blog/posts)
-
-[soptify](https://engineering.atspotify.com/)
-
-[quastar](https://blog.quastor.org/)
-
-[bytebytego](https://blog.bytebytego.com/)
+- [Airbnb](https://medium.com/airbnb-engineering)
+- [Appsflyer](https://medium.com/appsflyer)
+- [Bbc](https://medium.com/bbc-design-engineering)
+- [Blackrock](https://medium.com/blackrock-engineering)
+- [Cloudflare](https://blog.cloudflare.com/)
+- [Coupang](https://medium.com/coupang-engineering)
+- [Doordash](https://doordash.engineering/)
+- [Meta](https://engineering.fb.com/)
+- [Meta research](https://research.facebook.com/)
+- [Ebay](https://tech.ebayinc.com/)
+- [Grab](https://engineering.grab.com/)
+- [Heroku](https://blog.heroku.com/engineering)
+- [Instagram](https://instagram-engineering.com/)
+- [Just eat take away](https://medium.com/justeattakeaway-tech)
+- [Linkedin](https://engineering.linkedin.com/)
+- [Lyft](https://eng.lyft.com/)
+- [Netflix](https://netflixtechblog.com/)
+- [Ny times](https://medium.com/timesopen)
+- [Paypal](https://medium.com/paypal-tech)
+- [Pinterest](https://medium.com/@Pinterest_Engineering)
+- [Soundcloud](https://developers.soundcloud.com/blog/)
+- [Stripe](https://stripe.com/blog/)
+- [Twitter](https://blog.twitter.com/engineering/en_us/)
+- [Uber](https://eng.uber.com/)
+- [Udemy](https://medium.com/udemy-engineering)
+- [Vimeo](https://medium.com/vimeo-engineering-blog)
+- [Walmart](https://medium.com/walmartglobaltech)
+- [Yelp](https://engineeringblog.yelp.com/)
+- [Zillow](https://www.zillow.com/tech/)
+- [Shopify](https://shopify.engineering)
+- [Slack](https://slack.engineering)
+- [Goldman sachs](https://developer.gs.com/blog/posts)
+- [Soptify](https://engineering.atspotify.com/)
+- [Quastar](https://blog.quastor.org/)
+- [Bytebytego](https://blog.bytebytego.com/)
