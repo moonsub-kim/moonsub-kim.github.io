@@ -38,5 +38,7 @@ nav_order: 11
 - [Slack](https://slack.engineering)
 - [Goldman sachs](https://developer.gs.com/blog/posts)
 - [Soptify](https://engineering.atspotify.com/)
-- [Quastar](https://blog.quastor.org/)
-- [Bytebytego](https://blog.bytebytego.com/)
+- [Quastar](https://blog.quastor.org/): 여러회사들 포스팅 정리, weekly
+- [Bytebytego](https://blog.bytebytego.com/): system design interview 책 만든분이 운영하는곳
+- [Data Engineering Weekly](https://www.dataengineeringweekly.com/)
+- [Modern Data Stack(Linkedin)](https://www.linkedin.com/company/moderndatastack/posts/?feedView=all)
