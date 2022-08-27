@@ -1,7 +1,8 @@
 ---
 title: Minikube
+parent: 글
 has_children: false
-nav_order: 10
+nav_order: 1
 ---
 # Minikube
 

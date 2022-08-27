@@ -1,7 +1,6 @@
 ---
 title: Tech Blog RSS
 has_children: false
-nav_order: 11
 ---
 # 메모용입니다..
 
@@ -42,6 +41,7 @@ RSS 없음
 - [Goldman Sachs](https://developer.gs.com/blog/posts)
 - [Spotify](https://engineering.atspotify.com/): rss 있는데 동작안함
 - [Modern Data Stack(Linkedin)](https://www.linkedin.com/company/moderndatastack/posts/?feedView=all)
+- [Metadata Weekly(Linkedin)](https://www.linkedin.com/newsletters/metadata-weekly-6861008883754774528/): atlan에서 발행
 
 slack 안붙였음
 - [Cloudera](https://blog.cloudera.com/category/technical/): [RSS](https://blog.cloudera.com/category/technical/feed/)
