@@ -10,7 +10,7 @@ nav_order: 2
 
 작년에 Flink 써보려고 노력하던시절 (python 지원이 약해서 접음..) [spotlify/flink-on-k8s-operator](https://github.com/spotify/flink-on-k8s-operator) 에서 신기한 커맨드 발견
 
-```Makefile
+```sh
 ##@ General
 
 # The help target prints out all targets with their descriptions organized
