@@ -160,16 +160,16 @@ for upload in res['Uploads']:
 
 Apache Arrow 7.0.0 이전 버전에서 S3 multipart upload를 사용할때 데이터가 "손실" 될 수있는 버그를 7.0.0에서 수정했으므로 S3 multipart upload를 사용한다면 꼭 7.0.0 이상의 버전을 써야한다.
 
+[https://arrow.apache.org/blog/2022/02/08/7.0.0-release/](https://arrow.apache.org/blog/2022/02/08/7.0.0-release/)
+
 ## 참조
 
-https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html
+[https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html)
 
-https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html
+[https://arrow.apache.org/docs/](https://arrow.apache.org/docs/)
 
-https://arrow.apache.org/docs/
+[https://aws.amazon.com/blogs/aws-cloud-financial-management/discovering-and-deleting-incomplete-multipart-uploads-to-lower-amazon-s3-costs/](https://aws.amazon.com/blogs/aws-cloud-financial-management/discovering-and-deleting-incomplete-multipart-uploads-to-lower-amazon-s3-costs/)
 
-https://aws.amazon.com/blogs/aws-cloud-financial-management/discovering-and-deleting-incomplete-multipart-uploads-to-lower-amazon-s3-costs/
+[https://aws.amazon.com/blogs/big-data/top-10-performance-tuning-tips-for-amazon-athena/](https://aws.amazon.com/blogs/big-data/top-10-performance-tuning-tips-for-amazon-athena/)
 
-https://aws.amazon.com/blogs/big-data/top-10-performance-tuning-tips-for-amazon-athena/
-
-https://pypi.org/project/mypy-boto3/
+[https://pypi.org/project/mypy-boto3/](https://pypi.org/project/mypy-boto3/)
