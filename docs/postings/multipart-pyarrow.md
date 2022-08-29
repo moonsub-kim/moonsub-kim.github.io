@@ -158,13 +158,12 @@ for upload in res['Uploads']:
 
 ## 유의사항
 
+Apache Arrow 7.0.0 이전 버전에서 S3 multipart upload를 사용할때 데이터가 "손실" 될 수있는 버그를 7.0.0에서 수정했으므로 S3 multipart upload를 사용한다면 꼭 7.0.0 이상의 버전을 써야한다.
+
 ## 참조
+
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html
 
-1. Apache Arrow 7.0.0 이전 버전에서 S3 multipart upload를 사용할때 데이터가 "손실" 될 수있는 버그를 7.0.0에서 수정했으므로 S3 multipart upload를 사용한다면 꼭 7.0.0 이상의 버전을 써야한다.
-2. s3 multipart upload를 진행하다 실패하는 경우가 생길 수 있다. 이런 케이스는 s3api의 `list-multipart-uploads` 를 조회하면 볼 수 있는데, 
-
-## 참조
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html
 
 https://arrow.apache.org/docs/
