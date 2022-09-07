@@ -1,9 +1,8 @@
 ---
 title: Metastable Failures in Distributed Systems (HotOS ‘21)
-parent: Metastable Failure
-grand_parent: Distributed Systems
+parent: Distributed Systems
 last_modified_date: 2022-08-01
-nav_order: 1
+nav_order: 14
 description: "[Metastable Failures in Distributed Systems (HotOS ‘21)](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf) 을 번역한 글 입니다."
 ---
 **{{ page.description }}**
