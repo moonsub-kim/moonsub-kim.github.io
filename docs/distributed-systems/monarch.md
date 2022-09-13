@@ -8,6 +8,7 @@ description: "Google의 [Monarch: Google’s Planet-Scale In-Memory Time Series 
 **{{ page.description }}**
 
 # Monarch: Google’s Planet-Scale In-Memory Time Series Database
+[HN Comments](https://news.ycombinator.com/item?id=31379383)
 
 ## 1. Introduction
 
