@@ -53,3 +53,4 @@ slack 안붙였음
 
 - [Tech Crunch](https://techcrunch.com/): [RSS](https://techcrunch.com/feed/)
 - [Emerging Tech Brew](https://www.emergingtechbrew.com/)
+- [Data Products(Substack)](https://dataproducts.substack.com/)
