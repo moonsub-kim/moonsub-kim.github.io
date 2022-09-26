@@ -13,8 +13,6 @@ description: "Google의 [The Google File System (SOSP '03)](https://static.googl
 
 [From GFS To Colossus: Cluster-Level Storage](http://www.pdsw.org/pdsw-discs17/keynote.shtml)
 
-[Colossus - The Greatest Secret in the History of Computing](https://www.youtube.com/watch?v=g2tMcMQqSbA)
-
 
 ## 요약
 
