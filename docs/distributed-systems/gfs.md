@@ -118,7 +118,7 @@ client와 chunkserver는 data를 cache하지 않는다. 대부분 application이
 
 single master를 가지는것은 design을 단순하게 해주고, master가 global knowledge를 이용해 정교한 chunk placement 와 replication decision을 하게 해준다. 하지만 bottleneck이 발생하지 않도록 read,write에서 master의 critical path를 최소화 해야한다. client는 절대로 master를 통해서 data를 접근하지 않는다. client는 master에게 어떤 chunkserver와 통신하면 되는지 물어보고, 이 정보를 일정기간 cache하고, chunkserver와 직접 통신한다.
 
-Figure 1은 read할때의 interaction을 보여준다. 첫째로 fixed chunk size를 이용해서 client는 application에서 정의해둔 (file name, byte offset) 에서 file의 chunk index르 변환한다. (머 대충 $chunk\_index=byte\_offset\ \%\ fixed\_chunk\_size$). 그리고 master에게 (file name, chunk index)를 던진다. master는 replica에 대한 (chunk handle, chunk location)를 리턴해준다. client는 key를 (file name, chunk index), value를 (chunk handle, chunk location)으로 캐싱한다.
+Figure 1은 read할때의 interaction을 보여준다. 첫째로 fixed chunk size를 이용해서 client는 application에서 정의해둔 (file name, byte offset) 에서 file의 chunk index르 변환한다. (머 대충 $chunk_index=byte_offset\ \%\ fixed_chunk_size$). 그리고 master에게 (file name, chunk index)를 던진다. master는 replica에 대한 (chunk handle, chunk location)를 리턴해준다. client는 key를 (file name, chunk index), value를 (chunk handle, chunk location)으로 캐싱한다.
 
 client는 replica중 물리적으로 가까운 Replica에게 (chunk handle, byte range)로 요청을 던진다. 같은 chunk에대한 read는 캐시가 있으므로, cache expiration이나 file reopen이 안생긴다면 client-master간 interaction은 필요없다. 실제로 client는 같은 request에 여러 chunk를 담고, master는 여러 chunk에 대한 response를 전달해준다. 이런 extra information은 미래에 client-master interaction이 필요 없게 만들어준다.
 
