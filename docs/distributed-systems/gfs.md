@@ -138,7 +138,7 @@ large chunk size는 몇몇 이점을 준다.
 
 ### 2.6 Metadata
 
-master는 3종류의 metadata를 저장한다. file과 chunk namespace(file에서 chunk로의 매핑)와 각 chunk replica의 location이다. 모든 metadata는 master의 메모리에 올라간다. 또한 file, chunk namespace는 변경사항을 master의 locatl disk에 $operation\ log$로 남기고 remote machine에 복제하여 persistent하게 유지한다. $operation\ log$는 master crash에서 incosistency가 날 리스크를 없애줘서 master state를 simple,reliable하게 update 하도록 해준다. master는 chunk location을 persistent하게 저장하지 않고, master가 시작할때나 chunkserver가 cluster로 들어올때마다 chunkserver에서 가져온다.
+master는 3종류의 metadata를 저장한다. file과 chunk namespace, file to chunk 매핑, 각 chunk replica의 location이다. 모든 metadata는 master의 메모리에 올라간다. 또한 file, chunk namespace는 변경사항을 master의 locatl disk에 $operation\ log$로 남기고 remote machine에 복제하여 persistent하게 유지한다. $operation\ log$는 master crash에서 incosistency가 날 리스크를 없애줘서 master state를 simple,reliable하게 update 하도록 해준다. master는 chunk location을 persistent하게 저장하지 않고, master가 시작할때나 chunkserver가 cluster로 들어올때마다 chunkserver에서 가져온다.
 
 #### 2.6.1 In-Memory Data Structure
 
