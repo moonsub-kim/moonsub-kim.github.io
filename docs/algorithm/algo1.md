@@ -1,5 +1,6 @@
 ---
 title: "종만북1"
+parent: 종만북
 last_modified_date: 2022-09-30
 nav_order: 1
 description: "알고리즘 문제 해결 전략을 보면서 정리한 글입니다"
