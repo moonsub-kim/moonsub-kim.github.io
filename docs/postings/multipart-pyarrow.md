@@ -3,7 +3,7 @@ title: S3 Multipart Upload와 pyarrow로 고정된 스키마를 가지는 Parque
 parent: 글
 last_modified_date: 2022-08-28
 has_children: false
-nav_order: 2
+nav_order: 4
 ---
 
 # S3 Multipart Upload와 pyarrow로 고정된 스키마를 가지는 Parquet 파일 생성

@@ -3,7 +3,7 @@ title: make help 줍줍
 parent: 글
 last_modified_date: 2022-08-22
 has_children: false
-nav_order: 2
+nav_order: 3
 ---
 
 # make help 줍줍
