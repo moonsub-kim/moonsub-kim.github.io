@@ -91,7 +91,7 @@ heap target은 GC frequency를 제어한다. target이 크면 GC의 주기가 �
     
     다음 Total GC CPU cost에 대해 볼것이다. Total cost는 cost per cycle로 쪼개고, time period T와 GC frequency를 곱하면 된다.
     
-    $Total\ GC\ CPU\ cost=(GC\ CPU\ cost\ per\ cycle)*(GC\ frequency)*T $
+    $Total\ GC\ CPU\ cost=(GC\ CPU\ cost\ per\ cycle)*(GC\ frequency) * T$
     
     GC CPU cost per cycle은 GC model에 따라 아래의 수식을 가진다.
     
@@ -107,11 +107,11 @@ heap target은 GC frequency를 제어한다. target이 크면 GC의 주기가 �
     
     합쳐서 보면 아래 식을 얻을 수 있다
     
-    $Total\ GC\ CPU\ cost = (Allocation\ rate)/((Live\ heap+GC\ roots) * GOGC/100)*((Live\ heap+GC\ roots)*(Cost\ per\ byte)+Fixed\ cost)*T $
+    $Total\ GC\ CPU\ cost = (Allocation\ rate)/((Live\ heap+GC\ roots) * GOGC/100)*((Live\ heap+GC\ roots)*(Cost\ per\ byte)+Fixed\ cost) * T$
     
     충분히 heap size가 큰 대다수 케이스에서 GC cycle의 marginal cost는 fixed cost에 dominate되므로 위 식을 간단하게 만들 수 있다.
     
-    $Total\ GC\ CPU\ cost =(Allocation\ rate)/(GOGC/100)*(Cost\ per\ byte)*T $
+    $Total\ GC\ CPU\ cost =(Allocation\ rate)/(GOGC/100)*(Cost\ per\ byte) * T$
     
     위 식에서 GOGC를 두배로 하면 total GC CPU cost가 절반이 됨을 알 수 있다. (밑에 나올 viz는 fixed cost를 simulate해서 GC CPu overhead가 GOGC가 두배가 되더라도 정확히 절반이 되지 않음을 보여준다). 또한 GC CPU cost는 메모리 스캔 대상인 allocation rate, cost per byte에 의해 주로 결정됨을 알 수 있다. 이 비용을 줄이고싶다면 Optimization guide 섹션을 보면 된다.
     
