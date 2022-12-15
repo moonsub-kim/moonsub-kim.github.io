@@ -1,5 +1,5 @@
 ---
-title: Windows Azure Storage
+title: Windows Azure Storage (SOSP '11)
 parent: Distributed Systems
 last_modified_date: 2022-12-15
 nav_order: 16
