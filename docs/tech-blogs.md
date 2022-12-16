@@ -26,6 +26,7 @@ RSS 있음
 - [Paypal](https://medium.com/paypal-tech): [RSS](https://medium.com/feed/paypal-tech)
 - [Pinterest](https://medium.com/@Pinterest_Engineering): [RSS](https://medium.com/feed/@Pinterest_Engineering)
 - [Soundcloud](https://developers.soundcloud.com/blog/): [RSS](https://developers.soundcloud.com/blog/blog.rss)
+- [Spotify](https://engineering.atspotify.com/): [RSS](https://engineering.atspotify.com/feed)
 - [Stripe](https://stripe.com/blog/): [RSS](https://stripe.com/blog/feed.rss)
 - [Twitter](https://blog.twitter.com/engineering/en_us/): [RSS](https://blog.twitter.com/engineering/en_us/blog.rss)
 - [Uber](https://eng.uber.com/): [RSS](https://eng.uber.com/feed/)
@@ -39,7 +40,6 @@ RSS 없음
 - [Shopify](https://shopify.engineering)
 - [Slack](https://slack.engineering)
 - [Goldman Sachs](https://developer.gs.com/blog/posts)
-- [Spotify](https://engineering.atspotify.com/): rss 있는데 동작안함
 - [Modern Data Stack(Linkedin)](https://www.linkedin.com/company/moderndatastack/posts/?feedView=all)
 - [Metadata Weekly(Linkedin)](https://www.linkedin.com/newsletters/metadata-weekly-6861008883754774528/): atlan에서 발행
 
