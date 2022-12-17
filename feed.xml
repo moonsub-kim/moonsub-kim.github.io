@@ -8,13 +8,14 @@ layout: none
 		<description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>		
 		<link>{{ site.url }}</link>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-		{% for post in site.posts limit:10 %}
+		{% assign date_sorted_pages = include.pages | where_exp:"item", "item.title != nil", "item.last_modified_date != nil" | sort:"last_modified_date" | reverse %}
+		{% for post in date_sorted_pages %}
 			<item>
-				<title>{{ post.title | xml_escape }} -abcd</title>
+				<title>{{ post.title | xml_escape }}</title>
 				<description>{{ post.content | xml_escape }}</description>
-				<pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-				<link>{{ site.url }}{{ post.url }}</link>
-				<guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
+				<pubDate>{{ post.last_modified_date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+				<link>{{ child.url | absolute_url }}</link>
+				<guid isPermaLink="true">{{ child.url | absolute_url }}</guid>
 			</item>
 		{% endfor %}
 	</channel>
