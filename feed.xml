@@ -8,16 +8,16 @@ layout: none
 		<description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>		
 		<link>{{ site.url }}</link>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-		{% comment %} {% assign pages = site.pages | where_exp:"item", "item.title != nil and item.title != '404' and item.last_modified_date != nil" %} {% endcomment %}
 		{% for post in site.pages | where_exp:"item", "item.title != nil and item.title != '404'" %}
-			{% comment %} | sort:"last_modified_date" | reverse %} {% endcomment %}
-			<item>
-				<title>{{ post.title | xml_escape }}</title>
-				<description>{{ post.description | xml_escape }}</description>
-				<pubDate>{{ post.last_modified_date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-				<link>{{ post.url | absolute_url }}</link>
-				<guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
-			</item>
+			{% if post.title != "404" and post.last_modified_date != null %}
+				<item>
+					<title>{{ post.title | xml_escape }}</title>
+					<description>{{ post.description | xml_escape }}</description>
+					<pubDate>{{ post.last_modified_date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+					<link>{{ post.url | absolute_url }}</link>
+					<guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+				</item>
+			{% endif %}
 		{% endfor %}
 	</channel>
 </rss>
