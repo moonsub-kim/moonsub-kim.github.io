@@ -5,7 +5,7 @@ layout: null
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {%- assign titled_pages = site.pages | where_exp:"item", "item.title != nil" -%}
   {% for post in titled_pages %}
-    {% if (ne post.title "404") or (post.title) %}
+    {% if post.title and post.title != "404" %}
       <url>
         <loc>{{ site.url }}{{ post.url }}</loc>
         {% if post.last_modified_date != null %}
