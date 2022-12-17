@@ -1,5 +1,6 @@
 ---
 title: Tech Blog RSS
+last_modified_date: 2022-08-22
 has_children: false
 ---
 # 메모용입니다..

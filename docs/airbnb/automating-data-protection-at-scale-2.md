@@ -1,7 +1,7 @@
 ---
 title: "Automating Data Proteciton at Scale 2"
 parent: Airbnb
-last_modified_date: 2022-05-05
+last_modified_date: 2022-05-06
 nav_order: 8
 description: "Airbnb의 [Automating Data Proteciton at Scale 2](https://medium.com/airbnb-engineering/automating-data-protection-at-scale-part-2-c2b8d2068216) 을 번역한 글 입니다."
 ---
