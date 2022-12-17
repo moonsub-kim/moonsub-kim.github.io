@@ -8,8 +8,8 @@ layout: none
 		<description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>		
 		<link>{{ site.url }}</link>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-		{% assign pages = site.pages | where_exp:"item", "item.title != nil and item.title != '404' and item.last_modified_date != nil" %}
-		{% for post in pages %}
+		{% comment %} {% assign pages = site.pages | where_exp:"item", "item.title != nil and item.title != '404' and item.last_modified_date != nil" %} {% endcomment %}
+		{% for post in site.pages | where_exp:"item", "item.title != nil and item.title != '404'" %}
 			{% comment %} | sort:"last_modified_date" | reverse %} {% endcomment %}
 			<item>
 				<title>{{ post.title | xml_escape }}</title>
