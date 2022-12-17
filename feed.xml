@@ -8,7 +8,9 @@ layout: none
 		<description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>		
 		<link>{{ site.url }}</link>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-		{% for post in site.pages | where_exp:"item", "item.title != nil and item.title != '404'" | sort "last_modified_date" | reverse %}
+		{% assign pages = site.pages | where_exp:"item", "item.title != nil" %}
+		{% assign sorted_pages = pages | sort "last_modified_date" | reverse %}
+		{% for post in sorted_pages %}
 			{% if post.title != "404" and post.last_modified_date != null %}
 				<item>
 					<title>
