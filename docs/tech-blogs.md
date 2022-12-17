@@ -30,6 +30,8 @@ RSS 있음
 - [NY times](https://medium.com/timesopen): [RSS](https://medium.com/feed/timesopen)
 - [Paypal](https://medium.com/paypal-tech): [RSS](https://medium.com/feed/paypal-tech)
 - [Pinterest](https://medium.com/@Pinterest_Engineering): [RSS](https://medium.com/feed/@Pinterest_Engineering)
+- [Shopify](https://shopify.engineering): [RSS](https://shopify.engineering/blog.atom)
+- [Slack](https://slack.engineering): [RSS](https://slack.engineering/feed/)
 - [Soundcloud](https://developers.soundcloud.com/blog/): [RSS](https://developers.soundcloud.com/blog/blog.rss)
 - [Spotify](https://engineering.atspotify.com/): [RSS](https://engineering.atspotify.com/feed)
 - [Stripe](https://stripe.com/blog/): [RSS](https://stripe.com/blog/feed.rss)
@@ -43,13 +45,11 @@ RSS 있음
 - [Zillow](https://www.zillow.com/tech/): [RSS](https://www.zillow.com/tech/feed/)
 
 RSS 없음
-- [Shopify](https://shopify.engineering)
-- [Slack](https://slack.engineering)
 - [Goldman Sachs](https://developer.gs.com/blog/posts)
 - [Modern Data Stack(Linkedin)](https://www.linkedin.com/company/moderndatastack/posts/?feedView=all)
 - [Metadata Weekly(Linkedin)](https://www.linkedin.com/newsletters/metadata-weekly-6861008883754774528/): atlan에서 발행
 - [Twitch](https://blog.twitch.tv/ko-kr/en/tags/engineering/?utm_referrer=https://blog.twitch.tv/en/?utm_referrer=https://www.twitch.tv/)
 - [Delivery Hero](https://tech.deliveryhero.com/)
 - [Quastar](https://blog.quastor.org/): 여러회사들 포스팅 정리, weekly
-- [Emerging Tech Brew](https://www.emergingtechbrew.com/)
+- [Emerging Tech Brew](https://www.emergingtechbrew.com/): [RSS](https://www.emergingtechbrew.com/feed.xml)
 - [Tech Crunch](https://techcrunch.com/): [RSS](https://techcrunch.com/feed/)
