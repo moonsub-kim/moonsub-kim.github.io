@@ -11,7 +11,15 @@ layout: none
 		{% for post in site.pages | where_exp:"item", "item.title != nil and item.title != '404'" | sort "last_modified_date" | reverse %}
 			{% if post.title != "404" and post.last_modified_date != null %}
 				<item>
-					<title>{{ post.title | xml_escape }}</title>
+					<title>
+						{% if post.grand_parent != null %}
+							{{ post.grand_parent | xml_escape}} :: {{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
+						{% elseif post.parent %}
+							{{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
+						{% else %}
+							{{ post.title | xml_escape }}
+						{% endif %}
+					</title>
 					<description>{{ post.description | xml_escape }}</description>
 					<pubDate>{{ post.last_modified_date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
 					<link>{{ post.url | absolute_url }}</link>
