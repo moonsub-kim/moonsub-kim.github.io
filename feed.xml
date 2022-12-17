@@ -14,7 +14,7 @@ layout: none
 					<title>
 						{% if post.grand_parent != null %}
 							{{ post.grand_parent | xml_escape}} :: {{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
-						{% elseif post.parent %}
+						{% elseif post.parent != null %}
 							{{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
 						{% else %}
 							{{ post.title | xml_escape }}
