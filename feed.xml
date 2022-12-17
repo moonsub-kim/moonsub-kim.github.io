@@ -12,9 +12,9 @@ layout: none
 			{% if post.title != "404" and post.last_modified_date != null %}
 				<item>
 					<title>
-						{% if post.grand_parent != null %}
+						{% if post.grand_parent != nil %}
 							{{ post.grand_parent | xml_escape}} :: {{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
-						{% elseif post.parent != null %}
+						{% elseif post.parent != nil %}
 							{{ post.parent | xml_escape }} :: {{ post.title | xml_escape }}
 						{% else %}
 							{{ post.title | xml_escape }}
