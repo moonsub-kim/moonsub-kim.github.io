@@ -3,7 +3,7 @@ title: AWS Lambda
 parent: Distributed Systems
 last_modified_date: 2022-12-22
 nav_order: 17
-description: "AWS reinvent에 나왔던 lambda 내부 정리"
+description: "AWS에서 공개한 lambda internal"
 ---
 **{{ page.description }}**
 
