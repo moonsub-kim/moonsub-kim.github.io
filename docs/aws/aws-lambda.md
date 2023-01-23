@@ -1,6 +1,6 @@
 ---
 title: AWS Lambda
-parent: Distributed Systems
+parent: aws
 last_modified_date: 2022-12-22
 nav_order: 17
 description: "AWS에서 공개한 lambda internal"

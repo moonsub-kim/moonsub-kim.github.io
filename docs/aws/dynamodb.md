@@ -1,6 +1,6 @@
 ---
 title: DynamoDB
-parent: Distributed Systems
+parent: aws
 has_children: true
-nav_order: 5
+nav_order: 1
 ---

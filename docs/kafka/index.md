@@ -1,7 +1,7 @@
 ---
 title: Kafka
 has_children: true
-nav_order: 4
+nav_order: 5
 ---
 
 [books-and-papers](https://kafka.apache.org/books-and-papers)
