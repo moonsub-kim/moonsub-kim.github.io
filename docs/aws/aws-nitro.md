@@ -1,6 +1,6 @@
 ---
 title: AWS Nitro System
-parent: aws
+parent: AWS
 last_modified_date: 2023-01-23
 nav_order: 4
 description: "aws ec2가 어떻게 baremetal performance를 내는걸까"

@@ -1,6 +1,6 @@
 ---
 title: DynamoDB
-parent: aws
+parent: AWS
 has_children: true
 nav_order: 1
 ---

@@ -1,6 +1,6 @@
 ---
 title: Redshift (SIGMOD '22)
-parent: aws
+parent: AWS
 last_modified_date: 2022-06-04
 nav_order: 3
 description: "Amazon의 [Amazon Redshift re-invented (SIGMOD '22)](https://assets.amazon.science/bf/92/1e1507714ff78e46b8e97c9f98ac/amazon-redshift-re-invented.pdf) 를 번역한 글 입니다."
