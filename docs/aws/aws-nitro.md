@@ -7,7 +7,7 @@ description: "aws ec2가 어떻게 baremetal performance를 내는걸까"
 ---
 **{{ page.description }}**
 
-# ****AWS re:Invent 2017: NEW LAUNCH! Amazon EC2 Bare Metal Instances (CMP330)****
+# **AWS re:Invent 2017: NEW LAUNCH! Amazon EC2 Bare Metal Instances (CMP330)**
 
 [AWS re:Invent 2017: NEW LAUNCH! Amazon EC2 Bare Metal Instances (CMP330)](https://www.youtube.com/watch?v=o9_4uGvbvnk)
 
@@ -223,7 +223,7 @@ security, isolation, consistency VS speed, flexibility, performance
 - latency critical workload가 돌아가는데 GC로 인해 stop-the-world가 발생하면 안된다 → rust는 GC가 없다
 - firecracker는 lambda, fargate에서 사용중
 
-# ****AWS re:Invent 2018: Amazon EC2 Instances & Performance Optimization Best Practices (CMP307-R1)****
+# **AWS re:Invent 2018: Amazon EC2 Instances & Performance Optimization Best Practices (CMP307-R1)**
 
 [AWS re:Invent 2018: Amazon EC2 Instances & Performance Optimization Best Practices (CMP307-R1)](https://www.youtube.com/watch?v=W0PKclqP3U0)
 
