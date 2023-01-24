@@ -1,7 +1,7 @@
 ---
 title: AWS Networking Fundamental
 parent: AWS
-last_modified_date: 2023-01-23
+last_modified_date: 2023-01-24
 nav_order: 5
 description: "(level 200) vpc, subnet, sg, nacl, peering, transit gateway, private link"
 ---
