@@ -47,16 +47,22 @@ has_children: false
 - [Zendesk](https://zendesk.engineering/): [RSS](https://zendesk.engineering/feed)
 - [Zillow](https://www.zillow.com/tech/): [RSS](https://www.zillow.com/tech/feed/)
 
-## 기타
-- [Bytebytego](https://blog.bytebytego.com/): [RSS](https://blog.bytebytego.com/feed) system design interview 책 만든분이 운영하는곳
+## 국내 회사
+- [Naver](https://d2.naver.com/helloworld): RSS없음
+- [Techblogposts](https://techblogposts.com/): [RSS](https://techblogposts.com/rss.xml), 국내 기술블로그 모음
+
+## 데이터
 - [Data Engineering Weekly](https://www.dataengineeringweekly.com/): [RSS](https://www.dataengineeringweekly.com/feed)
 - [Data Products](https://dataproducts.substack.com/): [RSS](https://dataproducts.substack.com/feed)
 - [Metadata Weekly](https://metadataweekly.substack.com/): [RSS](https://metadataweekly.substack.com/feed) atlan에서 발행
 - [Modern Data Stack(Linkedin)](https://www.linkedin.com/company/moderndatastack/posts/?feedView=all)
-- [Quastar](https://blog.quastor.org/): system design관점에서 각 회사 기술 소개
 - [Seattle Data Guy](https://seattledataguy.substack.com): [RSS](https://seattledataguy.substack.com/feed)
-- [Techblogposts](https://techblogposts.com/): [RSS](https://techblogposts.com/rss.xml), 국내 기술블로그 모음
 
+## 시스템 디자인
+- [Bytebytego](https://blog.bytebytego.com/): [RSS](https://blog.bytebytego.com/feed) system design interview 책 만든분이 운영하는곳
+- [Quastar](https://blog.quastor.org/): system design관점에서 각 회사 기술 소개
+
+## 뉴스
 - [Emerging Tech Brew](https://www.emergingtechbrew.com/): [RSS](https://www.emergingtechbrew.com/feed.xml)
 - [Tech Crunch](https://techcrunch.com/): [RSS](https://techcrunch.com/feed/)
 - [The Verge](https://www.theverge.com/): [RSS](https://www.theverge.com/rss/index.xml)
