@@ -97,6 +97,8 @@ $f \approx (1 - e^{-(nk/m)})^k$
 
 $m/n$ (element 수 당 bit의 비율), $k$ (hash function 수)에 따른 false positive rate을 보여주는 그래프.
 
+![fpr](bloomfilter/1_fpr.png)
+
 실제 application에선 $m/n$을 일정하게 가져간다. 대체적으로 [6, 14]의 범위면 false positive rate이 낮아진다.
 
 $m/n$ 을 크게 키울수록 공간이 많아지므로 false positive rate이 내려감.
@@ -118,6 +120,8 @@ $k_{opt}$를 사용하면 false positive rate이 같아진다
 $f_{opt} = (1/2)^k$.
 
 $k_{opt}$ 식을 FPR 공식에 대입하면 나온다.
+
+![](bloomfilter/2_f_opt.png)
 
 bloom filter를 생성할땐 $n$, $f$를 입력받아서 $m$, $k$를 생성하는데, $k_{opt}$ 가 정수가 아닐경우 반올림을 하게되니 정확한 $f_{opt}$가 달라진다.
 하지만 $f_{opt}$ 공식을 활용해서 생기는 오차는 크지 않으며, 반올림보다는 계산하는 hash function의 수를 불이기 위해 값을 내리는게 낫다. (즉 5.545에서 5 선택)
