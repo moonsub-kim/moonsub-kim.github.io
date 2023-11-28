@@ -1,6 +1,7 @@
 ---
 title: "1) k8s cluster를 묶기 위한 openVPN 설치"
 parent: k3s
+grand_parent: posts
 last_modified_date: 2023-11-29
 nav_order: 1
 description: "openVPN 설치"
