@@ -1,6 +1,6 @@
 ---
 title: "crawler pod에 sidecar로 chromedriver를 띄우자"
-parent: 글
+parent: posts
 last_modified_date: 2022-12-20
 nav_order: 5
 description: "crawler pod에 sidecar로 chromedriver를 띄우자"

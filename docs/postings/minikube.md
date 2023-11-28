@@ -1,6 +1,6 @@
 ---
 title: Minikube
-parent: 글
+parent: posts
 last_modified_date: 2021-09-21
 has_children: false
 nav_order: 2

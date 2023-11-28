@@ -1,6 +1,6 @@
 ---
 title: "Shell Script Practices"
-parent: 글
+parent: posts
 last_modified_date: 2023-07-08
 nav_order: 6
 description: "HN에 소개 된 shell script practices 모음"
