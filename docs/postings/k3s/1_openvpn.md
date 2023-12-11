@@ -15,7 +15,7 @@ cloud instance랑 집에있는 머신들이랑 k3s로 연결하기 쉽게 만들
 
 - 네트워크 잘 모름
 - k8s port에대해서도 정확히 모름
-- 집에 머신이 4대라서 port-forwarding으로 해결할수있는지 모르겠음
+- ip로 통신할 수 있어야하는것같은데 집에 머신이 4대라서 port-forwarding으로 해결할수있는지 모르겠음
 - k3s install command 건들고싶지 않음(복잡해보임)
 
 OCI 서버스펙
@@ -31,7 +31,7 @@ OCI 서버스펙
 ## OCI 서버 접근
 ssh key를 받은다음 permission을 400으로 바꿔줘야함, 유저는 ubuntu임
 ```sh
-chmod 400 isntance.key
+chmod 400 instance.key
 ssh -i instance.key ubunutu@${INSTANCE_IP}
 ```
 
@@ -130,6 +130,7 @@ sudo cp OCI-openvpn-client.ovpn /etc/openvpn/client.conf
 ```
 
 테스트, 여기서 문제가있으면 한 3분내에 handshake failure 메시지가 나온다
+문제없으면 끝에 `Initialization Sequence Completed` 이 메시지가 나옴
 ```sh
 sudo openvpn --client --config /etc/openvpn/client.conf
 ```
@@ -144,7 +145,16 @@ sudo apt install net-tools # ifconfig 커맨드 설치
 ifconfig # 여기서 10.8.0.xxx IP가 찍힘, 이게 vpn 내부 IP임
 ```
 
+### 네트워크 우선순위 확인
 
+https://snowdeer.github.io/slinux/2018/10/13/ubuntu-change-network-priority/
+
+k8s cluster에 vpn ip를 (아무런설정없이) 등록하려면 네트워크 우선순위를 봐야한다
+```sh
+sudo apt install ifmetric -y
+route -n
+# Metric field의 숫자가 낮은게 높은 우선순위가 됨
+```
 
 
 ## 트러블슈팅
