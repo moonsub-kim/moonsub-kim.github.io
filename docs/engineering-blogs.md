@@ -59,9 +59,9 @@ has_children: false
 
 # RSS 없음
 
-| [Delivery Hero](https://tech.deliveryhero.com/) | |
-|-|-|
-| [Goldman Sachs](https://developer.gs.com/blog/posts) | |
+| [Delivery Hero](https://tech.deliveryhero.com/) |
+|-|
+| [Goldman Sachs](https://developer.gs.com/blog/posts) |
 
 # 기타
 
@@ -78,7 +78,6 @@ has_children: false
 
 # 비활성
 
-| | |
-|-|-|
 | [Instagram](https://instagram-engineering.com/) | [https://instagram-engineering.com/feed](https://instagram-engineering.com/feed) |
+|-|-|
 | [DB Weekly](https://dbweekly.com/) | [https://dbweekly.com/rss/](https://dbweekly.com/rss/) |
