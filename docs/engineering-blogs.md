@@ -6,14 +6,16 @@ has_children: false
 
 # 국내
 
-| [기술 블로그 모음](https://techblogposts.com/) | [https://techblogposts.com/rss.xml](https://techblogposts.com/rss.xml) |
+| | |
 |-|-|
+| [기술 블로그 모음](https://techblogposts.com/) | [https://techblogposts.com/rss.xml](https://techblogposts.com/rss.xml) |
 | [Naver DnA Tech](https://medium.com/naver-dna-tech-blog) |[https://medium.com/feed/naver-dna-tech-blog](https://medium.com/feed/naver-dna-tech-blog) |
 
 # 국외
 
-| [Agoda Engineering](https://medium.com/@agoda.eng) | [https://medium.com/@agoda.eng/feed](https://medium.com/@agoda.eng/feed) |
+| | |
 |-|-|
+| [Agoda Engineering](https://medium.com/@agoda.eng) | [https://medium.com/@agoda.eng/feed](https://medium.com/@agoda.eng/feed) |
 | [AirBnB](https://medium.com/airbnb-engineering) | [https://medium.com/feed/airbnb-engineering](https://medium.com/feed/airbnb-engineering) |
 | [Amazon Science](https://www.amazon.science/) | [https://www.amazon.science/index.rss](https://www.amazon.science/index.rss) |
 | [AppsFlyer](https://medium.com/appsflyer) | [https://medium.com/feed/appsflyer](https://medium.com/feed/appsflyer) |
@@ -59,14 +61,16 @@ has_children: false
 
 # RSS 없음
 
-| [Delivery Hero](https://tech.deliveryhero.com/) |
+| |
 |-|
+| [Delivery Hero](https://tech.deliveryhero.com/) |
 | [Goldman Sachs](https://developer.gs.com/blog/posts) |
 
 # 기타
 
-| [ByteByteGo](https://blog.bytebytego.com/) | [https://blog.bytebytego.com/feed](https://blog.bytebytego.com/feed) |
+| | |
 |-|-|
+| [ByteByteGo](https://blog.bytebytego.com/) | [https://blog.bytebytego.com/feed](https://blog.bytebytego.com/feed) |
 | [ACM Queue](https://queue.acm.org/) | [https://queue.acm.org/rss/feeds/queuecontent.xml](https://queue.acm.org/rss/feeds/queuecontent.xml) |
 | [Quanta Magazine](https://www.quantamagazine.org/) | [https://api.quantamagazine.org/feed/](https://api.quantamagazine.org/feed/) |
 | [Quastor](https://blog.quastor.org/) | [https://www.quastor.org/feed.xml](https://www.quastor.org/feed.xml) |
@@ -78,6 +82,7 @@ has_children: false
 
 # 비활성
 
-| [Instagram](https://instagram-engineering.com/) | [https://instagram-engineering.com/feed](https://instagram-engineering.com/feed) |
+| | |
 |-|-|
+| [Instagram](https://instagram-engineering.com/) | [https://instagram-engineering.com/feed](https://instagram-engineering.com/feed) |
 | [DB Weekly](https://dbweekly.com/) | [https://dbweekly.com/rss/](https://dbweekly.com/rss/) |
