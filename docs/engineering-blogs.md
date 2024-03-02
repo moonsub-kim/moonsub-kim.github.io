@@ -64,7 +64,9 @@ has_children: false
 | |
 |-|
 | [Delivery Hero](https://tech.deliveryhero.com/) |
+| [Grammarly](https://www.grammarly.com/blog/engineering/) |
 | [Goldman Sachs](https://developer.gs.com/blog/posts) |
+| [AWS Graviton Weekly](https://awsgravitonweekly.com/profile/posts) |
 
 # 기타
 
