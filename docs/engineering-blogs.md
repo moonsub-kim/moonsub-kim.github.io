@@ -59,9 +59,9 @@ has_children: false
 
 # RSS 없음
 
-| [Delivery Hero](https://tech.deliveryhero.com/) |
+| [Delivery Hero](https://tech.deliveryhero.com/) | |
 |-|-|
-| [Goldman Sachs](https://developer.gs.com/blog/posts) |
+| [Goldman Sachs](https://developer.gs.com/blog/posts) | |
 
 # 기타
 
