@@ -34,6 +34,7 @@ has_children: false
 | [LinkedIn](https://engineering.linkedin.com/) | [https://engineering.linkedin.com/blog.rss.html](https://engineering.linkedin.com/blog.rss.html) |
 | [Twitter](https://blog.twitter.com/engineering/en_us/) | [https://blog.twitter.com/engineering/en_us/blog.rss](https://blog.twitter.com/engineering/en_us/blog.rss) |
 | [Lyft](https://eng.lyft.com/) | [https://eng.lyft.com/feed](https://eng.lyft.com/feed) |
+| [Microsft Data Science](https://medium.com/data-science-at-microsoft) | [https://medium.com/feed/data-science-at-microsoft](https://medium.com/feed/data-science-at-microsoft) |
 | [Meta Analytics](https://medium.com/@AnalyticsAtMeta/feed) | [https://medium.com/@AnalyticsAtMeta/feed](https://medium.com/@AnalyticsAtMeta/feed) |
 | [Meta Engineering](https://engineering.fb.com/) | [https://engineering.fb.com/feed/](https://engineering.fb.com/feed/) |
 | [Meta Research](https://research.facebook.com/) | [https://research.facebook.com/feed/](https://research.facebook.com/feed/) |
@@ -77,7 +78,8 @@ has_children: false
 | [Quanta Magazine](https://www.quantamagazine.org/) | [https://api.quantamagazine.org/feed/](https://api.quantamagazine.org/feed/) |
 | [Quastor](https://blog.quastor.org/) | [https://www.quastor.org/feed.xml](https://www.quastor.org/feed.xml) |
 | [Data Engineering Weekly](https://www.dataengineeringweekly.com/) | [https://www.dataengineeringweekly.com/feed](https://www.dataengineeringweekly.com/feed) |
-| [Micah Lerner - CS Researches](https://www.micahlerner.com/) | [https://www.micahlerner.com/feed.xml](https://www.micahlerner.com/feed.xml) |
+| [Micah Lerner](https://www.micahlerner.com/) | [https://www.micahlerner.com/feed.xml](https://www.micahlerner.com/feed.xml) |
+| [Murat Demirbas](https://muratbuffalo.blogspot.com/) | [https://muratbuffalo.blogspot.com/feeds/posts/default](https://muratbuffalo.blogspot.com/feeds/posts/default) |
 | [InfoQ](https://www.infoq.com/) | [https://feed.infoq.com/](https://feed.infoq.com/) |
 | [SRE Weekly](https://sreweekly.com/) | [http://sreweekly.com/feed/](http://sreweekly.com/feed/) |
 | [Airflow](https://medium.com/apache-airflow) | [http://medium.com/feed/apache-airflow](http://medium.com/feed/apache-airflow) |
