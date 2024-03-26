@@ -80,6 +80,7 @@ has_children: false
 | [Data Engineering Weekly](https://www.dataengineeringweekly.com/) | [https://www.dataengineeringweekly.com/feed](https://www.dataengineeringweekly.com/feed) |
 | [Micah Lerner](https://www.micahlerner.com/) | [https://www.micahlerner.com/feed.xml](https://www.micahlerner.com/feed.xml) |
 | [Murat Demirbas](https://muratbuffalo.blogspot.com/) | [https://muratbuffalo.blogspot.com/feeds/posts/default](https://muratbuffalo.blogspot.com/feeds/posts/default) |
+| [Marc Brooker](https://brooker.co.za/blog/) | [https://brooker.co.za/blog/rss.xml](https://brooker.co.za/blog/rss.xml) |
 | [InfoQ](https://www.infoq.com/) | [https://feed.infoq.com/](https://feed.infoq.com/) |
 | [SRE Weekly](https://sreweekly.com/) | [http://sreweekly.com/feed/](http://sreweekly.com/feed/) |
 | [Airflow](https://medium.com/apache-airflow) | [http://medium.com/feed/apache-airflow](http://medium.com/feed/apache-airflow) |
