@@ -20,6 +20,7 @@ has_children: false
 | [Amazon Science](https://www.amazon.science/) | [https://www.amazon.science/index.rss](https://www.amazon.science/index.rss) |
 | [AppsFlyer](https://medium.com/appsflyer) | [https://medium.com/feed/appsflyer](https://medium.com/feed/appsflyer) |
 | [Auto Trader](https://engineering.autotrader.co.uk/) | [http://engineering.autotrader.co.uk/feed.xml](http://engineering.autotrader.co.uk/feed.xml) |
+| [AWS What's New](https://aws.amazon.com/new/) | [https://aws.amazon.com/about-aws/whats-new/recent/feed/](https://aws.amazon.com/about-aws/whats-new/recent/feed/) |
 | [BBC](https://medium.com/bbc-design-engineering) | [https://medium.com/feed/bbc-design-engineering](https://medium.com/feed/bbc-design-engineering) |
 | [BlackRock](https://medium.com/blackrock-engineering) | [https://medium.com/feed/blackrock-engineering](https://medium.com/feed/blackrock-engineering) |
 | [Canva](https://www.canva.dev/blog/engineering/) | [https://www.canva.dev/blog/engineering/feed.xml](https://www.canva.dev/blog/engineering/feed.xml) |
@@ -81,6 +82,7 @@ has_children: false
 | [Micah Lerner](https://www.micahlerner.com/) | [https://www.micahlerner.com/feed.xml](https://www.micahlerner.com/feed.xml) |
 | [Murat Demirbas](https://muratbuffalo.blogspot.com/) | [https://muratbuffalo.blogspot.com/feeds/posts/default](https://muratbuffalo.blogspot.com/feeds/posts/default) |
 | [Marc Brooker](https://brooker.co.za/blog/) | [https://brooker.co.za/blog/rss.xml](https://brooker.co.za/blog/rss.xml) |
+| [Brendan Gregg](https://www.brendangregg.com/blog/index.html) | [https://www.brendangregg.com/blog/rss.xml](https://www.brendangregg.com/blog/rss.xml) |
 | [InfoQ](https://www.infoq.com/) | [https://feed.infoq.com/](https://feed.infoq.com/) |
 | [SRE Weekly](https://sreweekly.com/) | [http://sreweekly.com/feed/](http://sreweekly.com/feed/) |
 | [Airflow](https://medium.com/apache-airflow) | [http://medium.com/feed/apache-airflow](http://medium.com/feed/apache-airflow) |
