@@ -83,6 +83,7 @@ has_children: false
 | [Murat Demirbas](https://muratbuffalo.blogspot.com/) | [https://muratbuffalo.blogspot.com/feeds/posts/default](https://muratbuffalo.blogspot.com/feeds/posts/default) |
 | [Marc Brooker](https://brooker.co.za/blog/) | [https://brooker.co.za/blog/rss.xml](https://brooker.co.za/blog/rss.xml) |
 | [Brendan Gregg](https://www.brendangregg.com/blog/index.html) | [https://www.brendangregg.com/blog/rss.xml](https://www.brendangregg.com/blog/rss.xml) |
+| [Ben Schofield](https://blog.benjscho.dev/) |  [https://blog.benjscho.dev/feed.xml](https://blog.benjscho.dev/feed.xml) |
 | [InfoQ](https://www.infoq.com/) | [https://feed.infoq.com/](https://feed.infoq.com/) |
 | [SRE Weekly](https://sreweekly.com/) | [http://sreweekly.com/feed/](http://sreweekly.com/feed/) |
 | [Airflow](https://medium.com/apache-airflow) | [http://medium.com/feed/apache-airflow](http://medium.com/feed/apache-airflow) |
