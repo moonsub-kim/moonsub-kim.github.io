@@ -26,7 +26,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 
 카디널리티 추정값 $E$ = $2^{\rho_{max}}$
 
-<!-- ![](hyper_log_log/1.jpg) -->
+![](hyper_log_log/1.jpg)
 - 이 예시에서 element 수 는 12, distinct element 수는 7
 - $\rho_{max} = 5$, $E = 2^5 = 32$
 - 실제 값 7과의 격차는 아직 크다
@@ -56,7 +56,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 - 그리고 산술평균으로 "평균 버킷 추정", $E_{bucket} = 2^{A}$
 - "평균" 버킷 추정이므로 전체로 확장하면, $E = m * E_{bucket} = 2^{\frac{\Sigma_{i=1}^{m}\rho_{i,max}}{m}}$
 
-<!-- ![](hyper_log_log/2.jpg) -->
+![](hyper_log_log/2.jpg)
 - 위 예시에서 $b=2, m=4$
 - 각 4개 버킷의 $\rho_{i, max}$ 는 각각 $2, 2, 5, 1$
 - $A = \frac{2+2+5+1}{4} = 2.5$
@@ -164,13 +164,13 @@ $d$개의 행과 $w$개의 열을 가진 정수 카운터 행렬 $CMS[1..d][1..w
 
 $d$ 개의 해시함수를 사용해 $a_t$ 에 대해 ($t$는 time stream t) $d$ 개의 해시를 계산하고, 각 해시값 $h_j(a_t)$을 $c_t$ 만큼 증가시킨다. 
 
-<!-- ![](count_min_sketch/1.jpg) -->
+![](count_min_sketch/1.jpg)
 
 ### Estimate
 
 각 hash value중에서 min 값을 리턴한다. 하지만 해시충돌이생길경우 과대추정이 가능하다.
 
-<!-- ![](count_min_sketch/2.jpg) -->
+![](count_min_sketch/2.jpg)
 
 ### Count-Min Sketch의 오차 vs 공간
 
