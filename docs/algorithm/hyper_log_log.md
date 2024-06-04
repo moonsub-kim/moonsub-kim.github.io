@@ -138,7 +138,7 @@ $E_{bucket}=\frac{m}{\Sigma_{i=1}{m}2^{-\rho{i,max}}}$
 
 최종 카디널리티 계산은 
 
-$E = \alpha_m*m*E_{bucket}=\frac{\alpha_mm^2}{\Sigma_{i=1}{m}2^{-\rho{i,max}}}$
+$E = \alpha_m * m * E_{bucket} = \frac{\alpha_m m^2}{\Sigma_{i=1}{m}2^{-\rho{i,max}}}$
 
 편항 보정계수는 LogLog와는 다른 값을 사용함
 
