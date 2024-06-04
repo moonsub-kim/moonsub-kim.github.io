@@ -94,3 +94,4 @@ has_children: false
 |-|-|
 | [Instagram](https://instagram-engineering.com/) | [https://instagram-engineering.com/feed](https://instagram-engineering.com/feed) |
 | [DB Weekly](https://dbweekly.com/) | [https://dbweekly.com/rss/](https://dbweekly.com/rss/) |
+| [The Morning Paper](https://blog.acolyer.org/) | |
