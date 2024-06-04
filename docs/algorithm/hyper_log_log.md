@@ -7,9 +7,24 @@ description: "출처) 대규모 데이터 세트를 위한 알고리즘과 데�
 ---
 
 **{{ page.description }}**
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
+- [HyperLogLog](#hyperloglog)
+   * [1. count distinct의 동작](#1-count-distinct-)
+   * [2 HyperLogLog를 보기전 천천히 이해해보자](#2-hyperloglog-)
+      + [2.1 직관](#21-)
+   * [3 확률론적 평균화](#3-)
+   * [4 LogLog](#4-loglog)
+      + [4.1 LogLog의 필요 저장공간, 왜 이름이 LogLog?](#41-loglog-loglog)
+   * [5 HyperLogLog](#5-hyperloglog)
+   * [6 Trino 지원 함수](#6-trino-)
+
+<!-- TOC end -->
+
+<!-- TOC --><a name="hyperloglog"></a>
 ## HyperLogLog
 
+<!-- TOC --><a name="1-count-distinct-"></a>
 ### 1. count distinct의 동작
 
 `SELECT COUNT(DISTINCT col) FROM table`
@@ -20,6 +35,7 @@ description: "출처) 대규모 데이터 세트를 위한 알고리즘과 데�
 
 해시테이블을 쓰려고 해도 distinct element 수 $k$ 는 실제 element 수 $n$까지 증가할 수 있으므로 해싱을 사용하기 부적합함
 
+<!-- TOC --><a name="2-hyperloglog-"></a>
 ### 2 HyperLogLog를 보기전 천천히 이해해보자
 
 - $a_1, a_2, ..., a_n$: 원본 데이터 (이중 distinct element $k$개)
@@ -39,6 +55,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 - $\rho_{max} = 5$, $E = 2^5 = 32$
 - 실제 값 7과의 격차는 아직 크다
 
+<!-- TOC --><a name="21-"></a>
 #### 2.1 직관
 - k개의 bit array가 uniform random 할때
 - 마지막 bit가 0으로 끝날 확률은 $k/2$, 1로 끝날 확률도 $k/2$, 그리고 00, 01, 10, 11로 끝날 확률은 $k/{2^2}$
@@ -52,6 +69,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 
 어찌됐건 확률의 평균적인 행동을 가지고 기대값을 만든것이므로 실제와 다를 수 있음.
 
+<!-- TOC --><a name="3-"></a>
 ### 3 확률론적 평균화
 
 1.2 에서 기대값 $E = 2^{\rho_{max}}$ 인데, 이게 2의 지수이므로 실제 카디널리티와 가까워지기 힘듦
@@ -72,6 +90,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 - $E = m * E_{bucket} = 4 * 5.66 = 22.64$
 - 1.2에서는 32, 실제 카디널리티는 7. 아직 값이 부정확하지만 이전보다 정확해졌음
 
+<!-- TOC --><a name="4-loglog"></a>
 ### 4 LogLog
 
 LogLog 는 1.3의 확률론적 평균화에서 정규화상수 $\~a_m$ 을 사용함
@@ -87,6 +106,7 @@ $E = \~a_m * m * E_{bucket}$
 - $E = \~a_m * m * E_{bucket} = 0.292 * 4 * 5.66 \approx 6.6$
 - 실제 값과 매우 가까워지게 됨
 
+<!-- TOC --><a name="41-loglog-loglog"></a>
 #### 4.1 LogLog의 필요 저장공간, 왜 이름이 LogLog?
 
 LogLog의 relative error는 $1.3/\sqrt{m}$ 에 가깝다고 함.
@@ -109,6 +129,7 @@ $m=2^{14}$ 로 설정한다면 (해시값에서 앞 14개의 bit사용, 2^14=163
     - 그리고 버킷이 $m$개가 있으므로 $5 bit * 2^{14} = 81920$ 약 81KB
     - $k_{max}$를 long max인 2^64로 한다고 해도 $2^{14}*log_2{log_2{2^{64}}}=98304$, 98KB
 
+<!-- TOC --><a name="5-hyperloglog"></a>
 ### 5 HyperLogLog
 
 1.4 LogLog 에서 버킷의 산술평균 대신 조화평균을 사용해보자
@@ -131,6 +152,7 @@ $\alpha_4=0.541$ 이므로 $E = 0.541 * 4 * 3.88 = 8.39$
 - LogLog 에선 6.6이 나왔고, HyperLogLog에서는 8.39가 나와서 정답 7 보다는 더 멀어졌지만, 데이터셋이 커질수록 HyperLogLog의 편향과 상대오차가 적다고 함
 - HyperLogLog의 상대오차는 $\frac{1.04}{\sqrt{m}}$ 이하이므로, LogLog의 상대오차 $\frac{1.3}{\sqrt{m}}$ 보다 작음
 
+<!-- TOC --><a name="6-trino-"></a>
 ### 6 Trino 지원 함수
 
 HyperLogLog에서 계산한 데이터들 자체를 저장해두고, 버킷 크기 $m$이 같은 HyperLogLog 두개를 합칠 수 있음
