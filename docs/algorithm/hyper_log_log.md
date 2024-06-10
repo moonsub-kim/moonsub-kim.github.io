@@ -2,11 +2,12 @@
 title: "HyperLogLog"
 parent: 알고리즘, 자료구조
 last_modified_date: 2024-06-04
-nav_order: 3
-description: "출처) 대규모 데이터 세트를 위한 알고리즘과 데이터 자료구조"
+nav_order: 2
+description: "Ref) Algorithms and Data Structures for Massive Datasets"
 ---
 
 **{{ page.description }}**
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [HyperLogLog](#hyperloglog)
@@ -72,12 +73,12 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 <!-- TOC --><a name="3-"></a>
 ### 3 확률론적 평균화
 
-1.2 에서 기대값 $E = 2^{\rho_{max}}$ 인데, 이게 2의 지수이므로 실제 카디널리티와 가까워지기 힘듦
+"[2 HyperLogLog를 보기전 천천히 이해해보자](#2-hyperloglog-)" 에서 기대값 $E = 2^{\rho_{max}}$ 인데, 이게 2의 지수이므로 실제 카디널리티와 가까워지기 힘듦
 
 따라서 여러 버킷으로 쪼개어서 각 버킷에 대해 확률적 계산을 수행해보자.
 
 - 각 해시값 $h_i$ 에서 처음 $b$개의 bit를 가지고 버킷을 선택 ($m=2^b$ 개의 버킷이 존재)
-- 그리고 1.2의 $\rho_i$ 를 계산, 그러면 $m$개의 bucket에서 $\rho_{max}$ 값 $m$개가 생김 -> $\rho_{i,max}$
+- 그리고 "[2 HyperLogLog를 보기전 천천히 이해해보자](#2-hyperloglog-)" 의 $\rho_i$ 를 계산, 그러면 $m$개의 bucket에서 $\rho_{max}$ 값 $m$개가 생김 -> $\rho_{i,max}$
 - 위 $m$개의 b버킷에서 산술평균을 계산하면, $A = \frac{\Sigma_{i=1}^{m}\rho_{i,max}}{m}$
 - 그리고 산술평균으로 "평균 버킷 추정", $E_{bucket} = 2^{A}$
 - "평균" 버킷 추정이므로 전체로 확장하면, $E = m * E_{bucket} = 2^{\frac{\Sigma_{i=1}^{m}\rho_{i,max}}{m}}$
@@ -88,7 +89,7 @@ $\rho_{max} = max(\rho_1, \rho_2, ... \rho_n)$
 - $A = \frac{2+2+5+1}{4} = 2.5$
 - $E_{bucket} = 2^{A} = 2^{2.5} \approx 5.66 $ 
 - $E = m * E_{bucket} = 4 * 5.66 = 22.64$
-- 1.2에서는 32, 실제 카디널리티는 7. 아직 값이 부정확하지만 이전보다 정확해졌음
+- "[2 HyperLogLog를 보기전 천천히 이해해보자](#2-hyperloglog-)" 에서는 32, 실제 카디널리티는 7. 아직 값이 부정확하지만 이전보다 정확해졌음
 
 <!-- TOC --><a name="4-loglog"></a>
 ### 4 LogLog
@@ -102,7 +103,7 @@ $\~a_m$ 은 버킷 수 m에서부터 생성되는 상수, $\~a_m \sim 0.39701 - 
 
 $E = \~a_m * m * E_{bucket}$
 
-- 1.3의 예시에서 m=4이므로, $\~a_m = \~a_4 = 0.39701 - \frac{2\pi^2+(ln2)^2}{48*4} = 0.292$
+- "[3 확률론적 평균화](#3-)" 의 예시에서 m=4이므로, $\~a_m = \~a_4 = 0.39701 - \frac{2\pi^2+(ln2)^2}{48*4} = 0.292$
 - $E = \~a_m * m * E_{bucket} = 0.292 * 4 * 5.66 \approx 6.6$
 - 실제 값과 매우 가까워지게 됨
 
@@ -132,7 +133,7 @@ $m=2^{14}$ 로 설정한다면 (해시값에서 앞 14개의 bit사용, 2^14=163
 <!-- TOC --><a name="5-hyperloglog"></a>
 ### 5 HyperLogLog
 
-1.4 LogLog 에서 버킷의 산술평균 대신 조화평균을 사용해보자
+"[4 LogLog](#4-loglog)" 에서 버킷의 산술평균 대신 조화평균을 사용해보자
 
 $E_{bucket}=\frac{m}{\Sigma_{i=1}{m}2^{-\rho{i,max}}}$
 
@@ -144,7 +145,7 @@ $E = \alpha_m * m * E_{bucket} =$ $\frac{\alpha_m m^2}{\Sigma_{i=1}{m}2^{-\rho_{
 
 $\alpha_m=\frac{1}{2ln2(1+\frac{1}{m}(3ln2-1)+O(m^{-2}))}$
 
-1.3의 예시에 조화평균 적용
+"[3 확률론적 평균화](#3-)" 의 예시에 조화평균 적용
 $E_{bucket}=\frac{4}{(1/2)^2 + (1/2)^2 + (1/2)^5 + (1/2)^1} = \frac{4}{33/32} \approx 3.88$
 
 $\alpha_4=0.541$ 이므로 $E = 0.541 * 4 * 3.88 = 8.39$

@@ -1,11 +1,11 @@
 ---
-title: "bloom filter, quotient filter"
+title: "Bloom filter"
 parent: 알고리즘, 자료구조
 last_modified_date: 2023-09-09
-nav_order: 2
-description: "대규모 데이터 세트를 위한 알고리즘과 데이터 자료구조의 챕터3을 정리한 내용입니다"
+nav_order: 3
+description: "Ref) Algorithms and Data Structures for Massive Datasets"
 ---
-# 대규모 데이터 세트를 위한 알고리즘과 데이터 자료구조 - 3. 근사 멤버십: Bloom 및 Quotient Filter
+# Bloom Filter
 
 ### Bloom Filter 소개
 실제 존재하는지는 확실하지 않지만, 부재 하다는 것은 확실하게 알 수 있음
@@ -73,16 +73,6 @@ web proxy는 cache를 이용해서 data copy를 유지해서 웹 트래픽을 �
 3. Bloom Filter에서 proxy D에 데이터가 존재하는것으로 확인되면 D에 요청을 forward함
 다만 데이터는 stale해질수도 있으므로 (D에 실제 존재했지만 D에서 데이터를 제거하는경우) false positive는 더 발생할 수 있음.
 
-### 3.2.2 비트코인 모바일 앱
-비트코인은 각각의 node가 모든 사람의 transaction을 알 수 있으나, 스마트폰같이 리소스가 제한된경우는 모든 transaction을 저장할 수 없음.
-
-이런경우 light node로서, 관심있는 transaction의 bloom filter를 만들어서 full node에게 전달.
-
-full ndoe는 bloom filter 를 바탕으로 내가 가진 transaction중 present한 transaction만 light node에게 전달.
-
-light node가 transaction을 받았을때, 관심있는 transaction이면 받고, 아니면 버림.
-
-
 ## 3.4 Bloom Filter 구성
 - $n$: 넣을 element 수
 - $f$: false positive rate
@@ -135,5 +125,14 @@ m=3MB=3*8*10^6, n=1M -> 10M=10^7, k=2 이다.
 
 $f = (1-e^{-nk/m})^k = (1 - e^{-2*10^7/(3*8*10^6)})^2 = (1-(1/e)^{5/6})^2 = 32%$
 
-예제 2) n, m 에서 f, k 계산: 1M개의 element를 저장하는 bloom filter 만들기. m=1MB=8*10^6
-$k_{opt} = m/n*ln2 = 8*10^6/10^6*ln2 = 5.54
+예제 2) n, m 에서 f, k 계산: 1M개의 element를 저장하는 bloom filter 만들기.
+- $m=1MB=8*10^6$
+- $k_{opt} = m/n*ln2 = 8*10^6/10^6*ln2 = 5.54$
+
+## 3.5 단점
+
+단점
+- 삭제 불가능
+- 크기 조정이 어려움
+- input 자체가 random하지 않으면 문제가 생김
+  - 현실은 대부분 zipfian distribution 이므로 frequent element에서 FPR이 올라가면 전체적으로 FPR이 올라감.
